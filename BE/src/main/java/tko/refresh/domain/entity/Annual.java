@@ -1,4 +1,4 @@
-package tko.refresh.domain;
+package tko.refresh.domain.entity;
 
 import static lombok.AccessLevel.*;
 import java.time.LocalDateTime;
@@ -20,9 +20,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import tko.refresh.domain.converter.AnnualStatusConverter;
 import tko.refresh.domain.converter.AnnualTypeConverter;
-import tko.refresh.domain.value.enu.AnnualStatus;
-import tko.refresh.domain.value.enu.AnnualType;
-import tko.refresh.domain.value.emb.Period;
+import tko.refresh.domain.enu.AnnualStatus;
+import tko.refresh.domain.enu.AnnualType;
+import tko.refresh.domain.emb.Period;
 
 @Entity
 @Getter
@@ -35,19 +35,15 @@ public class Annual extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_uid")
-    @NotNull
     private Member member;
     @Column(name = "annual_type")
     @Convert(converter = AnnualTypeConverter.class)
-    @NotNull
     private AnnualType annualType;
 
     @Column(name = "annual_status")
     @Convert(converter = AnnualStatusConverter.class)
-    @NotNull
     private AnnualStatus annualStatus;
 
-    @NotNull
     private String acceptor;
 
     @Embedded

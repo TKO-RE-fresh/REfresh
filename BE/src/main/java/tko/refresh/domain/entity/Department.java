@@ -1,4 +1,4 @@
-package tko.refresh.domain;
+package tko.refresh.domain.entity;
 
 import static lombok.AccessLevel.*;
 
@@ -12,7 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -29,8 +29,7 @@ public class Department extends BaseEntity {
     @Column(columnDefinition = "BINARY(16)", name = "department_uid")
     private UUID id;
 
-    @Column(name = "department_name")
-    @NotNull
+    @Column(name = "department_name", unique = true)
     private String name;
 
     @Column(name = "department_manager")

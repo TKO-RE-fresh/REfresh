@@ -1,4 +1,4 @@
-package tko.refresh.domain;
+package tko.refresh.domain.entity;
 
 import static javax.persistence.FetchType.*;
 import static lombok.AccessLevel.PROTECTED;
@@ -30,12 +30,10 @@ public class AnnualCount {
     private int sumCount;
 
     @Column(name = "annual_date")
-    @NotNull
     private LocalDateTime annualDate;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "department_uid")
-    @NotNull
     private Department department;
 
     @Builder

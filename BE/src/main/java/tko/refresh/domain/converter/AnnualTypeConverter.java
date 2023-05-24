@@ -1,7 +1,7 @@
 package tko.refresh.domain.converter;
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
-import tko.refresh.domain.value.enu.AnnualType;
+import tko.refresh.domain.enu.AnnualType;
 @Converter(autoApply = true)
 public class AnnualTypeConverter implements AttributeConverter<AnnualType, Integer> {
     @Override

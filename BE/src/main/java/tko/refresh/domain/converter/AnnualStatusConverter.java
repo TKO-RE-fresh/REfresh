@@ -2,7 +2,7 @@ package tko.refresh.domain.converter;
 
 import javax.persistence.AttributeConverter;
 
-import tko.refresh.domain.value.enu.AnnualStatus;
+import tko.refresh.domain.enu.AnnualStatus;
 
 public class AnnualStatusConverter implements AttributeConverter<AnnualStatus, String> {
     @Override

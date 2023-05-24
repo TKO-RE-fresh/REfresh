@@ -1,10 +1,13 @@
-package tko.refresh.domain;
+package tko.refresh.domain.entity;
 
 import static lombok.AccessLevel.*;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -13,10 +16,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = PROTECTED)
 public abstract class BaseEntity {
     @Column(name = "created_id")
-    @NotNull
+    @NotBlank
     private String createdBy;
     @Column(name = "modified_id")
-    @NotNull
+    @NotBlank
     private String modifiedBy;
 
     @NotNull

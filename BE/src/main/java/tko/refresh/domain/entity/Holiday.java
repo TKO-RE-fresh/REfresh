@@ -1,4 +1,4 @@
-package tko.refresh.domain;
+package tko.refresh.domain.entity;
 
 import static lombok.AccessLevel.*;
 

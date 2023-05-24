@@ -1,4 +1,4 @@
-package tko.refresh.domain.value.enu;
+package tko.refresh.domain.enu;
 
 import java.util.HashMap;
 import java.util.Map;
