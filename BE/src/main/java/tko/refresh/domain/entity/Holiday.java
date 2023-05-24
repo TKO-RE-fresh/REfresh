@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -22,5 +23,9 @@ public class Holiday {
 
     private String locdate;
 
-
+    @Builder
+    public Holiday(String name, String locdate) {
+        this.name = name;
+        this.locdate = locdate;
+    }
 }

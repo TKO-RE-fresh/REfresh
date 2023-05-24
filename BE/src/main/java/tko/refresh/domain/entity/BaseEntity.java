@@ -15,11 +15,11 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = PROTECTED)
 public abstract class BaseEntity {
-    @Column(name = "created_id")
-    @NotBlank
+    @Column(name = "created_nm")
+    @NotNull
     private String createdBy;
-    @Column(name = "modified_id")
-    @NotBlank
+    @Column(name = "modified_nm")
+    @NotNull
     private String modifiedBy;
 
     @NotNull

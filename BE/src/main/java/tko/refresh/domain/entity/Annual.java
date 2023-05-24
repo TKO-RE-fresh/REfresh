@@ -58,4 +58,8 @@ public class Annual extends BaseEntity {
         this.period = period;
         this.annualType = annualType;
     }
+
+    public void setMember(Member m) {
+        member = m;
+    }
 }

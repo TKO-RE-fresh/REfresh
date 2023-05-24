@@ -37,7 +37,7 @@ public class Member extends BaseEntity {
     private UUID id;
 
     @OneToMany(mappedBy = "member", cascade = ALL, orphanRemoval = true)
-    private List<Annual> annual = new ArrayList<>();
+    private List<Annual> annuals = new ArrayList<>();
 
     @Column(name = "member_id", unique = true)
     private String memberId;
@@ -70,5 +70,16 @@ public class Member extends BaseEntity {
         this.memberStatus = memberStatus;
         this.department = department;
     }
+
+    public void setDepartment(Department d) {
+        this.department = d;
+    }
+
+
+    public void addAnnual(Annual annual) {
+        annuals.add(annual);
+        annual.setMember(this);
+    }
+
 
 }

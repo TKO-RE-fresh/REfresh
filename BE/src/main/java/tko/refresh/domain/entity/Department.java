@@ -49,4 +49,14 @@ public class Department extends BaseEntity {
         this.manager = manager;
     }
 
+    public void addAnnualCount(AnnualCount ac) {
+        annualCount.add(ac);
+        ac.setDepartment(this);
+    }
+
+    public void addMember(Member m) {
+        member.add(m);
+        m.setDepartment(this);
+    }
+
 }
