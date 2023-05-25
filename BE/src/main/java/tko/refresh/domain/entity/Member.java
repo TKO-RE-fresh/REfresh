@@ -36,7 +36,7 @@ public class Member extends BaseEntity {
     @Id @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name="uuid2", strategy = "uuid2")
     @Column(columnDefinition = "BINARY(16)", name = "member_uid")
-    private UUID id;
+    private UUID uid;
 
     @OneToMany(mappedBy = "member")
     private List<Annual> annuals = new ArrayList<>();

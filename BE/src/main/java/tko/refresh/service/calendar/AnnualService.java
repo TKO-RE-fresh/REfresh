@@ -5,11 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
-import tko.refresh.domain.entity.Annual;
-import tko.refresh.dto.calendar.GetAnnualByDeptDto;
 import tko.refresh.dto.calendar.GetAnnualByNameFilterDto;
 import tko.refresh.dto.calendar.GetAnnualSearchDto;
-import tko.refresh.repository.calendar.AnnualRepository;
 import tko.refresh.repository.calendar.AnnualRepositoryImpl;
 
 /**
@@ -22,22 +19,7 @@ import tko.refresh.repository.calendar.AnnualRepositoryImpl;
 @Service
 @RequiredArgsConstructor
 public class AnnualService {
-    @Autowired
     private final AnnualRepositoryImpl annualRepository;
-    /**
-     * Daniel Kim
-     *
-     * @param year
-     * @param month
-     * @return
-     * 연, 월과 부서 이름을 통해 연차 집계 데이터를 가져옴
-     *
-     * 2023-04-27
-     */
-
-
-
-
     /**
      * Daniel Kim
      *
@@ -47,7 +29,7 @@ public class AnnualService {
      * @return
      * 사원 이름과 페이지 범위를 통해 연차 데이터를 가져옴
      *
-     * 2023-04-29
+     * 2023-05-24
      */
     public List<GetAnnualSearchDto> getAnnualByMember(String name, int page, int size) {
         // 사원 이름
@@ -68,7 +50,7 @@ public class AnnualService {
      * @return
      * 부서 이름과 페이지 범위를 통해 연차 데이터를 가져옴
      *
-     * 2023-04-29
+     * 2023-05-24
      */
     public List<GetAnnualSearchDto> getAnnualDataByDepartment(String name, int page, int size) {
         return annualRepository.findAnnualByMember(GetAnnualByNameFilterDto
