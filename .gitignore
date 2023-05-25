@@ -1,0 +1,50 @@
+HELP.md
+.gradle
+build/
+.idea
+!/BE/gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+application-API-KEY.properties
+application-NCP-DB.properties
+jacoco
+
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+### IntelliJ IDEA
+.idea
+*.iws
+*.iml
+*.ipr
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+**/dist/
+/nbdist/
+/.nb-gradle/
+.gz
+### VS Code ###
+.vscode/
+*.gz
+### log files
+*.log
+!**/util/aop/**
+
+###  file to ignore all directories called node_modules in the current folder and any subfolders
+node_modules
+.DS_Store
+
