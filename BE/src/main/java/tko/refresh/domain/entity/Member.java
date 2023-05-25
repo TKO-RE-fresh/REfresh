@@ -6,6 +6,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Embedded;
@@ -34,10 +36,10 @@ public class Member extends BaseEntity {
     @Id @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name="uuid2", strategy = "uuid2")
     @Column(columnDefinition = "BINARY(16)", name = "member_uid")
-    private UUID id;
+    private UUID uid;
 
-    @OneToMany(mappedBy = "member", cascade = ALL, orphanRemoval = true)
-    private List<Annual> annual = new ArrayList<>();
+    @OneToMany(mappedBy = "member")
+    private List<Annual> annuals = new ArrayList<>();
 
     @Column(name = "member_id", unique = true)
     private String memberId;
@@ -55,20 +57,31 @@ public class Member extends BaseEntity {
     @Convert(converter = MemberStatusConverter.class)
     private MemberStatus memberStatus;
 
-    @ManyToOne(fetch = LAZY)
+    @ManyToOne(fetch = LAZY, cascade = PERSIST)
     @JoinColumn(name = "department_uid")
     private Department department;
 
     @Builder
-    public Member(MemberJoinDto memberDto, MemberInfo memberInfo, double annualCount, MemberStatus memberStatus,
+    public Member(String memberId, String password, MemberInfo memberInfo, double annualCount, MemberStatus memberStatus,
                   Department department, LocalDateTime createdDate, LocalDateTime modifiedDate, String createdBy, String modifiedBy) {
         super(createdBy, modifiedBy, createdDate, modifiedDate);
-        this.memberId = memberDto.getId();
-        this.password = memberDto.getPassword();
+        this.memberId = memberId;
+        this.password = password;
         this.memberInfo = memberInfo;
         this.annualCount = annualCount;
         this.memberStatus = memberStatus;
         this.department = department;
     }
+
+    public void setDepartment(Department d) {
+        this.department = d;
+    }
+
+
+    public void addAnnual(Annual annual) {
+        annuals.add(annual);
+        annual.setMember(this);
+    }
+
 
 }

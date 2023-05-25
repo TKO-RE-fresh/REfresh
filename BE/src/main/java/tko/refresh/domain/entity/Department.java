@@ -27,7 +27,7 @@ public class Department extends BaseEntity {
     @Id @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name="uuid2", strategy = "uuid2")
     @Column(columnDefinition = "BINARY(16)", name = "department_uid")
-    private UUID id;
+    private UUID uid;
 
     @Column(name = "department_name", unique = true)
     private String name;
@@ -47,6 +47,16 @@ public class Department extends BaseEntity {
         super(createdBy, modifiedBy, createdDate, modifiedDate);
         this.name = name;
         this.manager = manager;
+    }
+
+    public void addAnnualCount(AnnualCount ac) {
+        annualCount.add(ac);
+        ac.setDepartment(this);
+    }
+
+    public void addMember(Member m) {
+        member.add(m);
+        m.setDepartment(this);
     }
 
 }

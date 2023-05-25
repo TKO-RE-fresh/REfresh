@@ -1,5 +1,6 @@
 package tko.refresh.domain.entity;
 
+import static javax.persistence.CascadeType.ALL;
 import static lombok.AccessLevel.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -31,9 +32,9 @@ public class Annual extends BaseEntity {
     @Id @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name="uuid2", strategy = "uuid2")
     @Column(columnDefinition = "BINARY(16)", name = "annual_uid")
-    private UUID id;
+    private UUID uid;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = ALL)
     @JoinColumn(name = "member_uid")
     private Member member;
     @Column(name = "annual_type")
@@ -57,5 +58,9 @@ public class Annual extends BaseEntity {
         this.member = member;
         this.period = period;
         this.annualType = annualType;
+    }
+
+    public void setMember(Member m) {
+        member = m;
     }
 }
