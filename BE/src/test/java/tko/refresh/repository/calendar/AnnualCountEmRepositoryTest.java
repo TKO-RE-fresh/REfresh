@@ -1,17 +1,12 @@
 package tko.refresh.repository.calendar;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.time.LocalDateTime;
 import java.util.List;
-
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,7 +24,7 @@ import tko.refresh.repository.MemberRepository;
 @DataJpaTest
 @TestPropertySource("classpath:application-TEST.properties")
 @Transactional
-class AnnualCountRepositoryImplTest {
+class AnnualCountEmRepositoryTest {
 
     @Autowired
     private AnnualRepository annualRepository;
@@ -41,11 +36,9 @@ class AnnualCountRepositoryImplTest {
     private MemberRepository memberRepository;
 
     @Autowired
-    private AnnualRepositoryImpl annualRepositoryImpl;
-    @Autowired
     private AnnualCountRepository annualCountRepository;
     @Autowired
-    private AnnualCountRepositoryImpl annualCountRepositoryImpl;
+    private AnnualCountEmRepository annualCountEmRepository;
 
     @BeforeEach
     void setUp() {
@@ -76,7 +69,7 @@ class AnnualCountRepositoryImplTest {
     @Test
     void 부서이름과_날짜_연차집계정보_가져오기() {
         //given
-        List<AnnualCount> list = annualCountRepositoryImpl.getAnnualCountByDept("2023", "5", "개발팀");
+        List<AnnualCount> list = annualCountEmRepository.getAnnualCountByDept("2023", "5", "개발팀");
         assertThat(list.size()).isEqualTo(1);
     }
 

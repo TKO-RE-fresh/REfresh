@@ -1,6 +1,7 @@
 package tko.refresh.repository.calendar;
 
 import static org.assertj.core.api.Assertions.*;
+
 import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,14 +22,14 @@ import tko.refresh.domain.entity.Member;
 import tko.refresh.domain.enu.AnnualStatus;
 import tko.refresh.domain.enu.AnnualType;
 import tko.refresh.domain.enu.MemberStatus;
-import tko.refresh.dto.calendar.GetAnnualByNameFilterDto;
-import tko.refresh.dto.calendar.GetAnnualSearchDto;
+import tko.refresh.dto.calendar.request.GetAnnualByNameReqDto;
+import tko.refresh.dto.calendar.response.GetAnnualByNameResDto;
 import tko.refresh.repository.MemberRepository;
 
 @DataJpaTest
 @TestPropertySource("classpath:application-TEST.properties")
 @Transactional
-class AnnualRepositoryImplTest {
+class AnnualEmRepositoryTest {
     @Autowired
     private TestEntityManager tm;
 
@@ -41,18 +43,21 @@ class AnnualRepositoryImplTest {
     private MemberRepository memberRepository;
 
     @Autowired
-    private AnnualRepositoryImpl annualRepositoryImpl;
+    private AnnualEmRepository annualEmRepository;
 
     @BeforeEach
     void setUp() {
-        Department department = new Department("개발팀", "code", "intro", "image", LocalDateTime.now(), LocalDateTime.now());
+        Department department = new Department("개발팀", "code", "intro", "image", LocalDateTime.now(),
+                                               LocalDateTime.now());
         MemberInfo memberInfo = new MemberInfo("name1245", "012-1211-2124", "position@gmail.com");
-        Member member = new Member("id", "1234", memberInfo, 15, MemberStatus.IN_USE, department, LocalDateTime.now(), LocalDateTime.now(), "dds","sdds");
+        Member member = new Member("id", "1234", memberInfo, 15, MemberStatus.IN_USE, department,
+                                   LocalDateTime.now(), LocalDateTime.now(), "dds", "sdds");
         department.addMember(member);
         member.setDepartment(department);
 
         Period period = Period.builder().startDate(LocalDateTime.now()).endDate(LocalDateTime.now()).build();
-        Annual annual = new Annual(member, AnnualType.ANNUAL_LEAVE, AnnualStatus.AGREE, "SDds", period, "dds", "sdfds", LocalDateTime.now(), LocalDateTime.now());
+        Annual annual = new Annual(member, AnnualType.ANNUAL_LEAVE, AnnualStatus.AGREE, "SDds", period, "dds",
+                                   "sdfds", LocalDateTime.now(), LocalDateTime.now());
         member.addAnnual(annual);
         annual.setMember(member);
 
@@ -61,31 +66,29 @@ class AnnualRepositoryImplTest {
         annualRepository.save(annual);
     }
 
-
     @Test
     public void 부서_이름으로_연차정보_가져오기() {
         // when
-        Page<GetAnnualSearchDto> annualByMember = annualRepositoryImpl.findAnnualByDept(
-                GetAnnualByNameFilterDto
+        Page<GetAnnualByNameResDto> annualByMember = annualEmRepository.findAnnualByDept(
+                GetAnnualByNameReqDto
                         .builder()
                         .name("개발팀")
-                        .size(10)
-                        .page(0)
-                        .build());
+                        .pageable(Pageable.ofSize(10).withPage(0)
+                        ).build());
         // then
         assertThat(annualByMember.getContent().size()).isEqualTo(1);
 
     }
+
     @Test
     public void 사원_이름으로_연차정보_가져오기() {
         // given
         // when
-        Page<GetAnnualSearchDto> annualByMember = annualRepositoryImpl.findAnnualByMember(
-                GetAnnualByNameFilterDto
+        Page<GetAnnualByNameResDto> annualByMember = annualEmRepository.findAnnualByMember(
+                GetAnnualByNameReqDto
                         .builder()
                         .name("name1245")
-                        .size(10)
-                        .page(0)
+                        .pageable(Pageable.ofSize(10).withPage(0))
                         .build());
         // then
         assertThat(annualByMember.getContent().size()).isEqualTo(1);

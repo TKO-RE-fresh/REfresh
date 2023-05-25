@@ -1,17 +1,13 @@
 package tko.refresh.repository.calendar;
 
 import java.util.List;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-
 import org.springframework.stereotype.Repository;
-
 import tko.refresh.domain.entity.AnnualCount;
-import tko.refresh.dto.calendar.GetAnnualCountDto;
 
 @Repository
-public class AnnualCountRepositoryImpl {
+public class AnnualCountEmRepository {
     @PersistenceContext
     private EntityManager entityManager;
 

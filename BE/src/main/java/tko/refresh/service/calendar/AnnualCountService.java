@@ -3,14 +3,12 @@ package tko.refresh.service.calendar;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
-import tko.refresh.repository.calendar.AnnualCountRepository;
-import tko.refresh.repository.calendar.AnnualCountRepositoryImpl;
 
 @Service
 @RequiredArgsConstructor
 public class AnnualCountService {
 
-    private final AnnualCountRepositoryImpl annualCountRepository;
+//    private final AnnualCountJpqlRepository annualCountJpqlRepository;
 
     /**
      * Daniel Kim
@@ -22,4 +20,8 @@ public class AnnualCountService {
      *
      * 2023-04-27
      */
+
+//    public List<AnnualCount> getAnnualCountByDept(String year, String month, String name) {
+//        return annualCountRepository.getAnnualCountByDept(year, month, name);
+//    }
 }
