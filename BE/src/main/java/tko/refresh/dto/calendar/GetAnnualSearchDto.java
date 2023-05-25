@@ -11,4 +11,6 @@ public class GetAnnualSearchDto {
     private final AnnualType annualType;
 
     private final Period period;
+
+
 }

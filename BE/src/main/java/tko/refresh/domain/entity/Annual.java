@@ -1,5 +1,6 @@
 package tko.refresh.domain.entity;
 
+import static javax.persistence.CascadeType.ALL;
 import static lombok.AccessLevel.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -33,7 +34,7 @@ public class Annual extends BaseEntity {
     @Column(columnDefinition = "BINARY(16)", name = "annual_uid")
     private UUID id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = ALL)
     @JoinColumn(name = "member_uid")
     private Member member;
     @Column(name = "annual_type")
