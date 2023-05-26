@@ -1,4 +1,4 @@
-package tko.refresh.dto.calendar.request.valid;
+package tko.refresh.util.valid;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

@@ -1,7 +1,4 @@
-package tko.refresh.dto.calendar.request;
-
-import java.util.HashSet;
-import java.util.Set;
+package tko.refresh.dto.calendar.request.annual;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -12,15 +9,18 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
-@Builder @ToString @Getter
-public class GetAnnualByNameReqDto {
-
-
+@ToString @Getter
+public class GetAnnualByMemberNameReqDto implements GlobalPage {
     @NotBlank
     private final String name;
     @NotNull
     private final Pageable pageable;
 
+    @Builder
+    public GetAnnualByMemberNameReqDto(String name, int page, int size) {
+        this.name = name;
+        this.pageable = setPageable(page, size);
+    }
 
 
 }

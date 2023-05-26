@@ -4,11 +4,12 @@ import static org.assertj.core.api.Assertions.*;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.EntityManager;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.TestPropertySource;
@@ -22,16 +23,19 @@ import tko.refresh.domain.entity.Member;
 import tko.refresh.domain.enu.AnnualStatus;
 import tko.refresh.domain.enu.AnnualType;
 import tko.refresh.domain.enu.MemberStatus;
-import tko.refresh.dto.calendar.request.GetAnnualByNameReqDto;
-import tko.refresh.dto.calendar.response.GetAnnualByNameResDto;
+import tko.refresh.dto.calendar.request.annual.GetAnnualByDeptNameReqDto;
+import tko.refresh.dto.calendar.request.annual.GetAnnualByMemberNameReqDto;
+import tko.refresh.dto.calendar.response.annual.AnnualResponse;
+import tko.refresh.dto.calendar.response.annual.AnnualResponseDto;
+import tko.refresh.dto.calendar.response.annual.GetAnnualByNameResDto;
 import tko.refresh.repository.MemberRepository;
 
-@DataJpaTest
+@SpringBootTest
 @TestPropertySource("classpath:application-TEST.properties")
 @Transactional
 class AnnualEmRepositoryTest {
     @Autowired
-    private TestEntityManager tm;
+    private EntityManager tm;
 
     @Autowired
     private AnnualRepository annualRepository;
@@ -49,7 +53,7 @@ class AnnualEmRepositoryTest {
     void setUp() {
         Department department = new Department("개발팀", "code", "intro", "image", LocalDateTime.now(),
                                                LocalDateTime.now());
-        MemberInfo memberInfo = new MemberInfo("name1245", "012-1211-2124", "position@gmail.com");
+        MemberInfo memberInfo = new MemberInfo("name1245", "012-1234-2124", "position@gmail.com");
         Member member = new Member("id", "1234", memberInfo, 15, MemberStatus.IN_USE, department,
                                    LocalDateTime.now(), LocalDateTime.now(), "dds", "sdds");
         department.addMember(member);
@@ -68,13 +72,15 @@ class AnnualEmRepositoryTest {
 
     @Test
     public void 부서_이름으로_연차정보_가져오기() {
+
+        GetAnnualByDeptNameReqDto dto = GetAnnualByDeptNameReqDto
+                .builder()
+                .name("개발팀")
+                .size(10)
+                .page(1)
+                .build();
         // when
-        Page<GetAnnualByNameResDto> annualByMember = annualEmRepository.findAnnualByDept(
-                GetAnnualByNameReqDto
-                        .builder()
-                        .name("개발팀")
-                        .pageable(Pageable.ofSize(10).withPage(0)
-                        ).build());
+        AnnualResponseDto<AnnualResponse> annualByMember = annualEmRepository.findAnnualByDept(dto);
         // then
         assertThat(annualByMember.getContent().size()).isEqualTo(1);
 
@@ -83,13 +89,14 @@ class AnnualEmRepositoryTest {
     @Test
     public void 사원_이름으로_연차정보_가져오기() {
         // given
+        GetAnnualByMemberNameReqDto dto = GetAnnualByMemberNameReqDto
+                .builder()
+                .page(1)
+                .size(10)
+                .name("name1245")
+                .build();
         // when
-        Page<GetAnnualByNameResDto> annualByMember = annualEmRepository.findAnnualByMember(
-                GetAnnualByNameReqDto
-                        .builder()
-                        .name("name1245")
-                        .pageable(Pageable.ofSize(10).withPage(0))
-                        .build());
+        AnnualResponseDto<AnnualResponse> annualByMember = annualEmRepository.findAnnualByMember(dto);
         // then
         assertThat(annualByMember.getContent().size()).isEqualTo(1);
     }

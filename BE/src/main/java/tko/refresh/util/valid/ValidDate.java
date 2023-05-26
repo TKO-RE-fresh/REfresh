@@ -1,4 +1,4 @@
-package tko.refresh.dto.calendar.request.valid;
+package tko.refresh.util.valid;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -13,4 +13,7 @@ import javax.validation.Constraint;
 @Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ValidDate {
+    String message() default "Invalid Date";
+    Class<?>[] groups() default {};
+    Class<?>[] payload() default {};
 }

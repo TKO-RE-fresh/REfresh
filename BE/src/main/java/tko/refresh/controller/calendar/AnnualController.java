@@ -1,20 +1,19 @@
 package tko.refresh.controller.calendar;
+import javax.validation.Valid;
 
-import java.util.List;
-
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
-import tko.refresh.dto.calendar.request.GetAnnualByDateAndDeptReqDto;
-import tko.refresh.dto.calendar.request.GetAnnualByNameReqDto;
-import tko.refresh.dto.calendar.TodayDto;
-import tko.refresh.dto.calendar.response.GetAnnualByDateAndDeptResDto;
-import tko.refresh.dto.calendar.response.GetAnnualByNameResDto;
+import tko.refresh.dto.calendar.request.annual.GetAnnualByDateAndDeptReqDto;
+import tko.refresh.dto.calendar.request.annual.GetAnnualByDeptNameReqDto;
+import tko.refresh.dto.calendar.request.annual.GetAnnualByMemberNameReqDto;
+import tko.refresh.dto.calendar.response.annual.AnnualResponse;
+import tko.refresh.dto.calendar.response.annual.AnnualResponseDto;
 import tko.refresh.repository.calendar.AnnualEmRepository;
 
 @RestController
@@ -27,12 +26,7 @@ public class AnnualController {
     /**
      * Daniel Kim
      *
-     * @param year
-     * @param month
-     * @param day
-     * @param name
-     * @param page
-     * @param size
+     * @param dto
      * @return
      *
      * 연, 월, 일, 부서 이름과 페이지 범위를 통해 연차 데이터를 가져옴
@@ -41,46 +35,31 @@ public class AnnualController {
      */
 
     @GetMapping
-    public ResponseEntity getAnnualByDateAndDept(@RequestParam int year, @RequestParam int month, @RequestParam int day, @RequestParam String name,
-                                                 @RequestParam int page, @RequestParam int size) {
-     List<GetAnnualByDateAndDeptResDto> content = annualRepository.findAnnualByDateAndDept(
-             GetAnnualByDateAndDeptReqDto.builder()
-                                         .today(TodayDto.builder().day(day).month(month).year(year).build())
-                                         .deptName(name)
-                                         .pageable(Pageable.ofSize(size).withPage(page - 1)).build());
-
+    public ResponseEntity getAnnualByDateAndDept(@ModelAttribute @Valid GetAnnualByDateAndDeptReqDto dto) {
+     AnnualResponseDto<AnnualResponse>
+             content = annualRepository.findAnnualByDateAndDept(dto);
 
         return ResponseEntity.ok().body(content);
     }
     /**
      * Daniel Kim
      *
-     * @param name
-     * @param page
-     * @param size
+     * @param dto
      * @return
      * 사원 이름과 페이지 범위를 통해 연차 데이터를 가져옴
      *
      * 2023-05-24
      */
     @GetMapping("/member")
-    public ResponseEntity getAnnualByMember(@RequestParam String name,
-                                            @RequestParam int page,
-                                            @RequestParam int size) {
-        List<GetAnnualByNameResDto> content = annualRepository.findAnnualByMember(GetAnnualByNameReqDto
-                                                                                     .builder()
-                                                                                     .name(name)
-                                                                                     .pageable(Pageable.ofSize(size).withPage(page - 1))
-                                                                                          .build()).getContent();
+    public ResponseEntity getAnnualByMember(@ModelAttribute @Valid GetAnnualByMemberNameReqDto dto){
+        AnnualResponseDto<AnnualResponse> content = annualRepository.findAnnualByMember(dto);
         return ResponseEntity.ok().body(content);
     }
 
     /**
      * Daniel Kim
      *
-     * @param name
-     * @param page
-     * @param size
+     * @param dto
      * @return
      * 부서 이름과 페이지 범위를 통해 연차 데이터를 가져옴
      *
@@ -88,15 +67,8 @@ public class AnnualController {
      */
 
     @GetMapping("/department")
-    public ResponseEntity getAnnualByDept(@RequestParam String name,
-                                                    @RequestParam int page,
-                                                    @RequestParam int size) {
-        List<GetAnnualByNameResDto> content = annualRepository.findAnnualByDept(GetAnnualByNameReqDto
-                                                                                     .builder()
-                                                                                     .name(name)
-                                                                                     .pageable(Pageable.ofSize(size).withPage(page - 1))
-                                                                                     .build())
-                                                                                     .getContent();
+    public ResponseEntity getAnnualByDept(@ModelAttribute @Valid GetAnnualByDeptNameReqDto dto) {
+        AnnualResponseDto<AnnualResponse> content = annualRepository.findAnnualByDept(dto);
         return ResponseEntity.ok().body(content);
     }
 

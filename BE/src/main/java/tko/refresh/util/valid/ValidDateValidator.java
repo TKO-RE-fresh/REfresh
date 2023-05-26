@@ -1,4 +1,4 @@
-package tko.refresh.dto.calendar.request.valid;
+package tko.refresh.util.valid;
 
 import java.time.DateTimeException;
 import java.time.LocalDate;

@@ -1,26 +1,19 @@
 package tko.refresh.dto.calendar;
 
-import java.time.LocalDateTime;
-
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
 import lombok.Builder;
 import lombok.Getter;
 
-@Builder
-@Getter
-public class TodayDto {
-    @Min(1900)
+@Builder @Getter
+public class YearMonthDto {
+
     @Max(2100)
+    @Min(1900)
     private final int year;
 
+    @Max(12)
+    @Min(1)
     private final int month;
-
-    private final int day;
-
-    public LocalDateTime toLocalDateTime() {
-        return LocalDateTime.of(year, month, day, 0, 0);
-    }
-
 }

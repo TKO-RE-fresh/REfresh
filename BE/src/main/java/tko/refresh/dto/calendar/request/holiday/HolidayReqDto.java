@@ -1,11 +1,9 @@
-package tko.refresh.dto.calendar;
+package tko.refresh.dto.calendar.request.holiday;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.ToString;
 
 /**
@@ -18,7 +16,7 @@ import lombok.ToString;
  * 2023-04-18
  */
 @Getter @ToString @Builder
-public class HolidayDbDto {
+public class HolidayReqDto {
     @NotBlank
     private final String year;
 

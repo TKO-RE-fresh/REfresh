@@ -1,4 +1,4 @@
-package tko.refresh.dto.calendar.request.valid;
+package tko.refresh.util.valid;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
