@@ -1,4 +1,4 @@
-package tko.refresh.domain.converter;
+package tko.refresh.util.converter;
 
 import javax.persistence.AttributeConverter;
 

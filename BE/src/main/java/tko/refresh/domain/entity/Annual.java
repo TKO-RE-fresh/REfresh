@@ -13,14 +13,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.GenericGenerator;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import tko.refresh.domain.converter.AnnualStatusConverter;
-import tko.refresh.domain.converter.AnnualTypeConverter;
+import tko.refresh.util.converter.AnnualStatusConverter;
+import tko.refresh.util.converter.AnnualTypeConverter;
 import tko.refresh.domain.enu.AnnualStatus;
 import tko.refresh.domain.enu.AnnualType;
 import tko.refresh.domain.emb.Period;

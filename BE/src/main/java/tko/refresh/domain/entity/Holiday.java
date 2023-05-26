@@ -28,4 +28,17 @@ public class Holiday {
         this.name = name;
         this.locdate = locdate;
     }
+
+    public int getYear() {
+        return Integer.parseInt(locdate.substring(0, 4));
+    }
+
+    public int getMonth() {
+        return Integer.parseInt(locdate.substring(4, 6));
+    }
+
+    public int getDay() {
+        return Integer.parseInt(locdate.substring(6, 8));
+    }
+
 }

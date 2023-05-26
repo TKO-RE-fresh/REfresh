@@ -1,17 +1,13 @@
 package tko.refresh.repository.calendar;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.time.LocalDateTime;
 import java.util.List;
-
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,12 +20,15 @@ import tko.refresh.domain.entity.Member;
 import tko.refresh.domain.enu.AnnualStatus;
 import tko.refresh.domain.enu.AnnualType;
 import tko.refresh.domain.enu.MemberStatus;
+import tko.refresh.dto.calendar.YearMonthDto;
+import tko.refresh.dto.calendar.request.annualcount.AnnualCountReqDto;
+import tko.refresh.dto.calendar.response.annualcount.AnnualCountResDto;
 import tko.refresh.repository.MemberRepository;
 
-@DataJpaTest
+@SpringBootTest
 @TestPropertySource("classpath:application-TEST.properties")
 @Transactional
-class AnnualCountRepositoryImplTest {
+class AnnualCountEmRepositoryTest {
 
     @Autowired
     private AnnualRepository annualRepository;
@@ -41,11 +40,9 @@ class AnnualCountRepositoryImplTest {
     private MemberRepository memberRepository;
 
     @Autowired
-    private AnnualRepositoryImpl annualRepositoryImpl;
-    @Autowired
     private AnnualCountRepository annualCountRepository;
     @Autowired
-    private AnnualCountRepositoryImpl annualCountRepositoryImpl;
+    private AnnualCountEmRepository annualCountEmRepository;
 
     @BeforeEach
     void setUp() {
@@ -75,9 +72,23 @@ class AnnualCountRepositoryImplTest {
 
     @Test
     void 부서이름과_날짜_연차집계정보_가져오기() {
-        //given
-        List<AnnualCount> list = annualCountRepositoryImpl.getAnnualCountByDept("2023", "5", "개발팀");
-        assertThat(list.size()).isEqualTo(1);
+        // 실패
+        List<AnnualCountResDto> list1 = annualCountEmRepository.getAnnualCountByDept(AnnualCountReqDto.builder()
+                                                                                             .yearMonth(
+                                                                                                     YearMonthDto.builder()
+                                                                                                             .month(LocalDateTime.now().getMonth().getValue())
+                                                                                                             .year(LocalDateTime.now().getYear() - 1)
+                                                                                                                 .build())
+                                                                                            .deptName("개발팀")
+                                                                                            .build());
+        assertThat(list1.size()).isEqualTo(0);
+        // 성공
+        List<AnnualCountResDto> list2 = annualCountEmRepository.getAnnualCountByDept(AnnualCountReqDto.builder()
+                                                                                             .yearMonth(YearMonthDto.builder().year(LocalDateTime.now().getYear())
+                                                                                                                    .month(LocalDateTime.now().getMonth().getValue()).build())
+                                                                                                     .deptName("개발팀")
+                                                                                                     .build());
+        assertThat(list2.size()).isEqualTo(1);
     }
 
 
