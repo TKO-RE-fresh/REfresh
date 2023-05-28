@@ -10,6 +10,7 @@ import tko.refresh.dto.admin.AnnualManageDto;
 import tko.refresh.service.admin.AnnualManageService;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @RestController
@@ -19,11 +20,15 @@ public class AnnualManageController {
     private final AnnualManageService annualManageService;
 
     @GetMapping("/{page}")
-    public ResponseEntity getAnnualAllList(@PathVariable int page){
-        List<AnnualManageDto> list = annualManageService.getAnnualManageAllList(page);
+    public ResponseEntity getAnnualAllList(@PathVariable Optional<Integer> page){
+        int formatPage = page.orElse(0);
+
+        List<AnnualManageDto> list = annualManageService.getAnnualManageAllList(formatPage);
 
         return ResponseEntity.ok().body(list);
     }
+
+
 
 
 }

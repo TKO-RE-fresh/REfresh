@@ -79,7 +79,7 @@ class AnnualManageServiceTest {
     @Test
     public void 관리자_연차관리정보_불러오기(){
 
-        list = annualManageService.getAnnualManageAllList(0);
+        list = annualManageService.getAnnualManageAllList(1);
         list.stream().forEach(System.out::println);
 
         Assertions.assertEquals(list.size(),1);

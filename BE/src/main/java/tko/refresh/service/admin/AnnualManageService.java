@@ -6,10 +6,10 @@ import org.springframework.stereotype.Service;
 import tko.refresh.domain.entity.Annual;
 import tko.refresh.dto.admin.AnnualManageDto;
 import tko.refresh.repository.admin.AnnualManageRepository;
+import tko.refresh.util.page.Pagination;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -20,7 +20,7 @@ public class AnnualManageService {
 
     public List<AnnualManageDto> getAnnualManageAllList(int page){
         List<AnnualManageDto> resultList = new ArrayList<>();
-        Pageable pageable = Pageable.ofSize(PAGE_SIZE).withPage(page);
+        Pageable pageable = Pagination.setPageable(page,PAGE_SIZE);
         List<Annual> annualList = annualManageRepo.findAllWithMember(pageable);
 
         for(Annual data : annualList ){
