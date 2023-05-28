@@ -17,8 +17,10 @@ import tko.refresh.domain.enu.AnnualStatus;
 import tko.refresh.domain.enu.AnnualType;
 import tko.refresh.domain.enu.MemberStatus;
 import tko.refresh.dto.admin.AnnualManageDto;
-import tko.refresh.repository.MemberRepository;
+
 import tko.refresh.repository.calendar.*;
+import tko.refresh.repository.member.MemberRepository;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -77,7 +79,7 @@ class AnnualManageServiceTest {
     @Test
     public void 관리자_연차관리정보_불러오기(){
 
-        list = annualManageService.getAnnualManageAllList();
+        list = annualManageService.getAnnualManageAllList(0);
         list.stream().forEach(System.out::println);
 
         Assertions.assertEquals(list.size(),1);

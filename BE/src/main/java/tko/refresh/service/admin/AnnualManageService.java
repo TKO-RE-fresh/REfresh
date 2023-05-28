@@ -1,6 +1,7 @@
 package tko.refresh.service.admin;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import tko.refresh.domain.entity.Annual;
 import tko.refresh.dto.admin.AnnualManageDto;
@@ -13,12 +14,14 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class AnnualManageService {
+    private final int PAGE_SIZE = 10;
 
     private final AnnualManageRepository annualManageRepo;
 
-    public List<AnnualManageDto> getAnnualManageAllList(){
+    public List<AnnualManageDto> getAnnualManageAllList(int page){
         List<AnnualManageDto> resultList = new ArrayList<>();
-        List<Annual> annualList = annualManageRepo.findAllWithMember();
+        Pageable pageable = Pageable.ofSize(PAGE_SIZE).withPage(page);
+        List<Annual> annualList = annualManageRepo.findAllWithMember(pageable);
 
         for(Annual data : annualList ){
             resultList.add(AnnualManageDto.builder()
@@ -27,8 +30,7 @@ public class AnnualManageService {
                             .departmentName(data.getMember().getDepartment().getName())
                             .annualType(data.getAnnualType().getCode())
                             .annualStatus(data.getAnnualStatus().getLabel())
-                            .startDate(data.getPeriod().getStartDate())
-                            .endDate(data.getPeriod().getEndDate())
+                            .period(data.getPeriod())
                             .createdDate(data.getCreatedDate())
                     .build()
             );

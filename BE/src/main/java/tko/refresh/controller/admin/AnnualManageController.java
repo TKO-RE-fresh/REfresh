@@ -20,7 +20,8 @@ public class AnnualManageController {
 
     @GetMapping("/{page}")
     public ResponseEntity getAnnualAllList(@PathVariable int page){
-        List<AnnualManageDto> list = annualManageService.getAnnualManageAllList();
+        List<AnnualManageDto> list = annualManageService.getAnnualManageAllList(page);
+
         return ResponseEntity.ok().body(list);
     }
 
