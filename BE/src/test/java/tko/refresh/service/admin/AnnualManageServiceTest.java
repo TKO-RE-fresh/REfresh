@@ -22,7 +22,6 @@ import tko.refresh.repository.calendar.*;
 import tko.refresh.repository.member.MemberRepository;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootTest
