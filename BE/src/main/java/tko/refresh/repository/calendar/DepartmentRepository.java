@@ -1,7 +1,9 @@
 package tko.refresh.repository.calendar;
 import org.springframework.data.jpa.repository.JpaRepository;
-import tko.refresh.domain.entity.Department;
+import org.springframework.stereotype.Repository;
 
+import tko.refresh.domain.entity.Department;
+@Repository
 public interface DepartmentRepository extends JpaRepository<Department, Long> {
 
 
