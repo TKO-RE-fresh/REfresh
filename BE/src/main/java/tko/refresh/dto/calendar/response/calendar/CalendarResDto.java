@@ -2,12 +2,15 @@ package tko.refresh.dto.calendar.response.calendar;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.ToString;
 
-@Builder @Getter
-public class CalendarResDto {
+@Getter @ToString
+@Builder
+public class CalendarResDto  {
     private final int day;
     private final String hoName;
 
     private final int sumCount;
+
 
 }

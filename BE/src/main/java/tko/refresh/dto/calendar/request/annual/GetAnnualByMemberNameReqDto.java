@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
+import tko.refresh.util.page.GlobalPage;
 
 @ToString @Getter
 public class GetAnnualByMemberNameReqDto implements GlobalPage {

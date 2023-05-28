@@ -85,7 +85,7 @@ jacocoTestCoverageVerification {
 //	exclude Main Class
 	afterEvaluate {
 		classDirectories.setFrom(files(classDirectories.files.collect {
-			fileTree(dir: it, exclude: ['**/RefreshApplication.class', '**/*Config.class'])
+			fileTree(dir: it, exclude: ['**/RefreshApplication.class', '**/*Config.class', '**/generated/**'])
 		}))
 	}
 }
@@ -170,6 +170,12 @@ sourceSets {
 compileQuerydsl {
 	options.annotationProcessorPath = configurations.querydsl
 }
+
+compileQuerydsl.doFirst {
+	if(file(querydslDir).exists() )
+		delete(file(querydslDir))
+}
+
 
 // querydsl이 compileClassPath를 상속하도록 설정
 configurations {

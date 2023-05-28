@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-import tko.refresh.dto.calendar.TodayDto;
+import tko.refresh.dto.TodayDto;
 
 public class ValidDateValidator implements ConstraintValidator<ValidDate, TodayDto> {
     @Override
