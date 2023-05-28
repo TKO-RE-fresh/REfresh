@@ -44,6 +44,9 @@ public class Member extends BaseEntity {
     @Column(name = "member_password")
     private String password;
 
+    @Column(name = "retire_date")
+    private LocalDateTime retireDate;
+
     @Embedded
     private MemberInfo memberInfo;
 
@@ -63,7 +66,7 @@ public class Member extends BaseEntity {
 
     @Builder
     public Member(String memberId, String password, MemberInfo memberInfo, double annualCount, MemberStatus memberStatus,
-                  Department department, LocalDateTime createdDate, LocalDateTime modifiedDate, String createdBy, String modifiedBy) {
+                  Department department, LocalDateTime createdDate, LocalDateTime modifiedDate, LocalDateTime retireDate, String createdBy, String modifiedBy) {
         super(createdBy, modifiedBy, createdDate, modifiedDate);
         this.memberId = memberId;
         this.password = password;
@@ -71,6 +74,7 @@ public class Member extends BaseEntity {
         this.annualCount = annualCount;
         this.memberStatus = memberStatus;
         this.department = department;
+        this.retireDate = retireDate;
     }
 
     public void setDepartment(Department d) {

@@ -18,6 +18,7 @@ import tko.refresh.domain.enu.AnnualType;
 import tko.refresh.domain.enu.MemberStatus;
 import tko.refresh.dto.admin.AnnualManageDto;
 
+import tko.refresh.dto.admin.AnnualSearchDto;
 import tko.refresh.repository.calendar.*;
 import tko.refresh.repository.member.MemberRepository;
 
@@ -51,7 +52,7 @@ class AnnualManageServiceTest {
     public void setup(){
         Department department = new Department("개발팀", "code", "intro", "image", LocalDateTime.now(), LocalDateTime.now());
         MemberInfo memberInfo = new MemberInfo("name1245", "012-1211-2124", "position@gmail.com");
-        Member member = new Member("id", "1234", memberInfo, 15, MemberStatus.IN_USE, department, LocalDateTime.now(), LocalDateTime.now(), "dds", "sdds");
+        Member member = new Member("id", "1234", memberInfo, 15, MemberStatus.IN_USE, department, LocalDateTime.now(), LocalDateTime.now(), null,"dds", "sdds");
         department.addMember(member);
         member.setDepartment(department);
 
@@ -78,10 +79,41 @@ class AnnualManageServiceTest {
     @Test
     public void 관리자_연차관리정보_불러오기(){
 
-        list = annualManageService.getAnnualManageAllList(0);
+        list = annualManageService.getAnnualManageAllList(1);
         list.stream().forEach(System.out::println);
 
         Assertions.assertEquals(list.size(),1);
+    }
+
+    @Test
+    public void 관리자_연차정보_검색_부서(){
+        //given
+        AnnualSearchDto searchDto = AnnualSearchDto
+                .builder()
+                .departmentName("개발팀")
+                .build();
+
+        list=annualManageService.getSearchAnnualMangeList(searchDto,1);
+        list.forEach(System.out::println);
+
+        Assertions.assertEquals(list.size(),1);
+
+    }
+
+
+    @Test
+    public void 관리자_연차정보_검색_부서_상태(){
+        //given
+        AnnualSearchDto searchDto = AnnualSearchDto
+                .builder()
+                .status(AnnualStatus.AGREE)
+                .departmentName("영업팀")
+                .build();
+
+        list=annualManageService.getSearchAnnualMangeList(searchDto,1);
+        list.forEach(System.out::println);
+
+        Assertions.assertEquals(list.size(),0);
     }
 
 }
