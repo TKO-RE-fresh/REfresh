@@ -3,6 +3,7 @@ package tko.refresh.domain.enu;
 import java.util.HashMap;
 import java.util.Map;
 
+
 public enum MemberStatus {
     IN_USE("IN_USE", 0),
     NOT_IN_USE("NOT_IN_USE", 1);

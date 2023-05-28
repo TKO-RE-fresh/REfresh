@@ -11,4 +11,5 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/admin")
 public class MemberController {
 
+
 }

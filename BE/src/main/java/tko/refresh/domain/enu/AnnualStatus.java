@@ -15,6 +15,7 @@ public enum AnnualStatus {
         }
     }
 
+
     private final String code;
     private final String label;
 
