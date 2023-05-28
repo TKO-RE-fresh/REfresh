@@ -31,16 +31,17 @@ import tko.refresh.repository.member.MemberRepository;
 class AnnualCountEmRepositoryTest {
 
     @Autowired
-    private AnnualRepository annualRepository;
-
-    @Autowired
     private DepartmentRepository departmentRepository;
-
     @Autowired
     private MemberRepository memberRepository;
 
     @Autowired
+    private AnnualRepository annualRepository;
+
+    @Autowired
     private AnnualCountRepository annualCountRepository;
+
+
     @Autowired
     private AnnualCountEmRepository annualCountEmRepository;
 

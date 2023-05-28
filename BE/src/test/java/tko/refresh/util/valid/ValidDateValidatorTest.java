@@ -28,7 +28,7 @@ class ValidDateValidatorTest {
                                .month(13)
                                .year(2020)
                                .build();
-        assertFalse(validDateValidator.isValid(dto1, null));
+        assertFalse(validDateValidator.isValid(dto2, null));
 
     }
     @Test
