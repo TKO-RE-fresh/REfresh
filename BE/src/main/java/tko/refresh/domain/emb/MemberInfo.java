@@ -29,6 +29,9 @@ public class MemberInfo {
     @Email
     private String email;
 
+    @Column(name = "retire_date")
+    private String retireDate;
+
     @Builder
     public MemberInfo(String name, String cellphone, String email) {
         this.name = name;

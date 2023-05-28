@@ -1,4 +1,4 @@
-package tko.refresh.dto.calendar.response.global;
+package tko.refresh.dto;
 
 import javax.validation.constraints.NotBlank;
 

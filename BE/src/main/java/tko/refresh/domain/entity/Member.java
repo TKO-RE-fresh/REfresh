@@ -21,6 +21,7 @@ import org.hibernate.annotations.GenericGenerator;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import tko.refresh.domain.enu.RoleType;
 import tko.refresh.util.converter.MemberStatusConverter;
 import tko.refresh.domain.emb.MemberInfo;
 import tko.refresh.domain.enu.MemberStatus;
@@ -56,6 +57,9 @@ public class Member extends BaseEntity {
     @ManyToOne(fetch = LAZY, cascade = PERSIST)
     @JoinColumn(name = "department_uid")
     private Department department;
+
+    @Column(name = "member_auth")
+    private RoleType roleType;
 
     @Builder
     public Member(String memberId, String password, MemberInfo memberInfo, double annualCount, MemberStatus memberStatus,
