@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Embedded;
@@ -17,17 +16,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.GenericGenerator;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import tko.refresh.domain.converter.MemberStatusConverter;
+import tko.refresh.util.converter.MemberStatusConverter;
 import tko.refresh.domain.emb.MemberInfo;
 import tko.refresh.domain.enu.MemberStatus;
-import tko.refresh.dto.MemberJoinDto;
 
 @Entity
 @Getter
