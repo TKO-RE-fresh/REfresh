@@ -4,7 +4,7 @@ import javax.validation.constraints.NotNull;
 
 import lombok.Builder;
 import lombok.Getter;
-import tko.refresh.dto.calendar.YearMonthDto;
+import tko.refresh.dto.YearMonthDto;
 import tko.refresh.util.valid.ValidDeptName;
 @Builder @Getter
 public class AnnualCountReqDto {

@@ -1,4 +1,4 @@
-package tko.refresh.dto.calendar;
+package tko.refresh.dto;
 
 import java.time.LocalDateTime;
 

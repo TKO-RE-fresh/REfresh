@@ -7,15 +7,12 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 //import tko.refresh.service.calendar.CalendarService;
 import lombok.RequiredArgsConstructor;
-import tko.refresh.dto.calendar.YearMonthDto;
 import tko.refresh.dto.calendar.request.calendar.CalendarReqDto;
 import tko.refresh.service.calendar.CalendarService;
-import tko.refresh.service.calendar.DepartmentService;
 
 @RestController
 @RequestMapping("/calendar")

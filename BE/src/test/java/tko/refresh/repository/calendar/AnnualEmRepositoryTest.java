@@ -10,8 +10,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,8 +25,7 @@ import tko.refresh.dto.calendar.request.annual.GetAnnualByDeptNameReqDto;
 import tko.refresh.dto.calendar.request.annual.GetAnnualByMemberNameReqDto;
 import tko.refresh.dto.calendar.response.annual.AnnualResponse;
 import tko.refresh.dto.calendar.response.annual.AnnualResponseDto;
-import tko.refresh.dto.calendar.response.annual.GetAnnualByNameResDto;
-import tko.refresh.repository.MemberRepository;
+import tko.refresh.repository.member.MemberRepository;
 
 @SpringBootTest
 @TestPropertySource("classpath:application-TEST.properties")

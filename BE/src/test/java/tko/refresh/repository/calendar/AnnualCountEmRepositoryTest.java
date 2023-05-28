@@ -20,10 +20,10 @@ import tko.refresh.domain.entity.Member;
 import tko.refresh.domain.enu.AnnualStatus;
 import tko.refresh.domain.enu.AnnualType;
 import tko.refresh.domain.enu.MemberStatus;
-import tko.refresh.dto.calendar.YearMonthDto;
+import tko.refresh.dto.YearMonthDto;
 import tko.refresh.dto.calendar.request.annualcount.AnnualCountReqDto;
 import tko.refresh.dto.calendar.response.annualcount.AnnualCountResDto;
-import tko.refresh.repository.MemberRepository;
+import tko.refresh.repository.member.MemberRepository;
 
 @SpringBootTest
 @TestPropertySource("classpath:application-TEST.properties")

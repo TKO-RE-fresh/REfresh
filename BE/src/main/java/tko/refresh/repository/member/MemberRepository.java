@@ -1,4 +1,4 @@
-package tko.refresh.repository;
+package tko.refresh.repository.member;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

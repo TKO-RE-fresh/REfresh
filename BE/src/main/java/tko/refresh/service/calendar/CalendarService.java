@@ -1,5 +1,6 @@
 package tko.refresh.service.calendar;
 
+import static tko.refresh.dto.calendar.response.calendar.CalendarResDto.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +13,6 @@ import tko.refresh.dto.calendar.request.annualcount.AnnualCountReqDto;
 import tko.refresh.dto.calendar.request.calendar.CalendarReqDto;
 import tko.refresh.dto.calendar.response.annualcount.AnnualCountResDto;
 import tko.refresh.dto.calendar.response.calendar.CalendarResDto;
-import tko.refresh.dto.calendar.response.calendar.CalendarResDto.CalendarResDtoBuilder;
 import tko.refresh.repository.calendar.AnnualCountEmRepository;
 
 /**
@@ -39,6 +39,9 @@ public class CalendarService {
     private static String holidayName;
     private final AnnualCountEmRepository annualCountRepository;
     private final HolidayService holidayService;
+
+
+
     public List<CalendarResDto> updateCalendar(CalendarReqDto calendarReqDto) {
         List<CalendarResDto> result = new ArrayList<>();
         int year = calendarReqDto.getYearMonth().getYear();
@@ -65,10 +68,9 @@ public class CalendarService {
 
         // 전달 정보 생성
         while(preStart <= preEnd) {
-            result.add(CalendarResDto.builder()
-                                         .day(preStart++)
-                                         .hoName("")
-                                         .build());
+            result.add(builder().day(preStart++)
+                                .hoName("")
+                                .build());
         }
 
         List<AnnualCountResDto> annualCountByDept = annualCountRepository.getAnnualCountByDept(
@@ -85,7 +87,7 @@ public class CalendarService {
         // 이번달 정보 생성 (요일 정보, 휴일 정보, 이번 달 표시 정보)
         while(dayIdx <= curEnd) {
             curDay = curDay == 7 ? 0 : curDay;
-            CalendarResDtoBuilder builder = CalendarResDto.builder();
+            CalendarResDtoBuilder builder = builder();
 
             if(dayIdx >= minimumDay && minimumDay > 0) {
                 builder.sumCount(annualCountByDept.get(dayCount++).getSumCount());
@@ -97,6 +99,8 @@ public class CalendarService {
             } else {
                 if(curDay == 0) {
                     builder.day(dayIdx++).hoName("일요일");
+                } else if (curDay == 6) {
+                    builder.day(dayIdx++).hoName("토요일");
                 } else {
                     builder.day(dayIdx++).hoName("평일");
                 }
@@ -107,7 +111,7 @@ public class CalendarService {
         }
         // 다음달 정보 생성
         while(nextDay <= nextEnd) {
-            result.add(CalendarResDto.builder()
+            result.add(builder()
                                          .day(nextDay++)
                                          .hoName("")
                                          .build());
@@ -155,7 +159,7 @@ public class CalendarService {
      *
      * 2023-04-19
      */
-    private int curEndDayOfWeek(int year, int month) {
+    public int curEndDayOfWeek(int year, int month) {
         int idx = LocalDate.of(year, month, calendarEnd(year, month)).getDayOfWeek().getValue();
         return idx == 7 ? 0 : idx;
     }
