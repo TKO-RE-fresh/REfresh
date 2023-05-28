@@ -11,7 +11,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
 @EnableAspectJAutoProxy // 오토 프록싱(AOP)
 @EnableScheduling
-@EnableJpaRepositories("tko.refresh.repository/*")
+@EnableJpaRepositories("tko.refresh.repository.*")
 public class RefreshApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(RefreshApplication.class, args);
