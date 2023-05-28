@@ -52,7 +52,7 @@ class AnnualEmRepositoryTest {
                                                LocalDateTime.now());
         MemberInfo memberInfo = new MemberInfo("name1245", "012-1234-2124", "position@gmail.com");
         Member member = new Member("id", "1234", memberInfo, 15, MemberStatus.IN_USE, department,
-                                   LocalDateTime.now(), LocalDateTime.now(), "dds", "sdds");
+                                   LocalDateTime.now(), LocalDateTime.now(), null,"dds", "sdds");
         department.addMember(member);
         member.setDepartment(department);
 
