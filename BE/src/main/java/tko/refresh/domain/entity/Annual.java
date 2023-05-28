@@ -4,6 +4,7 @@ import static javax.persistence.CascadeType.ALL;
 import static lombok.AccessLevel.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
+
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Embedded;
@@ -13,7 +14,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-
 import org.hibernate.annotations.GenericGenerator;
 import lombok.Builder;
 import lombok.Getter;
@@ -36,6 +36,7 @@ public class Annual extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY, cascade = ALL)
     @JoinColumn(name = "member_uid")
     private Member member;
+
     @Column(name = "annual_type")
     @Convert(converter = AnnualTypeConverter.class)
     private AnnualType annualType;

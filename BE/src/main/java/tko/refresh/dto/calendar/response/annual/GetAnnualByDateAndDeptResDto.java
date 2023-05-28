@@ -13,6 +13,7 @@ public class GetAnnualByDateAndDeptResDto extends AnnualResponse {
 
     @NotBlank
     private String memberName;
+
     @NotBlank
     @ValidDeptName
     private String deptName;
