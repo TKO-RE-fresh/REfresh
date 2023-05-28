@@ -9,7 +9,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import tko.refresh.domain.entity.Member;
-import tko.refresh.dto.member.MemberLoginDto;
 
 @Repository
 public interface MemberRepository extends JpaRepository<Member, UUID> {

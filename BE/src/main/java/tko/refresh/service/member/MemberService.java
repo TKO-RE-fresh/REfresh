@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 import tko.refresh.domain.entity.Member;
 import tko.refresh.domain.entity.RefreshToken;
 import tko.refresh.dto.GlobalResponseDto;
-import tko.refresh.dto.member.MemberLoginDto;
+import tko.refresh.dto.member.request.MemberLoginReqDto;
 import tko.refresh.dto.member.TokenDto;
 import tko.refresh.repository.member.MemberRepository;
 import tko.refresh.repository.refreshtoken.RefreshTokenRepository;
@@ -61,7 +61,7 @@ public class MemberService {
 
     @Transactional
     @PreAuthorize("isAuthenticated()")
-    public GlobalResponseDto login(MemberLoginDto loginDto, HttpServletResponse response) {
+    public GlobalResponseDto login(MemberLoginReqDto loginDto, HttpServletResponse response) {
 
         // 아이디 검사
         Member member = memberRepository.findLoginMemberId(loginDto.getMemberId()).get();

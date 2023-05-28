@@ -1,4 +1,4 @@
-package tko.refresh.dto.member;
+package tko.refresh.dto.member.request;
 
 import javax.validation.constraints.NotBlank;
 
@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @Builder
 @RequiredArgsConstructor
-public class MemberLoginDto {
+public class MemberLoginReqDto {
 
     @NotBlank
     private final String memberId;
