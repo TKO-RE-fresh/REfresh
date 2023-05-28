@@ -1,24 +1,19 @@
 package tko.refresh.dto;
 
-import javax.validation.constraints.NotBlank;
-
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-
-@Getter
-@NoArgsConstructor
 public class GlobalResponseDto {
+    private final String message;
+    private final int statusCode;
 
-    @NotBlank
-    private String msg;
-    @NotBlank
-    private int statusCode;
-
-    @Builder
-    public GlobalResponseDto(String msg, int statusCode) {
-        this.msg = msg;
+    public GlobalResponseDto(String message, int statusCode) {
+        this.message = message;
         this.statusCode = statusCode;
     }
 
+    public String getMessage() {
+        return message;
+    }
+
+    public int getStatusCode() {
+        return statusCode;
+    }
 }

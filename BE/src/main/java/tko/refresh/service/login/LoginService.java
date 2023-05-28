@@ -1,4 +1,4 @@
-package tko.refresh.service.member;
+package tko.refresh.service.login;
 import static org.springframework.http.HttpStatus.*;
 
 import java.util.Optional;
@@ -10,16 +10,16 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import tko.refresh.domain.entity.Member;
 import tko.refresh.domain.entity.RefreshToken;
-import tko.refresh.dto.GlobalResponseDto;
 import tko.refresh.dto.member.request.MemberLoginReqDto;
 import tko.refresh.dto.member.TokenDto;
+import tko.refresh.dto.member.response.MemberLoginResDto;
 import tko.refresh.repository.member.MemberRepository;
 import tko.refresh.repository.refreshtoken.RefreshTokenRepository;
 import tko.refresh.util.jwt.JwtUtil;
 
 @Service
 @RequiredArgsConstructor
-public class MemberService {
+public class LoginService {
 
     private final JwtUtil jwtUtil;
     private final PasswordEncoder passwordEncoder;
@@ -60,24 +60,25 @@ public class MemberService {
 //    }
 
     @Transactional
-    @PreAuthorize("isAuthenticated()")
-    public GlobalResponseDto login(MemberLoginReqDto loginDto, HttpServletResponse response) {
+    public MemberLoginResDto login(MemberLoginReqDto loginDto, HttpServletResponse response) {
 
         // 아이디 검사
         Member member = memberRepository.findLoginMemberId(loginDto.getMemberId()).get();
         if(member == null) {
-            return GlobalResponseDto.builder().statusCode(UNAUTHORIZED.value()).msg("아이디가 올바르지 않습니다.").build();
+            return MemberLoginResDto.builder().statusCode(UNAUTHORIZED.value()).message("아이디가 올바르지 않습니다.").build();
         }
+
+
         // 비밀번호 검사
         if(!passwordEncoder.matches(loginDto.getPassword(), member.getPassword())) {
-            return GlobalResponseDto.builder().statusCode(UNAUTHORIZED.value()).msg("비밀번호가 올바르지 않습니다.").build();
+            return MemberLoginResDto.builder().statusCode(UNAUTHORIZED.value()).message("비밀번호가 올바르지 않습니다.").build();
         }
 
         // 아이디 정보로 Token생성
         TokenDto tokenDto = jwtUtil.createAllToken(loginDto.getMemberId());
 
         // Refresh토큰 있는지 확인
-        Optional<RefreshToken> refreshToken = refreshTokenRepository.findByAccountEmail(member.getMemberId());
+        Optional<RefreshToken> refreshToken = refreshTokenRepository.findByAccountEmail(member.getMemberInfo().getEmail());
 
         // 있다면 새토큰 발급후 업데이트
         // 없다면 새로 만들고 디비 저장
@@ -94,7 +95,8 @@ public class MemberService {
         // response 헤더에 Access Token / Refresh Token 넣음
         setHeaderToken(response, tokenDto);
 
-        return GlobalResponseDto.builder().statusCode(OK.value()).msg("로그인 성공").build();
+        return MemberLoginResDto.builder().statusCode(OK.value()).message("로그인 성공").auth(member.getMemberAuth().getValue()).memberId(
+                member.getMemberId()).memberName(member.getMemberInfo().getName()).deptName(member.getDepartment().getName()).build();
 
     }
 

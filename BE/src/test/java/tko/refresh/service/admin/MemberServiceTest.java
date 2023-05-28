@@ -11,6 +11,7 @@ import tko.refresh.domain.emb.MemberInfo;
 import tko.refresh.domain.entity.Department;
 import tko.refresh.domain.entity.Member;
 import tko.refresh.domain.enu.MemberStatus;
+import tko.refresh.domain.enu.RoleType;
 import tko.refresh.dto.admin.MemberDto;
 import tko.refresh.repository.calendar.DepartmentRepository;
 import tko.refresh.repository.member.MemberRepository;
@@ -47,6 +48,7 @@ class MemberServiceTest {
                 .department(department)
                 .createdDate(LocalDateTime.now())
                 .modifiedDate(LocalDateTime.now())
+                .memberAuth(RoleType.MEMBER)
 //                .retireDate(LocalDateTime.now())
                 .createdBy("admin")
                 .modifiedBy("admin")

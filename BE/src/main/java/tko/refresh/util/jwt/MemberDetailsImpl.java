@@ -21,7 +21,7 @@ public class MemberDetailsImpl implements UserDetails {
 
     public MemberDetailsImpl(Member member, RoleType role) {
         this.member = member;
-        this.role = member.getRoleType();
+        this.role = member.getMemberAuth();
         this.authorities = Collections.singletonList(new SimpleGrantedAuthority(role.getValue()));
     }
     public RoleType getRole() {

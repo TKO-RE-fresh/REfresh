@@ -10,17 +10,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import tko.refresh.dto.member.request.MemberLoginReqDto;
-import tko.refresh.service.member.MemberService;
+import tko.refresh.dto.member.response.MemberLoginResDto;
+import tko.refresh.service.login.LoginService;
 
 @RestController
 @RequestMapping("/login")
 @RequiredArgsConstructor
 public class LoginController {
 
-    private final MemberService memberService;
+    private final LoginService memberService;
     @PostMapping
     public ResponseEntity login(@ModelAttribute MemberLoginReqDto dto, HttpServletResponse response) {
-        memberService.login(dto, response);
-        return ResponseEntity.ok().body().build();
+        MemberLoginResDto inform = memberService.login(dto, response);
+
+        return ResponseEntity.ok().body(inform);
     }
 }
