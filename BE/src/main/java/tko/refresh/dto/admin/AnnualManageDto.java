@@ -31,7 +31,6 @@ public class AnnualManageDto implements GlobalPage {
 
     private String endDate;
 
-
     @NotEmpty
     private String createdDate;
 

@@ -5,11 +5,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import tko.refresh.domain.entity.Annual;
 import tko.refresh.dto.admin.AnnualManageDto;
-import tko.refresh.repository.admin.AnnualManageRepository;
+import tko.refresh.dto.admin.AnnualSearchDto;
+import tko.refresh.repository.admin.annualManage.AnnualManageRepository;
+import tko.refresh.util.page.Pagination;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -19,22 +20,36 @@ public class AnnualManageService {
     private final AnnualManageRepository annualManageRepo;
 
     public List<AnnualManageDto> getAnnualManageAllList(int page){
-        List<AnnualManageDto> resultList = new ArrayList<>();
-        Pageable pageable = Pageable.ofSize(PAGE_SIZE).withPage(page);
-        List<Annual> annualList = annualManageRepo.findAllWithMember(pageable);
+        Pageable pageable = Pagination.setPageable(page,PAGE_SIZE);
+        List<Annual> list = annualManageRepo.findAllWithMember(pageable);
 
-        for(Annual data : annualList ){
+
+        return entityToDto(list);
+    }
+
+    public List<AnnualManageDto> getSearchAnnualMangeList(AnnualSearchDto searchDto,int page){
+        Pageable pageable = Pagination.setPageable(page,PAGE_SIZE);
+        List<Annual> list = annualManageRepo.searchAnnual(searchDto,pageable);
+        return entityToDto(list);
+    }
+
+
+    public List<AnnualManageDto> entityToDto(List<Annual> list){
+        List<AnnualManageDto> resultList = new ArrayList<>();
+
+        for(Annual data : list ){
             resultList.add(AnnualManageDto.builder()
-                            .annualUid(String.valueOf(data.getUid()))
-                            .memberName(data.getMember().getMemberInfo().getName())
-                            .departmentName(data.getMember().getDepartment().getName())
-                            .annualType(data.getAnnualType().getCode())
-                            .annualStatus(data.getAnnualStatus().getLabel())
-                            .period(data.getPeriod())
-                            .createdDate(data.getCreatedDate())
+                    .annualUid(String.valueOf(data.getUid()))
+                    .memberName(data.getMember().getMemberInfo().getName())
+                    .departmentName(data.getMember().getDepartment().getName())
+                    .annualType(data.getAnnualType().getCode())
+                    .annualStatus(data.getAnnualStatus().getLabel())
+                    .period(data.getPeriod())
+                    .createdDate(data.getCreatedDate())
                     .build()
             );
         }
         return resultList;
     }
+
 }
