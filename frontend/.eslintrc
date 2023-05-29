@@ -1,0 +1,59 @@
+{
+  "extends": [
+    "eslint:recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "plugin:vue/recommended"
+  ],
+  "plugins": ["import"],
+  "parserOptions": {
+    "sourceType": "module"
+  },
+  "rules": {
+    "import/order": "error",
+    "import/first": "error",
+    "import/no-mutable-exports": "error",
+    "import/no-unresolved": "off",
+    "generator-star-spacing": "off",
+    "prefer-const": [
+      "error",
+      {
+        "destructuring": "any",
+        "ignoreReadBeforeAssign": false
+      }
+    ],
+    "no-lonely-if": "error",
+    "curly": ["error", "all"],
+    "require-await": "error",
+    "dot-notation": "error",
+    "no-var": "error",
+    "object-shorthand": "error",
+    "no-useless-rename": "error",
+    "vue/no-parsing-error": [
+      "error",
+      {
+        "x-invalid-end-tag": false
+      }
+    ],
+
+    "vue/html-self-closing": "off",
+    "vue/attributes-order": [
+      "error",
+      {
+        "order": [
+          "DEFINITION",
+          "LIST_RENDERING",
+          "CONDITIONALS",
+          "RENDER_MODIFIERS",
+          "GLOBAL",
+          "UNIQUE",
+          "TWO_WAY_BINDING",
+          "OTHER_DIRECTIVES",
+          "OTHER_ATTR",
+          "EVENTS",
+          "CONTENT"
+        ]
+      }
+    ]
+  }
+}
