@@ -1,4 +1,4 @@
-package tko.refresh.repository.admin.annualManage;
+package tko.refresh.repository.admin;
 
 import org.springframework.data.domain.Pageable;
 import tko.refresh.domain.entity.Annual;

@@ -16,6 +16,7 @@ import tko.refresh.domain.entity.Member;
 import tko.refresh.domain.enu.AnnualStatus;
 import tko.refresh.domain.enu.AnnualType;
 import tko.refresh.domain.enu.MemberStatus;
+import tko.refresh.domain.enu.RoleType;
 import tko.refresh.dto.admin.AnnualManageDto;
 
 import tko.refresh.dto.admin.AnnualSearchDto;
@@ -52,7 +53,7 @@ class AnnualManageServiceTest {
     public void setup(){
         Department department = new Department("개발팀", "code", "intro", "image", LocalDateTime.now(), LocalDateTime.now());
         MemberInfo memberInfo = new MemberInfo("name1245", "012-1211-2124", "position@gmail.com");
-        Member member = new Member("id", "1234", memberInfo, 15, MemberStatus.IN_USE, department, LocalDateTime.now(), LocalDateTime.now(), null,"dds", "sdds");
+        Member member = new Member("id", "1234", memberInfo, 15, MemberStatus.IN_USE, RoleType.MEMBER , department, LocalDateTime.now(), LocalDateTime.now(), null, "dds", "sdds");
         department.addMember(member);
         member.setDepartment(department);
 

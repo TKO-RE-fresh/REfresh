@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import tko.refresh.domain.entity.Annual;
 import tko.refresh.dto.admin.AnnualManageDto;
 import tko.refresh.dto.admin.AnnualSearchDto;
-import tko.refresh.repository.admin.annualManage.AnnualManageRepository;
+import tko.refresh.repository.admin.AnnualManageRepository;
 import tko.refresh.util.page.Pagination;
 
 import java.util.ArrayList;

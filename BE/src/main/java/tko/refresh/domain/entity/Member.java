@@ -21,9 +21,11 @@ import org.hibernate.annotations.GenericGenerator;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import tko.refresh.domain.enu.RoleType;
 import tko.refresh.util.converter.MemberStatusConverter;
 import tko.refresh.domain.emb.MemberInfo;
 import tko.refresh.domain.enu.MemberStatus;
+import tko.refresh.util.converter.RoleTypeConverter;
 
 @Entity
 @Getter
@@ -60,14 +62,20 @@ public class Member extends BaseEntity {
     @JoinColumn(name = "department_uid")
     private Department department;
 
+    @Column(name = "member_auth")
+    @Convert(converter = RoleTypeConverter.class)
+    private RoleType memberAuth;
+
     @Builder
     public Member(String memberId, String password, MemberInfo memberInfo, double annualCount, MemberStatus memberStatus,
+                  RoleType memberAuth,
                   Department department, LocalDateTime createdDate, LocalDateTime modifiedDate, LocalDateTime retireDate, String createdBy, String modifiedBy) {
         super(createdBy, modifiedBy, createdDate, modifiedDate);
         this.memberId = memberId;
         this.password = password;
         this.memberInfo = memberInfo;
         this.annualCount = annualCount;
+        this.memberAuth = memberAuth;
         this.memberStatus = memberStatus;
         this.department = department;
         this.retireDate = retireDate;
