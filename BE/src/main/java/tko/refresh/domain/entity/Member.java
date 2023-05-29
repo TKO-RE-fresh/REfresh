@@ -16,6 +16,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.GenericGenerator;
 import lombok.Builder;
@@ -40,15 +42,18 @@ public class Member extends BaseEntity {
     private List<Annual> annuals = new ArrayList<>();
 
     @Column(name = "member_id", unique = true)
+    @NotNull
     private String memberId;
 
     @Column(name = "member_password")
+    @NotNull
     private String password;
 
     @Column(name = "retire_date")
     private LocalDateTime retireDate;
 
     @Embedded
+    @Valid
     private MemberInfo memberInfo;
 
     @Column(name = "member_annual_count")
@@ -63,6 +68,7 @@ public class Member extends BaseEntity {
     private Department department;
 
     @Column(name = "member_auth")
+    @NotNull
     @Convert(converter = RoleTypeConverter.class)
     private RoleType memberAuth;
 

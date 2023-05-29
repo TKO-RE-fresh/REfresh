@@ -23,7 +23,6 @@ import tko.refresh.domain.entity.Holiday;
 class HolidayServiceTest {
     @Autowired
     private HolidayService holidayService;
-
     /**
      * Daniel Kim
      *
