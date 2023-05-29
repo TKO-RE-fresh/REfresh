@@ -16,7 +16,7 @@ public class GetAnnualByDeptNameReqDto implements GlobalPage {
     @NotBlank
     @ValidDeptName
     private final String name;
-    @NotNull
+
     private final Pageable pageable;
     @Builder
     public GetAnnualByDeptNameReqDto(String name, int page, int size) {

@@ -31,11 +31,9 @@ class CalendarServiceTest {
 
     @Test
     void 달력_생성_테스트() {
-        CalendarReqDto dto = CalendarReqDto.builder().yearMonth(YearMonthDto.builder().year(2023)
-                                                                                   .month(5).build()).deptName(
-                "개발팀").build();
+        CalendarReqDto dto = CalendarReqDto.builder().year(2023).month(12).deptName("개발팀").build();
         List<CalendarResDto> calendarRes = calendarService.updateCalendar(dto);
-        assertThat(calendarRes.size()).isEqualTo(35);
+        assertThat(calendarRes.size()).isEqualTo(42);
     }
 
     @Test

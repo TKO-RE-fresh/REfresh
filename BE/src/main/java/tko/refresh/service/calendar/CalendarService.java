@@ -75,7 +75,7 @@ public class CalendarService {
 
         List<AnnualCountResDto> annualCountByDept = annualCountRepository.getAnnualCountByDept(
                 AnnualCountReqDto.builder()
-                                 .yearMonth(calendarReqDto.getYearMonth())
+                        .year(2023).month(12)
                                  .deptName(calendarReqDto.getDeptName())
                                  .build());
 

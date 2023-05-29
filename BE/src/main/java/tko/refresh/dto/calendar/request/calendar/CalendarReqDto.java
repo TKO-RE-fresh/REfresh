@@ -8,7 +8,7 @@ import lombok.Getter;
 import tko.refresh.dto.YearMonthDto;
 import tko.refresh.util.valid.ValidDeptName;
 
-@Builder @Getter
+@Getter
 public class CalendarReqDto {
     @Valid
     @NotNull
@@ -16,4 +16,12 @@ public class CalendarReqDto {
 
     @ValidDeptName
     private final String deptName;
+
+    @Builder
+    public CalendarReqDto(int month, int year, String deptName) {
+        this.yearMonth = YearMonthDto.builder().month(month).year(year).build();
+        this.deptName = deptName;
+    }
+
+
 }

@@ -72,19 +72,29 @@ public class AnnualEmRepository {
     }
 
     public AnnualResponseDto<AnnualResponse> findAnnualByDateAndDept(GetAnnualByDateAndDeptReqDto dto) {
-        String countQuery = "SELECT COUNT(a) FROM Annual a JOIN a.member m WHERE m.memberInfo.name LIKE CONCAT('%', :name, '%') and a.annualStatus = '승인'";
+        String countQuery = "SELECT count(a) FROM Annual a JOIN a.member m JOIN "
+                            + "m.department d WHERE d.name = :department and a.annualStatus = '승인' "
+                            + "and :today BETWEEN a.period.startDate and a.period.endDate";
+
         String jpql = "SELECT a FROM Annual a JOIN FETCH a.member m JOIN FETCH "
                       + "m.department d WHERE d.name = :department and a.annualStatus = '승인' "
                       + "and :today BETWEEN a.period.startDate and a.period.endDate";
+        Pageable pageable = dto.getPageable();
+        TypedQuery<Long> query = entityManager.createQuery(countQuery, Long.class);
+        query.setParameter("department", dto.getDeptName());
+        query.setParameter("today", dto.getToday().toLocalDateTime());
+        long totalElements = query.getSingleResult();
+        int pageNumber = pageable.getPageNumber();
+
+
         TypedQuery<Annual> q = entityManager.createQuery(jpql, Annual.class);
         q.setParameter("department", dto.getDeptName());
         q.setParameter("today", dto.getToday().toLocalDateTime());
-        TypedQuery<Long> query = entityManager.createQuery(countQuery, Long.class);
-        Pageable pageable = dto.getPageable();
-        int pageNumber = pageable.getPageNumber();
+
+
         q.setFirstResult(pageable.getPageNumber() * pageable.getPageSize());
         q.setMaxResults(pageable.getPageSize());
-        long totalElements = query.getSingleResult() / pageable.getPageSize();
+
 
         List<AnnualResponse> collect = q.getResultList().stream().map(annual -> GetAnnualByDateAndDeptResDto.
                 builder().deptName(dto.getDeptName()).memberName(annual.getMember().getMemberInfo().getName())
