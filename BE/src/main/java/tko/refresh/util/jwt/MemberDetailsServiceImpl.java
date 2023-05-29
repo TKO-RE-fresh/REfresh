@@ -1,6 +1,7 @@
 package tko.refresh.util.jwt;
 
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsChecker;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
@@ -22,4 +23,5 @@ public class MemberDetailsServiceImpl implements UserDetailsService {
         memberDetails.setMember(member);
         return memberDetails;
     }
+
 }
