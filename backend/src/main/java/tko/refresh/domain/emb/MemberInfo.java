@@ -22,7 +22,6 @@ public class MemberInfo {
 
     @Column(name = "member_cellphone", unique = true)
     @Pattern(regexp = "\\d{3}-\\d{4}-\\d{4}", message = "Invalid phone number format. Valid format: XXX-XXXX-XXXX")
-    private String phoneNumber;
     private String cellphone;
 
     @Column(name = "member_email", unique = true)
