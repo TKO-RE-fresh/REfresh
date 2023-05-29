@@ -1,9 +1,11 @@
 {
   "extends": [
-    "eslint:recommended",
-    "plugin:import/errors",
-    "plugin:import/warnings",
-    "plugin:vue/recommended"
+    // vue
+    // 'plugin:vue/vue3-essential', // Lv1
+    'plugin:vue/vue3-strongly-recommended', // Lv2
+    // 'plugin:vue/vue3-recommended', // Lv3
+    // js
+    'eslint:recommended'
   ],
   "plugins": ["import"],
   "parserOptions": {
