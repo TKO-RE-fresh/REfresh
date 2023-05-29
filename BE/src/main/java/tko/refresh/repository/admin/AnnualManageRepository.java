@@ -9,7 +9,7 @@ import tko.refresh.domain.entity.Annual;
 
 import java.util.List;
 @Repository
-public interface AnnualManageRepository extends JpaRepository<Annual,Long>, AnnualManageRepositoryCustom{
+public interface AnnualManageRepository extends JpaRepository<Annual,Long>, AnnualManageRepositoryCustom {
 
     @Query("SELECT a FROM Annual a LEFT JOIN FETCH a.member m LEFT JOIN FETCH m.department")
     public List<Annual> findAllWithMember(Pageable pageable);

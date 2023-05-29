@@ -74,8 +74,8 @@ class AnnualEmRepositoryTest {
         GetAnnualByDeptNameReqDto dto = GetAnnualByDeptNameReqDto
                 .builder()
                 .name("개발팀")
-                .size(10)
                 .page(1)
+                .size(10)
                 .build();
         // when
         AnnualResponseDto<AnnualResponse> annualByMember = annualEmRepository.findAnnualByDept(dto);

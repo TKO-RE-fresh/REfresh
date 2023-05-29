@@ -76,18 +76,15 @@ class AnnualCountEmRepositoryTest {
     void 부서이름과_날짜_연차집계정보_가져오기() {
         // 실패
         List<AnnualCountResDto> list1 = annualCountEmRepository.getAnnualCountByDept(AnnualCountReqDto.builder()
-                                                                                             .yearMonth(
-                                                                                                     YearMonthDto.builder()
-                                                                                                             .month(LocalDateTime.now().getMonth().getValue())
-                                                                                                             .year(LocalDateTime.now().getYear() - 1)
-                                                                                                                 .build())
+                                                                                             .year(LocalDateTime.now().getYear() - 10)
+                                                                                             .month(LocalDateTime.now().getMonth().getValue())
                                                                                             .deptName("개발팀")
                                                                                             .build());
         assertThat(list1.size()).isEqualTo(0);
         // 성공
         List<AnnualCountResDto> list2 = annualCountEmRepository.getAnnualCountByDept(AnnualCountReqDto.builder()
-                                                                                             .yearMonth(YearMonthDto.builder().year(LocalDateTime.now().getYear())
-                                                                                                                    .month(LocalDateTime.now().getMonth().getValue()).build())
+                                                                                                      .year(LocalDateTime.now().getYear())
+                                                                                                      .month(LocalDateTime.now().getMonth().getValue())
                                                                                                      .deptName("개발팀")
                                                                                                      .build());
         assertThat(list2.size()).isEqualTo(1);
