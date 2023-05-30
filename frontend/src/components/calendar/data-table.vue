@@ -9,15 +9,15 @@
       </tr>
     </thead>
     <tbody>
-      <!-- <template v-for="(row, idx) in list" :key="idx">
+      <template v-for="(row, idx) in list" :key="idx">
         <tr>
           <slot name="row" 
                 :row="row"></slot> 이부분을 치환 -->
-        <!-- </tr> -->
-      <!-- </template>
+        </tr>
+      </template>
       <tr v-if="list.length === 0" class="empty">
         <td colspan="100">데이터가 없습니다.</td> 
-      </tr> --> 
+      </tr> 
     </tbody>
   </table>
 </template>
