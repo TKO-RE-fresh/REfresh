@@ -20,7 +20,7 @@ public class AnnualManageController {
     @GetMapping("/{page}")
     public ResponseEntity getSearchList(@RequestParam(required = false) AnnualSearchDto searchDto,
                                         @PathVariable Optional<Integer> page){
-        int formatPage = page.orElse(0);
+        int formatPage = page.orElse(1);
         List<AnnualManageDto> list;
 
         if (searchDto == null) {
@@ -28,8 +28,14 @@ public class AnnualManageController {
         }else{
             list=annualManageService.getSearchAnnualMangeList(searchDto,formatPage);
         }
+
         return ResponseEntity.ok().body(list);
     }
 
+
+   @PutMapping("/{status}")
+    public ResponseEntity processAnnualRequest(@RequestBody String uid, @PathVariable String status){
+       return ResponseEntity.ok().body("dd");
+   }
 
 }
