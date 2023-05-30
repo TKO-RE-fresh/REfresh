@@ -1,14 +1,11 @@
 package tko.refresh.service.calendar;
 import static org.assertj.core.api.Assertions.*;
-import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.*;
 
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 
 import tko.refresh.domain.entity.Holiday;
@@ -19,10 +16,11 @@ import tko.refresh.domain.entity.Holiday;
  * 2023-04-19
  */
 @SpringBootTest
-@TestPropertySource("classpath:application-TEST.properties")
 class HolidayServiceTest {
     @Autowired
     private HolidayService holidayService;
+
+
     /**
      * Daniel Kim
      *
@@ -42,7 +40,7 @@ class HolidayServiceTest {
         String year = "2023";
         String month = "5";
         List<Holiday> holidayList2 = holidayService.getHolidayByDate(year, month);
-        assertThat(holidayList2.size()).isEqualTo(0);
+        assertThat(holidayList2.size()).isEqualTo(3);
 
     }
 }

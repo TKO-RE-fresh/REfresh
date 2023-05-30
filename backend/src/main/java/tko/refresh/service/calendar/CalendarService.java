@@ -136,7 +136,7 @@ public class CalendarService {
         int midIdx;
         while(left <= right) {
             mid = (left + right) / 2;
-            midIdx = holidayDataList.get(mid).getDay();
+            midIdx = holidayDataList.get(mid).getDate().getDayOfMonth();
             if(midIdx == dayIdx) {
                 holidayName = holidayDataList.get(mid).getName();
                 return true;

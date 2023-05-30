@@ -12,7 +12,7 @@ public class ValidNameDeptValidator implements ConstraintValidator<ValidDeptName
 
     static {
         validNames.add("개발팀");
-        validNames.add("기획팀");
+        validNames.add("서비스팀");
         validNames.add("영업팀");
         validNames.add("디자인팀");
         validNames.add("인사팀");
