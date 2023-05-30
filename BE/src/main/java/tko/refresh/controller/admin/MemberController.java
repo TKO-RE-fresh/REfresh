@@ -1,15 +1,15 @@
 package tko.refresh.controller.admin;
 
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import lombok.RequiredArgsConstructor;
 import tko.refresh.dto.admin.MemberDto;
+import tko.refresh.dto.admin.MemberSearchDto;
 import tko.refresh.service.admin.MemberService;
 
-import java.util.List;
+import java.util.Optional;
 
 
 @RestController
@@ -19,10 +19,19 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @GetMapping
-    public ResponseEntity getMemberAllList() {
-        List<MemberDto> list = memberService.getAllMemberList(0);
+    @GetMapping("/{page}")
+    public ResponseEntity getMemberAllList(@RequestParam(required = false)MemberSearchDto searchDto,
+                                           @PathVariable Optional<Integer> page) {
+        int formatPage = page.orElse(0);
+
+        Page<MemberDto> list;
+        if(searchDto == null) {
+            list = memberService.getAllMemberList(formatPage);
+        } else {
+            list = memberService.getSearchMemberList(searchDto, formatPage);
+        }
 
         return ResponseEntity.ok().body(list);
     }
+
 }

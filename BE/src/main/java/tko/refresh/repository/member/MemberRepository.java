@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 
 import tko.refresh.domain.entity.Member;
 @Repository
-public interface MemberRepository extends JpaRepository<Member, UUID> {
+public interface MemberRepository extends JpaRepository<Member, UUID>, MemberRepositoryCustom {
 }
