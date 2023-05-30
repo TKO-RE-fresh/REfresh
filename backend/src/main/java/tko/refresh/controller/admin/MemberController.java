@@ -20,7 +20,7 @@ public class MemberController {
     private final MemberService memberService;
 
     @GetMapping("/{page}")
-    public ResponseEntity getMemberAllList(@RequestParam(required = false)MemberSearchDto searchDto,
+    public ResponseEntity getMemberAllList(@RequestParam(required = false) MemberSearchDto searchDto,
                                            @PathVariable Optional<Integer> page) {
         int formatPage = page.orElse(0);
 
