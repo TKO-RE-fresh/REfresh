@@ -56,21 +56,21 @@ public class JwtUtil {
     }
 
     // 토큰 생성
-    public TokenDto createAllToken(String id) {
+    public TokenDto createAllToken(String email) {
         return TokenDto.builder()
-                       .accessToken(createToken(id, "Access"))
-                       .refreshToken(createToken(id, "Refresh"))
+                       .accessToken(createToken(email, "Access"))
+                       .refreshToken(createToken(email, "Refresh"))
                        .build();
     }
 
-    public String createToken(String id, String type) {
+    public String createToken(String email, String type) {
 
         Date date = new Date();
 
         long time = type.equals("Access") ? ACCESS_TIME : REFRESH_TIME;
 
         return Jwts.builder()
-                   .setSubject(id)
+                   .setSubject(email)
                    .setExpiration(new Date(date.getTime() + time))
                    .setIssuedAt(date)
                    .signWith(key, signatureAlgorithm)

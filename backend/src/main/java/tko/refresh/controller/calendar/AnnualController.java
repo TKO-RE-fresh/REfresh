@@ -4,16 +4,19 @@ import javax.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
+import tko.refresh.domain.entity.Annual;
 import tko.refresh.dto.calendar.request.annual.GetAnnualByDateAndDeptReqDto;
 import tko.refresh.dto.calendar.request.annual.GetAnnualByDeptNameReqDto;
 import tko.refresh.dto.calendar.request.annual.GetAnnualByMemberNameReqDto;
 import tko.refresh.dto.calendar.response.annual.AnnualResponse;
 import tko.refresh.dto.calendar.response.annual.AnnualResponseDto;
 import tko.refresh.repository.calendar.AnnualEmRepository;
+import tko.refresh.repository.calendar.AnnualRepository;
 
 @RestController
 @RequestMapping("/calendar/annual")
@@ -21,6 +24,7 @@ import tko.refresh.repository.calendar.AnnualEmRepository;
 public class AnnualController {
 
     private final AnnualEmRepository annualRepository;
+
 
     /**
      * Daniel Kim
@@ -67,5 +71,6 @@ public class AnnualController {
         AnnualResponseDto<AnnualResponse> content = annualRepository.findAnnualByDept(dto);
         return ResponseEntity.ok().body(content);
     }
+
 
 }
