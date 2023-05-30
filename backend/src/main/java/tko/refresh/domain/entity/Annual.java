@@ -47,8 +47,9 @@ public class Annual extends BaseEntity {
     @Convert(converter = AnnualStatusConverter.class)
     private AnnualStatus annualStatus;
 
-    @Column(name = "annual_reject_reason", columnDefinition = "varchar(255")
+    @Column(name = "annual_reject_reason")
     private String rejectReason;
+
     private String acceptor;
 
     @Embedded
