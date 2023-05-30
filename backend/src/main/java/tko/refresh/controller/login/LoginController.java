@@ -33,7 +33,7 @@ public class LoginController {
 
     @PostMapping("/join")
     public String join() {
-        memberService.signup(MemberJoinDto.builder().deptName("개발팀").memberId("admin").password("qwer1234").email("now20412041@gmail.com").build());
+        memberService.signup(MemberJoinDto.builder().deptName("인사팀").memberId("jaeseok").password("qwer1234").email("jaeseok@daum.net").build());
         return "success";
     }
 }

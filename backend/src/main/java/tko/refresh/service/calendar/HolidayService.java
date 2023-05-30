@@ -144,6 +144,7 @@ public class HolidayService {
         }
         findData(dep + 1, jsonNode.get(array[dep]));
     }
+
     /**
      * Daniel Kim
      *
@@ -153,10 +154,10 @@ public class HolidayService {
      *
      * 2023-04-18
      */
-    public List<Holiday> getHolidayByDate(String strYear, String strMonth) {
-        int month = Integer.parseInt(strMonth);
-        String monthStr = month < 10 ? "0"+month : String.valueOf(month);
-        return holidayRepository.findHolidayByLocdateContaining(strYear + monthStr);
+    public List<Holiday> getHolidayByDate(String year, String month) {
+        int y = Integer.parseInt(year);
+        int m = Integer.parseInt(month);
+        return holidayRepository.findByYearMonth(y, m);
     }
 
 }

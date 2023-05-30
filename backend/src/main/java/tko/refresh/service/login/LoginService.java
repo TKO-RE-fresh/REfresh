@@ -56,7 +56,7 @@ public class LoginService {
                 .memberId(dto.getMemberId())
                 .password(dto.getPassword())
                 .memberAuth(RoleType.ADMIN)
-                              .memberInfo(MemberInfo.builder().name("김민상").email(dto.getEmail()).cellphone("010-2322-0111").build())
+                              .memberInfo(MemberInfo.builder().name("유재석").email(dto.getEmail()).cellphone("010-3778-0123").build())
                               .memberStatus(MemberStatus.IN_USE)
                               .annualCount(15.0)
                               .modifiedDate(LocalDateTime.now())
