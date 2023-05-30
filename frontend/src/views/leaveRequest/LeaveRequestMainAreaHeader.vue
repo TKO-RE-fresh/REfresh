@@ -1,0 +1,18 @@
+<template lang="ko">
+  <div>
+    <div class="navbar bg-slate-200 rounded-lg shadow-sm px-6">
+      <div class="flex-1">
+        <h3 class="normal-case text-3xl font-bold">연차 신청</h3>
+        <!-- <a class="btn btn-ghost normal-case text-xl">연차 신청</a> -->
+      </div>
+      <div class="flex-none">
+          <div class="tabs">
+              <a class="tab tab-bordered tab-active text-lg">연차</a> 
+              <a class="tab tab-bordered text-lg">오전 반차</a> 
+              <a class="tab tab-bordered text-lg">오후 반차</a>
+          </div>
+      </div>
+    </div>
+  </div>
+</template>
+<script setup></script>

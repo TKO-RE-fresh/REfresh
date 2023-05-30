@@ -35,7 +35,7 @@
           </a>
         </div>
         <div class="flex items-center">
-          <div class="flex items-center ml-3 m-3 mr-16">
+          <div class="flex items-center m-3">
             <div>
               <form action="/logout" method="POST">
                 <!-- th:action을 action으로 변경 -->
