@@ -21,9 +21,11 @@ public class RefreshToken {
     private Long id;
 
     @Column(unique = true)
+    @NotNull
     private String refreshToken;
 
     @Column(unique = true)
+    @NotNull
     private String accountEmail;
 
     @Builder

@@ -30,6 +30,7 @@ public class AnnualCount {
     private int sumCount;
 
     @Column(name = "annual_date")
+    @NotNull
     private LocalDateTime annualDate;
 
     @ManyToOne(fetch = LAZY)

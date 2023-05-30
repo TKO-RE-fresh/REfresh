@@ -13,6 +13,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -30,6 +32,7 @@ public class Department extends BaseEntity {
     private UUID uid;
 
     @Column(name = "department_name", unique = true)
+    @NotEmpty
     private String name;
 
     @Column(name = "department_manager")

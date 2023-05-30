@@ -1,6 +1,7 @@
 package tko.refresh.service.login;
 import static org.springframework.http.HttpStatus.*;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -8,11 +9,18 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
+import tko.refresh.domain.emb.MemberInfo;
+import tko.refresh.domain.entity.Department;
 import tko.refresh.domain.entity.Member;
 import tko.refresh.domain.entity.RefreshToken;
+import tko.refresh.domain.enu.MemberStatus;
+import tko.refresh.domain.enu.RoleType;
+import tko.refresh.dto.GlobalResponseDto;
+import tko.refresh.dto.member.MemberJoinDto;
 import tko.refresh.dto.member.request.MemberLoginReqDto;
 import tko.refresh.dto.member.TokenDto;
 import tko.refresh.dto.member.response.MemberLoginResDto;
+import tko.refresh.repository.calendar.DepartmentRepository;
 import tko.refresh.repository.member.MemberRepository;
 import tko.refresh.repository.refreshtoken.RefreshTokenRepository;
 import tko.refresh.util.jwt.JwtUtil;
@@ -26,41 +34,46 @@ public class LoginService {
 
     private final MemberRepository memberRepository;
 
+    private final DepartmentRepository departmentRepository;
+
     private final RefreshTokenRepository refreshTokenRepository;
 
-//    @Transactional
-//    public GlobalResponseDto signup(MemberJoinDto dto) {
-//        // id 중복검사
-//        if(memberRepository.findByMemberId(dto.getId()).isPresent()){
-//            return GlobalResponseDto.builder().msg("중복된 아이디입니다.").statusCode(BAD_REQUEST.value()).build();
-//        }
-//        // email 중복검사
-//        if(memberRepository.findByEmail(dto.getEmail()).isPresent()){
-//            return GlobalResponseDto.builder().msg("중복된 이메일입니다.").statusCode(BAD_REQUEST.value()).build();
-//        }
-//
-//
-//        // 패스워드 암호화
-//        dto.setEncodePwd(passwordEncoder.encode(dto.getPassword()));
-//        Member member = Member.builder().memberDto(dto)
-//                              .name("하이")
-//                              .email("now20412041@gmail.com")
-//                              .memberStatus(MemberStatus.IN_USE)
-//                              .annualCount(15.0)
-//                              .cellphone("010-2322-0111")
-//                              .modifiedDate(LocalDateTime.now())
-//                .createdDate(LocalDateTime.now())
-//                .modifiedBy("admin")
-//                .modifiedDate(LocalDateTime.now())
-//                .createdBy("admin").build();
-//
-//        // 회원가입 성공
-//        memberRepository.save(member);
-//        return GlobalResponseDto.builder().msg("회원가입 성공").statusCode(OK.value()).build();
-//    }
+    @Transactional
+    public GlobalResponseDto signup(MemberJoinDto dto) {
+        // id 중복검사
+        if(memberRepository.findByMemberId(dto.getMemberId()).isPresent()){
+            return GlobalResponseDto.builder().message("중복된 아이디입니다.").statusCode(BAD_REQUEST.value()).build();
+        }
+        // email 중복검사
+        if(memberRepository.findByLoginEmail(dto.getEmail()).isPresent()){
+            return GlobalResponseDto.builder().message("중복된 이메일입니다.").statusCode(BAD_REQUEST.value()).build();
+        }
+        Department dept = departmentRepository.findByName(dto.getDeptName());
+
+        // 패스워드 암호화
+        dto.setEncodePwd(passwordEncoder.encode(dto.getPassword()));
+        Member member = Member.builder()
+                .memberId(dto.getMemberId())
+                .password(dto.getPassword())
+                .memberAuth(RoleType.ADMIN)
+                              .memberInfo(MemberInfo.builder().name("김민상").email(dto.getEmail()).cellphone("010-2322-0111").build())
+                              .memberStatus(MemberStatus.IN_USE)
+                              .annualCount(15.0)
+                              .modifiedDate(LocalDateTime.now())
+                .department(dept)
+                .createdDate(LocalDateTime.now())
+                .modifiedBy("admin")
+                .modifiedDate(LocalDateTime.now())
+                .createdBy("admin").build();
+        dept.addMember(member);
+        // 회원가입 성공
+        memberRepository.save(member);
+        return GlobalResponseDto.builder().message("회원가입 성공").statusCode(OK.value()).build();
+    }
 
     @Transactional
     public MemberLoginResDto login(MemberLoginReqDto loginDto, HttpServletResponse response) {
+
 
         // 아이디 검사
         Member member = memberRepository.findLoginMemberId(loginDto.getMemberId()).get();

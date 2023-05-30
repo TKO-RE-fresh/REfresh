@@ -34,7 +34,7 @@ public class AnnualController {
      */
 
     @GetMapping
-    public ResponseEntity getAnnualByDateAndDept(@ModelAttribute GetAnnualByDateAndDeptReqDto dto) {
+    public ResponseEntity getAnnualByDateAndDept(@ModelAttribute @Valid GetAnnualByDateAndDeptReqDto dto) {
         return ResponseEntity.ok().body(annualRepository.findAnnualByDateAndDept(dto));
     }
     /**

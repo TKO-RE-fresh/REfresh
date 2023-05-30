@@ -33,6 +33,8 @@ public class AnnualEmRepository {
         String jpql = "SELECT a FROM Annual a JOIN FETCH a.member m JOIN FETCH m.department d "
                       + "WHERE d.name = :department and a.annualStatus = '승인'";
         Pageable pageable = dto.getPageable();
+
+
         TypedQuery<Long> query = entityManager.createQuery(countQuery, Long.class);
         query.setParameter("department", dto.getName());
         long totalElements = query.getSingleResult();

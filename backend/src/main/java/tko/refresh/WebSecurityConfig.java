@@ -15,6 +15,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import tko.refresh.util.jwt.JwtAuthFilter;
 import tko.refresh.util.jwt.JwtUtil;
 
@@ -39,13 +40,13 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.cors();
         http.csrf().disable();
-
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.authorizeRequests().antMatchers("/member/**", "/swagger-ui.html", "/swagger/**",
+        http.authorizeRequests().antMatchers("/login/**", "/swagger-ui.html", "/swagger/**",
                                              "/swagger-resources/**","/webjars/**","/v2/api-docs").permitAll()
                 .anyRequest().authenticated()
                 .and().addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
+
 }
