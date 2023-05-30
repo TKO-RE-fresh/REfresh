@@ -1,18 +1,21 @@
 package tko.refresh.dto.admin;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
+import tko.refresh.domain.enu.MemberStatus;
 import tko.refresh.util.converter.DateConverter;
+import tko.refresh.util.converter.MemberStatusConverter;
 
+import javax.persistence.Convert;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 
 @Getter
 @ToString
+@NoArgsConstructor
+@Setter
 public class MemberDto {
 
-    private final String FORMAT = "YYYY년 MM월 dd일";
+    private final String FORMAT = "yyyy-MM-dd";
 
     @NotEmpty
     private String memberId;
@@ -25,20 +28,21 @@ public class MemberDto {
     @NotEmpty
     private String memberEmail;
     @NotEmpty
-    private String createdDate;
-    private String retireDate;
-    @NotEmpty
-    private String memberStatus;
+    private LocalDateTime createdDate;
+    private LocalDateTime retireDate;
+
+    @Convert(converter = MemberStatusConverter.class)
+    private MemberStatus memberStatus;
 
     @Builder
-    public MemberDto(String memberId, String memberName, String departmentName, String memberCellphone, String memberEmail, String createdDate, String retireDate, String memberStatus) {
+    public MemberDto(String memberId, String memberName, String departmentName, String memberCellphone, String memberEmail, LocalDateTime createdDate, LocalDateTime retireDate, MemberStatus memberStatus) {
         this.memberId = memberId;
         this.memberName = memberName;
         this.departmentName = departmentName;
         this.memberCellphone = memberCellphone;
         this.memberEmail = memberEmail;
-        this.createdDate = DateConverter.format(LocalDateTime.parse(createdDate), FORMAT);
-        this.retireDate = (retireDate.equals("null")) ? null : DateConverter.format(LocalDateTime.parse(retireDate), FORMAT);
+        this.createdDate = LocalDateTime.parse(DateConverter.format(createdDate, FORMAT));
+        this.retireDate = (retireDate == null) ? null : LocalDateTime.parse(DateConverter.format(retireDate, FORMAT));
         this.memberStatus = memberStatus;
     }
 }
