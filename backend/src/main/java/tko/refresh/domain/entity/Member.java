@@ -96,6 +96,4 @@ public class Member extends BaseEntity {
         annuals.add(annual);
         annual.setMember(this);
     }
-
-
 }

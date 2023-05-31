@@ -21,8 +21,6 @@ public class WithMockCustomUserSecurityContextFactory implements
 
     @Autowired
     private JwtUtil jwtUtil;
-
-
     @Override
     public SecurityContext createSecurityContext(WithMockCustomUser annotation) {
         SecurityContext context = SecurityContextHolder.createEmptyContext();

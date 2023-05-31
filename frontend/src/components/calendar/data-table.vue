@@ -4,6 +4,7 @@
       <tr class="heading">
         <slot name="header"></slot> <!-- 이부분을 치환 -->
       </tr>
+     
       <tr class="filter">
         <slot name="filter"></slot> <!-- 이부분을 치환 -->
       </tr>

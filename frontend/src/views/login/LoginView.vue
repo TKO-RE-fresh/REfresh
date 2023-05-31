@@ -79,9 +79,11 @@ const memberId = ref('');
 const password = ref('');
 
 async function onSubmit() {
-  const res = await mixins.methods.$api('login', 'post', {
+
+  const body = {
     memberId: memberId.value, password: password.value
-  });
+  }
+  const res = await mixins.methods.$api('login', 'post', { body });
   const date = new Date();
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
