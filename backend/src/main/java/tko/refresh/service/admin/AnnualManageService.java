@@ -20,6 +20,7 @@ import javax.transaction.Transactional;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -47,32 +48,36 @@ public class AnnualManageService {
 
     @Transactional
     public boolean AccessAnnualRequest(UUID uid){
-        boolean result;
-        Annual annual = annualManageRepo.findById(uid).orElse(null);
+        Annual annual = annualManageRepo.findByOne(uid).orElse(null);
         if(annual == null) return false;
         Period period = annual.getPeriod();
         Member member = annual.getMember();
-
+        int sumResult = 0,discountResult=0 ,statusResult =0;
         // 연차는 계산한 값, 반차는 0.5
         double discount= annual.getAnnualType().equals(AnnualType.ANNUAL_LEAVE) ? WorkingDaysCounter(period) : 0.5 ;
-        if(discount > 0){
-            result = memberRepository.discountAnnualCount(member.getMemberId(), discount) > 0;
-            result = annualCountRepository.setAnnualSumCount(period.getStartDate().toLocalDate(), period.getEndDate().toLocalDate(), member.getDepartment().getName()) > 0;
-        }else {
-            result=false;
-        }
+
+        if(discount < 0) return false;
+
+        discountResult = memberRepository.discountAnnualCount(member.getMemberId(), discount);
+        sumResult = annualCountRepository.setAnnualSumCount(period.getStartDate(), period.getEndDate(), member.getDepartment().getUid());
         //승인 상태 변경
-        result = annualManageRepo.acceptAnnualStatus(uid,AnnualStatus.AGREE.getLabel(),"admin") > 0 ;
-        return result;
+        statusResult = annualManageRepo.acceptAnnualStatus(uid,AnnualStatus.AGREE,"admin");
+        return successTransaction(discountResult, sumResult, statusResult);
     }
 
+    // 연차 차감, 연차 집계, 상태 변경이 ALL VALID CHECK FUNCTION
+    private boolean successTransaction(int ...args){
+        return Arrays.stream(args).allMatch(e -> e > 0);
+    };
+
+    
     @Transactional
     public boolean RejectAnnualRequest(UUID uid,String msg){
         Annual annual = annualManageRepo.findById(uid).orElse(null);
         if(annual == null) return false;
         Period period = annual.getPeriod();
         Member member = annual.getMember();
-        return annualManageRepo.rejectAnnualStatus(uid, AnnualStatus.REJECT.getLabel(), "admin",msg) > 0;
+        return annualManageRepo.rejectAnnualStatus(uid, AnnualStatus.REJECT, "admin",msg) > 0;
     }
 
 

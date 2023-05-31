@@ -4,12 +4,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import tko.refresh.domain.entity.Annual;
+import tko.refresh.domain.enu.AnnualStatus;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -17,13 +20,16 @@ public interface AnnualManageRepository extends JpaRepository<Annual, UUID>, Ann
     @Query("SELECT a FROM Annual a LEFT JOIN FETCH a.member m LEFT JOIN FETCH m.department")
     List<Annual> findAllWithMember(Pageable pageable);
 
+    @Query("SELECT a FROM Annual a LEFT JOIN FETCH a.member m LEFT JOIN FETCH m.department where a.uid = :uid")
+    Optional<Annual> findByOne(@Param("uid") UUID uid);
+
     @Modifying
     @Transactional
     @Query("update Annual ann set ann.annualStatus = :status, ann.acceptor= :acceptor , ann.modifiedDate = now() where ann.uid = :uid")
-    int acceptAnnualStatus(UUID uid,String status,String acceptor);
+    int acceptAnnualStatus(@Param("uid") UUID uid, @Param("status") AnnualStatus status, @Param("acceptor")String acceptor);
 
     @Modifying
     @Transactional
     @Query("update Annual ann set ann.annualStatus = :status, ann.acceptor= :acceptor, ann.rejectReason = :msg , ann.modifiedDate=now() where ann.uid = :uid")
-    int rejectAnnualStatus(UUID uid,String status,String acceptor ,String msg);
+    int rejectAnnualStatus(@Param("uid") UUID uid, @Param("status") AnnualStatus status, @Param("acceptor")String acceptor , @Param("msg") String msg);
 }

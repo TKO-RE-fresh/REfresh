@@ -47,7 +47,10 @@ public class AnnualManageController {
           result = annualManageService.RejectAnnualRequest(annualUid,statusDto.getRejectReason());
        }
 
-       return (ResponseEntity)(result ? ResponseEntity.ok() : ResponseEntity.badRequest());
+       if(result){
+           return ResponseEntity.ok("Success");
+       }else {
+           return ResponseEntity.badRequest().build();
+       }
    }
-
 }

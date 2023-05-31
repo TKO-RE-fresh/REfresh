@@ -23,5 +23,5 @@ public interface MemberRepository extends JpaRepository<Member, UUID> {
 
     @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query("UPDATE Member m set m.annualCount = m.annualCount-:count where m.memberId = :memberId")
-    int discountAnnualCount(String memberId, double count);
+    int discountAnnualCount(@Param("memberId") String memberId, @Param("count")double count);
 }
