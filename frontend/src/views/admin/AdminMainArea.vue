@@ -14,7 +14,7 @@
           <div v-show="flagTab === 1">
             <AdminNewMemberArea></AdminNewMemberArea>
           </div>
-          <div v-show="flagTab === 2">
+          <div v-show="flagTab === 2" class="px-10">
             <AdminAnnualArea></AdminAnnualArea>
           </div>
         </div>
