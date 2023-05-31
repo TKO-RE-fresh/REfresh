@@ -5,18 +5,18 @@
         <div class="mx-20">
           <h2 class="text-3xl font-semibold sr-only">관리자 페이지</h2>
 
-        <!-- 관리자 페이지 헤더 -->
-        <AdminMainHeader @selected-tab="handleId"></AdminMainHeader>
+          <!-- 관리자 페이지 헤더 -->
+          <AdminMainHeader @selected-tab="handleId"></AdminMainHeader>
 
-        <div v-show="flagTab === 0">
+          <div v-show="flagTab === 0">
             <AdminMemberArea></AdminMemberArea>
-        </div>
-        <div v-show="flagTab === 1">
+          </div>
+          <div v-show="flagTab === 1">
             <AdminNewMemberArea></AdminNewMemberArea>
-        </div>
-        <div v-show="flagTab === 2">
+          </div>
+          <div v-show="flagTab === 2">
             <AdminAnnualArea></AdminAnnualArea>
-        </div>
+          </div>
         </div>
       </article>
     </section>
