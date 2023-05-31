@@ -41,6 +41,8 @@ public class AnnualManageRepositoryImpl implements AnnualManageRepositoryCustom 
                 .fetch();
     }
 
+
+
     private BooleanExpression memberNameEq(String memberName){
         return memberName == null ? null :member.memberInfo.name.contains(memberName);
     }
@@ -52,4 +54,6 @@ public class AnnualManageRepositoryImpl implements AnnualManageRepositoryCustom 
     private BooleanExpression annualStatusEq(AnnualStatus status){
         return status == null? null : annual.annualStatus.eq(status);
     }
+
+
 }

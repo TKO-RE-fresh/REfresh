@@ -10,4 +10,5 @@ import java.util.List;
 public interface AnnualManageRepositoryCustom {
 
     List<Annual> searchAnnual(AnnualSearchDto searchDto, Pageable pageable);
+
 }

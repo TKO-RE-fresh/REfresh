@@ -1,6 +1,4 @@
 package tko.refresh.util.page;
-
-
 import org.springframework.data.domain.Pageable;
 
 public interface GlobalPage {

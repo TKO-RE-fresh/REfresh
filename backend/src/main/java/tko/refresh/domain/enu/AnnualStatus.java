@@ -6,6 +6,8 @@ import java.util.Map;
 public enum AnnualStatus {
     CANCEL("CANCEL", "취소"),
     WAITING("WAITING", "대기"),
+
+    REJECT("REJECT","반려"),
     AGREE("AGREE", "승인");
     private static final Map<String, AnnualStatus> LABEL_LOOKUP = new HashMap<>();
 

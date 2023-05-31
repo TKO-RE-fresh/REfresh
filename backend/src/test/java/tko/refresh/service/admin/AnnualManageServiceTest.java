@@ -48,6 +48,8 @@ class AnnualManageServiceTest {
     @Autowired
     private AnnualManageService annualManageService;
 
+    @Autowired
+    private HolidayRepository holidayRepository;
 
     @BeforeEach
     public void setup(){
@@ -115,6 +117,14 @@ class AnnualManageServiceTest {
         list.forEach(System.out::println);
 
         Assertions.assertEquals(list.size(),0);
+    }
+
+    @Test
+    public void 주말_공휴일_제외_기간계산_메소드(){
+        Period period = new Period(LocalDateTime.of(2023,05,26,0,0,0),LocalDateTime.of(2023, 5,26,0,0,0));
+        int workingDay = annualManageService.WorkingDaysCounter(period);
+
+        Assertions.assertEquals(workingDay,1);
     }
 
 }

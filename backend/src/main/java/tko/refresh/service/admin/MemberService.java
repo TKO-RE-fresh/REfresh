@@ -1,14 +1,14 @@
 package tko.refresh.service.admin;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import tko.refresh.domain.entity.Member;
 import tko.refresh.dto.admin.MemberDto;
+import tko.refresh.dto.admin.MemberSearchDto;
 import tko.refresh.repository.member.MemberRepository;
+import tko.refresh.util.page.Pagination;
 
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -17,25 +17,19 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
 
-    public List<MemberDto> getAllMemberList(int page) {
-        List<MemberDto> resultList = new ArrayList<>();
-        Pageable pageable = Pageable.ofSize(PAGE_SIZE).withPage(page);
-        List<Member> memberList = memberRepository.findAll();
+    public Page<MemberDto> getAllMemberList(int page) {
+        Pageable pageable = Pagination.setPageable(page,PAGE_SIZE);
+        Page<MemberDto> list = memberRepository.allMemberPage(pageable);
 
-        for (Member data : memberList) {
-            resultList.add(MemberDto.builder()
-                    .memberId(data.getMemberId())
-                    .memberName(data.getMemberInfo().getName())
-                    .departmentName(data.getDepartment().getName())
-                    .memberCellphone(data.getMemberInfo().getCellphone())
-                    .memberEmail(data.getMemberInfo().getEmail())
-                    .createdDate(String.valueOf(data.getCreatedDate()))
-                    .retireDate(String.valueOf(data.getRetireDate()))
-                    .memberStatus(String.valueOf(data.getMemberStatus()))
-                    .build()
-            );
-        }
-        return resultList;
+        return list;
+    }
+
+
+    public Page<MemberDto> getSearchMemberList(MemberSearchDto searchDto, int page) {
+        Pageable pageable = Pagination.setPageable(page,PAGE_SIZE);
+        Page<MemberDto> memberSearchList = memberRepository.searchMemberPage(searchDto, pageable);
+
+        return memberSearchList;
     }
 }
 
