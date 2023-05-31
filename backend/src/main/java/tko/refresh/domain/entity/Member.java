@@ -24,6 +24,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import tko.refresh.domain.enu.RoleType;
+import tko.refresh.dto.admin.MemberUpdateDto;
 import tko.refresh.util.converter.MemberStatusConverter;
 import tko.refresh.domain.emb.MemberInfo;
 import tko.refresh.domain.enu.MemberStatus;
@@ -95,6 +96,20 @@ public class Member extends BaseEntity {
     public void addAnnual(Annual annual) {
         annuals.add(annual);
         annual.setMember(this);
+    }
+
+    public void updateMember(MemberUpdateDto memberUpdateDto) {
+        this.memberInfo=MemberInfo.builder()
+                .name(memberUpdateDto.getMemberName())
+                .cellphone(memberUpdateDto.getMemberCellphone())
+                .email(memberUpdateDto.getMemberEmail())
+                .build();
+        this.annualCount = memberUpdateDto.getAnnualCount();
+        this.modifiedBy = memberUpdateDto.getModifiedBy();
+        this.modifiedDate = memberUpdateDto.getModifiedDate();
+        this.retireDate = memberUpdateDto.getRetireDate();
+        this.memberAuth = memberUpdateDto.getMemberAuth();
+        this.memberStatus = memberUpdateDto.getMemberStatus();
     }
 
 
