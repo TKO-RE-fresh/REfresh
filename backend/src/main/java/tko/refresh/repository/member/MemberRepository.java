@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 import tko.refresh.domain.entity.Member;
 
 @Repository
-public interface MemberRepository extends JpaRepository<Member, UUID> {
+public interface MemberRepository extends JpaRepository<Member, UUID>, MemberRepositoryCustom {
 
     Optional<Member> findByMemberId(String memberId);
     @Query("SELECT m FROM Member m WHERE m.memberInfo.email = :email")

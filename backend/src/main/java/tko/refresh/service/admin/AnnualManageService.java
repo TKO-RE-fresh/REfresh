@@ -70,7 +70,7 @@ public class AnnualManageService {
         return Arrays.stream(args).allMatch(e -> e > 0);
     };
 
-    
+
     @Transactional
     public boolean RejectAnnualRequest(UUID uid,String msg){
         Annual annual = annualManageRepo.findById(uid).orElse(null);
