@@ -9,6 +9,7 @@ import tko.refresh.dto.admin.MemberSearchDto;
 import tko.refresh.repository.member.MemberRepository;
 import tko.refresh.util.page.Pagination;
 
+
 @Service
 @RequiredArgsConstructor
 public class MemberService {
@@ -23,12 +24,12 @@ public class MemberService {
         return list;
     }
 
+
     public Page<MemberDto> getSearchMemberList(MemberSearchDto searchDto, int page) {
         Pageable pageable = Pagination.setPageable(page,PAGE_SIZE);
         Page<MemberDto> memberSearchList = memberRepository.searchMemberPage(searchDto, pageable);
 
         return memberSearchList;
     }
-
 }
 
