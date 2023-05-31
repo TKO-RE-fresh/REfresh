@@ -15,6 +15,7 @@ import tko.refresh.domain.enu.MemberStatus;
 import tko.refresh.domain.enu.RoleType;
 import tko.refresh.dto.admin.MemberDto;
 import tko.refresh.dto.admin.MemberSearchDto;
+import tko.refresh.dto.admin.MemberUpdateDto;
 import tko.refresh.repository.calendar.DepartmentRepository;
 import tko.refresh.repository.member.MemberRepository;
 
@@ -50,8 +51,8 @@ class MemberServiceTest {
                 .department(department)
                 .createdDate(LocalDateTime.now())
                 .modifiedDate(LocalDateTime.now())
-                .memberAuth(RoleType.MEMBER)
 //                .retireDate(LocalDateTime.now())
+                .memberAuth(RoleType.MEMBER)
                 .createdBy("admin")
                 .modifiedBy("admin")
                 .build();
@@ -73,6 +74,7 @@ class MemberServiceTest {
                 .createdDate(LocalDateTime.now())
                 .modifiedDate(LocalDateTime.now())
 //                .retireDate(LocalDateTime.now())
+                .memberAuth(RoleType.MEMBER)
                 .createdBy("admin")
                 .modifiedBy("admin")
                 .build();
@@ -134,6 +136,27 @@ class MemberServiceTest {
         System.out.println(list.getContent());
 
         Assertions.assertEquals(list.getTotalElements(), 2);
+    }
+
+    @Test
+    public void 관리자_사원정보변경() {
+        MemberUpdateDto memberUpdateDto = MemberUpdateDto
+                .builder()
+                .memberName("홍길동")
+                .memberCellphone("010-7777-6666")
+                .memberEmail("sfdf@daum.net")
+                .annualCount(16)
+                .modifiedBy("madmin")
+                .modifiedDate(LocalDateTime.now())
+                .retireDate(LocalDateTime.now())
+                .memberAuth(RoleType.MEMBER)
+                .memberStatus(MemberStatus.IN_USE)
+                .build();
+
+        memberService.modifyMember("id", memberUpdateDto);
+
+        Page<MemberDto> list = memberService.getAllMemberList(1);
+        list.stream().forEach(System.out::println);
     }
     
 }
