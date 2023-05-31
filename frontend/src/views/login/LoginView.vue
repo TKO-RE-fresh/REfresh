@@ -69,22 +69,25 @@
       </section>
     </main>
 </template>
-
 <script setup>
-import {ref} from 'vue';
-import mixins from '@/mixins';
+import { ref } from 'vue';
+import mixins from '@/utils/mixins';
+import Token from '@/utils/token.js';
+import Store from '@/store/index.js';
+import Router from '@/router/index.js';
 const memberId = ref('');
 const password = ref('');
 
-function onSubmit() {
-  console.log(memberId.value, password.value);
-  mixins.methods.$api('login', 'post', { memberId: memberId.value, password: password.value })
-    .then(res => {
-      console.log(res);
-    })
-    .catch(err => {
-      console.log(err);
-    })
+async function onSubmit() {
+  const res = await mixins.methods.$api('login', 'post', {
+    memberId: memberId.value, password: password.value
+  });
+  const date = new Date();
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+  Token.setToken(res.headers.refresh_token);
+  Store.commit('setAccessToken', res.headers.access_token);
+  Router.push({ name: 'CalendarView', params: { year, month }});
 }
 
 
