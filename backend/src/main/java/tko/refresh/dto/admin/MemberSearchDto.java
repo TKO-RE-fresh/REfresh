@@ -2,6 +2,7 @@ package tko.refresh.dto.admin;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.lang.Nullable;
 import tko.refresh.domain.enu.MemberStatus;
 import tko.refresh.util.converter.MemberStatusConverter;
@@ -9,6 +10,7 @@ import tko.refresh.util.converter.MemberStatusConverter;
 import javax.persistence.Convert;
 
 @Getter
+@Setter
 public class MemberSearchDto {
 
     @Nullable

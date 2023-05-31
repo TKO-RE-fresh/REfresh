@@ -24,12 +24,10 @@ public interface AnnualManageRepository extends JpaRepository<Annual, UUID>, Ann
     Optional<Annual> findByOne(@Param("uid") UUID uid);
 
     @Modifying
-    @Transactional
     @Query("update Annual ann set ann.annualStatus = :status, ann.acceptor= :acceptor , ann.modifiedDate = now() where ann.uid = :uid")
     int acceptAnnualStatus(@Param("uid") UUID uid, @Param("status") AnnualStatus status, @Param("acceptor")String acceptor);
 
     @Modifying
-    @Transactional
     @Query("update Annual ann set ann.annualStatus = :status, ann.acceptor= :acceptor, ann.rejectReason = :msg , ann.modifiedDate=now() where ann.uid = :uid")
     int rejectAnnualStatus(@Param("uid") UUID uid, @Param("status") AnnualStatus status, @Param("acceptor")String acceptor , @Param("msg") String msg);
 }

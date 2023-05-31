@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 @Getter
 @ToString
 public class AnnualManageDto implements GlobalPage {
-    private final String FORMAT = "YYYY년 MM월 dd일";
 
     @NotEmpty
     private String annualUid;
@@ -37,13 +36,14 @@ public class AnnualManageDto implements GlobalPage {
 
     @Builder
     public AnnualManageDto(String annualUid, String memberName, String departmentName, String annualType, String annualStatus, Period period, LocalDateTime createdDate) {
+        String format = "YYYY년 MM월 dd일";
         this.annualUid = annualUid;
         this.memberName = memberName;
         this.departmentName = departmentName;
         this.annualType = annualType;
         this.annualStatus = annualStatus;
-        this.startDate = DateConverter.format(period.getStartDate(),FORMAT);
-        this.endDate = DateConverter.format(period.getEndDate(),FORMAT);
-        this.createdDate = DateConverter.format(createdDate,FORMAT);
+        this.startDate = DateConverter.format(period.getStartDate(),format);
+        this.endDate = DateConverter.format(period.getEndDate(),format);
+        this.createdDate = DateConverter.format(createdDate,format);
     }
 }
