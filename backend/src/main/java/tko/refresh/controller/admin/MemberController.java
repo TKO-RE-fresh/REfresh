@@ -5,8 +5,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import lombok.RequiredArgsConstructor;
+import tko.refresh.domain.entity.Member;
 import tko.refresh.dto.admin.MemberDto;
 import tko.refresh.dto.admin.MemberSearchDto;
+import tko.refresh.dto.admin.MemberUpdateDto;
 import tko.refresh.service.admin.MemberService;
 
 import java.util.Optional;
@@ -32,6 +34,14 @@ public class MemberController {
         }
 
         return ResponseEntity.ok().body(list);
+    }
+
+    @PatchMapping("/{memberId}")
+    public ResponseEntity<String> modifyMember(@PathVariable String memberId, @RequestBody MemberUpdateDto memberUpdateDto) {
+
+        memberService.modifyMember(memberId, memberUpdateDto);
+
+        return ResponseEntity.ok("Success");
     }
 
 }

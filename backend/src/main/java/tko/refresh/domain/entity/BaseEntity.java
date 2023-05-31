@@ -17,15 +17,15 @@ import lombok.NoArgsConstructor;
 public abstract class BaseEntity {
     @Column(name = "created_nm")
     @NotNull
-    private String createdBy;
+    protected String createdBy;
     @Column(name = "modified_nm")
     @NotNull
-    private String modifiedBy;
+    protected String modifiedBy;
 
     @NotNull
-    private LocalDateTime createdDate;
+    protected LocalDateTime createdDate;
     @NotNull
-    private LocalDateTime modifiedDate;
+    protected LocalDateTime modifiedDate;
 
     protected BaseEntity(String createdBy, String modifiedBy, LocalDateTime modifiedDate,
                          LocalDateTime createdDate) {
@@ -33,5 +33,10 @@ public abstract class BaseEntity {
         this.modifiedBy = modifiedBy;
         this.modifiedDate = modifiedDate;
         this.createdDate = createdDate;
+    }
+
+    public BaseEntity(String modifiedBy, LocalDateTime modifiedDate) {
+        this.modifiedBy = modifiedBy;
+        this.modifiedDate = modifiedDate;
     }
 }
