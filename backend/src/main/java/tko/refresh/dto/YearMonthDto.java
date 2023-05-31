@@ -5,8 +5,9 @@ import javax.validation.constraints.Min;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.ToString;
 
-@Builder @Getter
+@Builder @Getter @ToString
 public class YearMonthDto {
 
     @Max(2100)

@@ -75,13 +75,13 @@ public class CalendarService {
 
         List<AnnualCountResDto> annualCountByDept = annualCountRepository.getAnnualCountByDept(
                 AnnualCountReqDto.builder()
-                        .year(2023).month(12)
+                        .year(year).month(month)
                                  .deptName(calendarReqDto.getDeptName())
                                  .build());
 
-        int minimumDay = annualCountByDept.size() == 0 ? 0 :
+        int size = annualCountByDept.size();
+        int minimumDay = size == 0 ? 0 :
                          annualCountByDept.get(0).getAnnualDate().getDayOfMonth();
-
         int dayCount = 0;
 
         // 이번달 정보 생성 (요일 정보, 휴일 정보, 이번 달 표시 정보)
@@ -89,7 +89,7 @@ public class CalendarService {
             curDay = curDay == 7 ? 0 : curDay;
             CalendarResDtoBuilder builder = builder();
 
-            if(dayIdx >= minimumDay && minimumDay > 0) {
+            if(size > dayCount && dayIdx >= minimumDay && minimumDay > 0) {
                 builder.sumCount(annualCountByDept.get(dayCount++).getSumCount());
             }
 

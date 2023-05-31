@@ -18,7 +18,7 @@ public class AnnualCountReqDto {
 
 
     @Builder
-    public AnnualCountReqDto(String deptName, int month, int year) {
+    public AnnualCountReqDto(String deptName,int month, int year) {
         this.deptName = deptName;
         this.yearMonth = YearMonthDto.builder().month(month).year(year).build();
     }

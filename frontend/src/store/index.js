@@ -2,9 +2,19 @@ import { createStore } from "vuex";
 
 
 export default createStore({
-  state: {},
-  getters: {},
-  mutations: {},
+  state: {
+    token: null,
+  },
+  getters: {
+    getAccessToken: (state) => {
+      return state.token
+    }
+  },
+  mutations: {
+    setAccessToken: (state, token) => {
+      state.token = token;
+    }
+  },
   actions: {},
   modules: {},
   plugins: []
