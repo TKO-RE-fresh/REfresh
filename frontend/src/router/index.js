@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import LoginView from "../views/login/LoginView";
 import CalendarView from "../views/calendar/CalendarView";
 import LeaveRequestView from "../views/leaveRequest/LeaveRequestView";
+import AdminView from "../views/admin/AdminView";
 
 const routes = [
   {
@@ -19,6 +20,11 @@ const routes = [
     name: "leaveRequest",
     component: LeaveRequestView,
   },
+  {
+    path:"/admin",
+    name: "AdminView",
+    component : AdminView
+  }
 ];
 
 const router = createRouter({

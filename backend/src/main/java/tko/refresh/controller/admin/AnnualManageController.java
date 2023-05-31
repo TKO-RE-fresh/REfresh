@@ -21,7 +21,7 @@ public class AnnualManageController {
     private final AnnualManageService annualManageService;
 
     @GetMapping("/{page}")
-    public ResponseEntity getSearchList(@RequestParam(required = false) AnnualSearchDto searchDto,
+    public ResponseEntity getSearchList(@ModelAttribute AnnualSearchDto searchDto,
                                         @PathVariable Optional<Integer> page){
         int formatPage = page.orElse(1);
         List<AnnualManageDto> list;
