@@ -1,5 +1,7 @@
 package tko.refresh.repository.admin;
 
+import org.hibernate.annotations.BatchSize;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -18,6 +20,7 @@ import java.util.UUID;
 @Repository
 public interface AnnualManageRepository extends JpaRepository<Annual, UUID>, AnnualManageRepositoryCustom{
     @Query("SELECT a FROM Annual a LEFT JOIN FETCH a.member m LEFT JOIN FETCH m.department")
+    @BatchSize(size = 1)
     List<Annual> findAllWithMember(Pageable pageable);
 
     @Query("SELECT a FROM Annual a LEFT JOIN FETCH a.member m LEFT JOIN FETCH m.department where a.uid = :uid")
