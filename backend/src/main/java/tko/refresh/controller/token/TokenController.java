@@ -21,11 +21,11 @@ public class TokenController {
     private final JwtUtil jwtUtil;
 
 
-    @GetMapping("/reissue")
-    public TokenDto reissue(
-            @AuthenticationPrincipal MemberDetailsImpl memberDetails
-    ) throws JsonProcessingException {
-//        AccountResponse accountResponse = AccountResponse.of(memberDetails.getMember());
-//        return jwtUtil.reissueToken(accountResponse);
-    }
+//    @GetMapping("/reissue")
+//    public TokenDto reissue(
+//            @AuthenticationPrincipal MemberDetailsImpl memberDetails
+//    ) throws JsonProcessingException {
+////        AccountResponse accountResponse = AccountResponse.of(memberDetails.getMember());
+////        return jwtUtil.reissueToken(accountResponse);
+//    }
 }

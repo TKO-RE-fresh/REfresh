@@ -31,10 +31,7 @@ public class LeaveRequestService {
 
     private final AnnualRepository annualRepository;
     private final LeaveRequestRepository leaveRequestRepository;
-<<<<<<< HEAD
-=======
 
->>>>>>> f8529818cdf89fd77d50027f41936c9a1ea4053d
     /* 사용한 연차일 수 받아오기 */
     public Map<String, Double> getUsedAnnualLeave(String memberId) {
         double annualCount = leaveRequesterInfoRepository.findByAnnualCount(memberId);
