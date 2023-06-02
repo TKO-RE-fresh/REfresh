@@ -16,7 +16,7 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/admin/members")
+@RequestMapping("/admin/member")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class MemberController {
 
@@ -35,6 +35,13 @@ public class MemberController {
         }
 
         return ResponseEntity.ok().body(list);
+    }
+
+    @GetMapping("/{memberId}")
+    public ResponseEntity<MemberDto> detailMember(@PathVariable String memberId) {
+        MemberDto memberDto = memberService.getMemberDetail(memberId);
+
+        return ResponseEntity.ok().body(memberDto);
     }
 
     @PatchMapping("/{memberId}")

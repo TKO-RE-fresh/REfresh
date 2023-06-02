@@ -15,8 +15,6 @@ import java.time.LocalDateTime;
 @Setter
 public class MemberDto {
 
-    private final String FORMAT = "yyyy-MM-dd";
-
     @NotEmpty
     private String memberId;
     @NotEmpty
@@ -41,8 +39,8 @@ public class MemberDto {
         this.departmentName = departmentName;
         this.memberCellphone = memberCellphone;
         this.memberEmail = memberEmail;
-        this.createdDate = LocalDateTime.parse(DateConverter.format(createdDate, FORMAT));
-        this.retireDate = (retireDate == null) ? null : LocalDateTime.parse(DateConverter.format(retireDate, FORMAT));
+        this.createdDate = createdDate;
+        this.retireDate = retireDate;
         this.memberStatus = memberStatus;
     }
 }

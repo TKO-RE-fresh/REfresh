@@ -74,7 +74,7 @@ onMounted(async () => {
     const params = {
         page: currentPage.value
     }
-    const res = await mixins.methods.$api(`/admin/members`, `get`, { params });
+    const res = await mixins.methods.$api(`/admin/member`, `get`, { params });
     const arr = [];
 
     for (let i=0; i<res.data.content.length; i++) {
@@ -93,7 +93,7 @@ function selectPage(idx) {
     const arr = [];
 
     watchEffect(async () => {
-        const res = await mixins.methods.$api(`/admin/members`, `get`, { params });
+        const res = await mixins.methods.$api(`/admin/member`, `get`, { params });
         
         for (let i=0; i<res.data.content.length; i++) {
             arr.push(res.data.content[i]);
