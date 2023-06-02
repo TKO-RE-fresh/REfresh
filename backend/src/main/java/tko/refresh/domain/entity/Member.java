@@ -111,4 +111,13 @@ public class Member extends BaseEntity {
         this.memberStatus = memberUpdateDto.getMemberStatus();
     }
 
+<<<<<<< HEAD
+=======
+    public void updateAnnualCount(double annualCount) {
+        this.annualCount = annualCount;
+    }
+
+
+
+>>>>>>> 33f88d32b6c7da145dc14fb10ba00087b1989ddd
 }

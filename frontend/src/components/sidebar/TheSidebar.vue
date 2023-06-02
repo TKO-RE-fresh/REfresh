@@ -24,9 +24,7 @@
           </div>
           <div class="mt-2">
             <label class="ml-6">예정 일정</label>
-            <a href="/mypage/history" class="ml-6 text-blue-500"
-              >예정휴가(하드)</a
-            >
+            <a href="/mypage/history" class="ml-6 text-blue-500">예정휴가(하드)</a>
           </div>
         </div>
       </div>

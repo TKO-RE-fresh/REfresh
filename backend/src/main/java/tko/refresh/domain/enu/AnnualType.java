@@ -12,10 +12,12 @@ public enum AnnualType {
     MORNING_HALF("오전 반차", 2),
     AFTERNOON_HALF("오후 반차", 3);
     private static final Map<Integer, AnnualType> LABEL_LOOKUP = new HashMap<>();
+    private static final Map<String, AnnualType> CODE_LOOKUP = new HashMap<>();
 
     static {
         for (AnnualType annualType : values()) {
             LABEL_LOOKUP.put(annualType.getLabel(), annualType);
+            CODE_LOOKUP.put(annualType.getCode(), annualType);
         }
     }
 
@@ -35,6 +37,13 @@ public enum AnnualType {
         }
 
         throw new IllegalArgumentException("Invalid label: " + label);
+    }
+
+    public static AnnualType getEnumByCode(String code) {
+        if(CODE_LOOKUP.containsKey(code)) {
+            return CODE_LOOKUP.get(code);
+        }
+        throw new IllegalArgumentException("Invalid code: " + code);
     }
 
 
