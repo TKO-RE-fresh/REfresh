@@ -1,11 +1,8 @@
 package tko.refresh.controller.leaveRequest;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import tko.refresh.dto.GlobalResponseDto;
 import tko.refresh.dto.leaveRequest.LeaveRequestDto;
 import tko.refresh.service.leaveRequest.LeaveRequestService;

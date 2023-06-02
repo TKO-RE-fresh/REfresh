@@ -1,16 +1,27 @@
 import { createStore } from "vuex";
-
+import mixins from "@/utils/mixins";
 
 export default createStore({
   state: {
     token: null,
+    annualList: [],
     calendarYear: new Date().getFullYear(),
     calendarMonth: new Date().getMonth() + 1,
     deptName: null,
     memberId: null,
     memberName: null,
+<<<<<<< HEAD
     auth: null,
     deptList: []
+=======
+    deptList: [],
+    searchInput: {
+      memberName: "",
+      departmentName: "",
+      status: "",
+    },
+    page: 1,
+>>>>>>> f8529818cdf89fd77d50027f41936c9a1ea4053d
   },
   getters: {
     getAccessToken: (state) => {
@@ -19,8 +30,8 @@ export default createStore({
     getCalendar: (state) => {
       return {
         year: state.calendarYear,
-        month: state.calendarMonth
-      }
+        month: state.calendarMonth,
+      };
     },
     getDepartment: (state) => {
       return state.deptName;
@@ -28,6 +39,7 @@ export default createStore({
     getDepartmentList: (state) => {
       return state.deptList;
     },
+<<<<<<< HEAD
     getMemberId: (state) => {
       return state.memberId;
     },
@@ -37,6 +49,17 @@ export default createStore({
     getAuth: (state) => {
       return state.auth;
     }
+=======
+    getAnnualList: (state) => {
+      return state.annualList;
+    },
+    getSearchInput: (state) => {
+      return state.searchInput;
+    },
+    getPage: (state) => {
+      return state.page;
+    },
+>>>>>>> f8529818cdf89fd77d50027f41936c9a1ea4053d
   },
   mutations: {
     setDeptName: (state, deptName) => {
@@ -51,6 +74,14 @@ export default createStore({
     setAccessToken: (state, token) => {
       state.token = token;
     },
+    setAnnualList: async (state) => {
+      const res = await mixins.methods.$api(
+        `admin/annual/${state.page}`,
+        "get",
+        { params: state.searchInput }
+      );
+      state.annualList = res.data;
+    },
     setCalendarDate: (state, date) => {
       const { year, month } = date;
       state.calendarYear = year;
@@ -62,11 +93,19 @@ export default createStore({
     setDeptList: (state, deptList) => {
       state.deptList = deptList;
     },
+<<<<<<< HEAD
     setAuth: (state, auth) => {
       state.auth = auth;
+=======
+    setSearchInput: (state, searchInput) => {
+      state.searchInput = searchInput;
+    },
+    setPage: (state, page) => {
+      state.page = page;
+>>>>>>> f8529818cdf89fd77d50027f41936c9a1ea4053d
     },
   },
   actions: {},
   modules: {},
-  plugins: []
+  plugins: [],
 });

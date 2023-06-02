@@ -25,7 +25,7 @@ public class TokenController {
     public TokenDto reissue(
             @AuthenticationPrincipal MemberDetailsImpl memberDetails
     ) throws JsonProcessingException {
-        AccountResponse accountResponse = AccountResponse.of(memberDetails.getMember());
-        return jwtUtil.reissueToken(accountResponse);
+//        AccountResponse accountResponse = AccountResponse.of(memberDetails.getMember());
+//        return jwtUtil.reissueToken(accountResponse);
     }
 }

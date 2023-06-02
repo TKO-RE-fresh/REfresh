@@ -1,6 +1,7 @@
 package tko.refresh.service.admin;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import tko.refresh.domain.emb.Period;
@@ -27,7 +28,7 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class AnnualManageService {
-    private final int PAGE_SIZE = 10;
+    private final int PAGE_SIZE = 5;
 
     private final AnnualManageRepository annualManageRepo;
     private final MemberRepository memberRepository;
@@ -42,8 +43,8 @@ public class AnnualManageService {
 
     public List<AnnualManageDto> getSearchAnnualMangeList(AnnualSearchDto searchDto,int page){
         Pageable pageable = Pagination.setPageable(page,PAGE_SIZE);
-        List<Annual> list = annualManageRepo.searchAnnual(searchDto,pageable);
-        return entityToDto(list);
+        Page<Annual> list = annualManageRepo.searchAnnual(searchDto,pageable);
+        return entityToDto(list.toList());
     }
 
     @Transactional
@@ -88,9 +89,10 @@ public class AnnualManageService {
             resultList.add(AnnualManageDto.builder()
                     .annualUid(String.valueOf(data.getUid()))
                     .memberName(data.getMember().getMemberInfo().getName())
+                    .email(data.getMember().getMemberInfo().getEmail())
                     .departmentName(data.getMember().getDepartment().getName())
-                    .annualType(data.getAnnualType().getCode())
-                    .annualStatus(data.getAnnualStatus().getLabel())
+                    .annualType(data.getAnnualType())
+                    .annualStatus(data.getAnnualStatus())
                     .period(data.getPeriod())
                     .createdDate(data.getCreatedDate())
                     .build()

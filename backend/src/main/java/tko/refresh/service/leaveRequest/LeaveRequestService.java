@@ -5,17 +5,15 @@ import org.springframework.stereotype.Service;
 import tko.refresh.domain.emb.Period;
 import tko.refresh.domain.entity.Annual;
 import tko.refresh.domain.entity.Member;
-import tko.refresh.domain.enu.AnnualStatus;
 import tko.refresh.domain.enu.AnnualType;
-import tko.refresh.dto.GlobalResponseDto;
 import tko.refresh.dto.leaveRequest.LeaveRequestDto;
-import tko.refresh.repository.calendar.AnnualCountRepository;
+import tko.refresh.domain.enu.AnnualStatus;
+import tko.refresh.dto.GlobalResponseDto;
 import tko.refresh.repository.calendar.AnnualRepository;
 import tko.refresh.repository.leaveRequest.LeaveRequestRepository;
 import tko.refresh.repository.leaveRequest.LeaveRequesterInfoRepository;
 import tko.refresh.repository.member.MemberRepository;
 import tko.refresh.service.admin.AnnualManageService;
-
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
@@ -30,8 +28,13 @@ public class LeaveRequestService {
     private final MemberRepository memberRepository;
     private final AnnualManageService annualManageService;
 
+
     private final AnnualRepository annualRepository;
     private final LeaveRequestRepository leaveRequestRepository;
+<<<<<<< HEAD
+=======
+
+>>>>>>> f8529818cdf89fd77d50027f41936c9a1ea4053d
     /* 사용한 연차일 수 받아오기 */
     public Map<String, Double> getUsedAnnualLeave(String memberId) {
         double annualCount = leaveRequesterInfoRepository.findByAnnualCount(memberId);
@@ -41,6 +44,20 @@ public class LeaveRequestService {
         annualLeaveMap.put("usedAnnualCount", usedAnnualCount);
         return annualLeaveMap;
     }
+//
+//    public boolean filterHoliday(){
+//
+//        Period period = Period.builder().startDate(leaveRequestDto.getStartDate()).endDate(leaveRequestDto.getEndDate()).build();
+//        int notholidays = annualManageService.WorkingDaysCounter(period);
+//        // 휴가기간중 공휴일 제외 (메서드명 바꿔야함을 강력 추천)
+//
+//        leaveRequestDto.setAnnualCount(notholidays);
+//
+//
+//        System.out.println("공휴이 아닌 휴가일수: " + notholidays);
+//    }
+
+
 
     /* 클라이언트로부터 들어온 정보를 토대로 연차를 신청 */
     @Transactional
