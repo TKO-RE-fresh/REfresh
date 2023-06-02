@@ -24,9 +24,7 @@
           </div>
           <div class="mt-2">
             <label class="ml-6">예정 일정</label>
-            <a href="/mypage/history" class="ml-6 text-blue-500"
-              >예정휴가(하드)</a
-            >
+            <a href="/mypage/history" class="ml-6 text-blue-500">예정휴가(하드)</a>
           </div>
         </div>
       </div>
@@ -34,7 +32,7 @@
       <ul class="h-80 space-y-6 font-medium">
         <li>
           <router-link
-            to="/cal"
+            to="#"
             class="flex items-center p-2 text-gray-500 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
           >
             <svg
@@ -73,7 +71,7 @@
         </li>
         <li>
           <router-link
-            to="/mypage/history"
+            to="#"
             class="flex items-center p-2 text-gray-500 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
           >
             <svg

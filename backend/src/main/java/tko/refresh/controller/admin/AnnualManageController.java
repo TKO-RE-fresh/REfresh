@@ -16,6 +16,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/admin/annual")
+@CrossOrigin("*")
 public class AnnualManageController {
 
     private final AnnualManageService annualManageService;
@@ -36,15 +37,15 @@ public class AnnualManageController {
     }
 
 
-   @PutMapping("/{status}")
-    public ResponseEntity processAnnualRequest(@RequestBody AnnualStatusDto statusDto, @PathVariable String status){
+   @PutMapping
+    public ResponseEntity processAnnualRequest(@RequestBody AnnualStatusDto statusDto){
         Boolean result = true;
-        UUID annualUid = UUID.fromString(statusDto.getUid());
+        System.out.println(statusDto);
 
-       if(status.equals(AnnualStatus.AGREE.getCode())){
-           result = annualManageService.AccessAnnualRequest(annualUid);
-       }else if(status.equals(AnnualStatus.REJECT.getCode())) {
-          result = annualManageService.RejectAnnualRequest(annualUid,statusDto.getRejectReason());
+       if(statusDto.getStatus().equals(AnnualStatus.AGREE.getCode())){
+           result = annualManageService.AccessAnnualRequest(statusDto.getUid());
+       }else if(statusDto.getStatus().equals(AnnualStatus.REJECT.getCode())) {
+          result = annualManageService.RejectAnnualRequest(statusDto.getUid(),statusDto.getRejectReason());
        }
 
        if(result){

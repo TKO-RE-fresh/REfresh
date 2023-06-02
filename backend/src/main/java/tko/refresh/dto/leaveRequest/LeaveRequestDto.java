@@ -1,26 +1,20 @@
 package tko.refresh.dto.leaveRequest;
 
 import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
 import tko.refresh.domain.emb.Period;
 import tko.refresh.util.valid.ValidPeriod;
-
-import org.springframework.format.annotation.DateTimeFormat;
-
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+
+
 
 @Getter
 @ToString
 public class LeaveRequestDto {
     @NotBlank
     private String memberId;
-
 
     @NotBlank
     private String annualType;
