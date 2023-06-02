@@ -30,7 +30,6 @@ public class AnnualManageRepositoryImpl implements AnnualManageRepositoryCustom 
     public Page<Annual> searchAnnual(AnnualSearchDto searchDto, Pageable pageable) {
         List<Annual> content = searchAnnualList(searchDto,pageable);
         Long count = getCount(searchDto);
-        System.out.println("!!!!!!!!!!!!!!!!!+ count"+count);
         return new PageImpl<>(content,pageable,count);
     }
 
@@ -49,8 +48,6 @@ public class AnnualManageRepositoryImpl implements AnnualManageRepositoryCustom 
     }
 
     public List<Annual> searchAnnualList(AnnualSearchDto searchDto, Pageable pageable) {
-        System.out.println("!!!!!!pageOffset"+pageable.getOffset());
-        System.out.println("!!!!!!PageSize"+pageable.getPageSize());
         return queryFactory
                 .selectFrom(annual)
                 .leftJoin(annual.member, member)
