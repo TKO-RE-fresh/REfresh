@@ -1,5 +1,6 @@
 package tko.refresh.dto;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import javax.validation.constraints.Max;
@@ -19,8 +20,7 @@ public class TodayDto {
 
     private final int day;
 
-    public LocalDateTime toLocalDateTime() {
-        return LocalDateTime.of(year, month, day, 0, 0);
+    public LocalDate toLocalDate() {
+        return LocalDate.of(year, month, day);
     }
-
 }

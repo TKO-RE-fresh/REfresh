@@ -8,9 +8,9 @@ import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
 public enum AnnualType {
-    ANNUAL_LEAVE("ANNUAL_LEAVE", 1),
-    MORNING_HALF("MORNING_HALF", 2),
-    AFTERNOON_HALF("AFTERNOON_HALF", 3);
+    ANNUAL_LEAVE("연차", 1),
+    MORNING_HALF("오전 반차", 2),
+    AFTERNOON_HALF("오후 반차", 3);
     private static final Map<Integer, AnnualType> LABEL_LOOKUP = new HashMap<>();
 
     static {

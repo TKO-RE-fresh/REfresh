@@ -110,5 +110,5 @@ public class Member extends BaseEntity {
         this.memberAuth = memberUpdateDto.getMemberAuth();
         this.memberStatus = memberUpdateDto.getMemberStatus();
     }
-    
+
 }

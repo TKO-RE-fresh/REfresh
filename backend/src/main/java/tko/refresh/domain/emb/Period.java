@@ -1,6 +1,7 @@
 package tko.refresh.domain.emb;
 import static lombok.AccessLevel.PROTECTED;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import javax.persistence.Column;
@@ -29,4 +30,5 @@ public class Period {
         this.startDate = startDate;
         this.endDate = endDate;
     }
+    
 }

@@ -5,28 +5,26 @@ import lombok.Setter;
 import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Setter
 @Getter
 @ToString
 public class LeaveRequestDto {
-
-    @NotEmpty
-    private String memberName;
-
+    @NotBlank
     private String memberId;
 
+    @NotBlank
     private double annualCount;
 
-    @NotEmpty
+    @NotBlank
     private String annualType;
 
-
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime startDate;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime endDate;
 }

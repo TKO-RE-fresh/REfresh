@@ -53,35 +53,25 @@ public class LeaveRequestService {
 
     /* 클라이언트로부터 들어온 정보를 토대로 연차를 신청 */
     @Transactional
-    public boolean createLeaveRequest(LeaveRequestDto leaveRequestDto) {
+    public boolean createLeaveRequest(LeaveRequestDto dto) {
         boolean result = true;
-        System.out.println("멤버 이름 확인: "+memberRepository.findByMemberId("jaeseok").get());
-        System.out.println("멤버 이름 확인 DTO: "+leaveRequestDto.getMemberId());
-//        Member member = memberRepository.findByMemberId(leaveRequestDto.getMemberId()).get();
-        Optional<Member> member = memberRepository.findByMemberId(leaveRequestDto.getMemberId());
-
+        // 이름을 가지고 Member 객체를 찾는다.
+        Optional<Member> member = memberRepository.findByMemberId(dto.getMemberId());
         /* 멤버 객체 존재여부 확인 */
         if(!member.isPresent()) return false;
 
-        /* 멤버의 이름 및 연차 타입이 null인지 확인 */
-        if (leaveRequestDto.getMemberName() == null || leaveRequestDto.getAnnualType() == null) {
-            return false;
-        }
-
-
-        System.out.println("멤버 확인: " + member);
         Annual annual = Annual
                 .builder()
                 .member(member.get())
-                .createdBy(member.get().getMemberInfo().getName())
-                .modifiedBy(member.get().getMemberInfo().getName())
+                .createdBy(member.get().getMemberId())
+                .modifiedBy(member.get().getMemberId())
                 .createdDate(LocalDateTime.now())
                 .modifiedDate(LocalDateTime.now())
-                .annualType(AnnualType.valueOf(leaveRequestDto.getAnnualType()))
+                .annualType(AnnualType.valueOf(dto.getAnnualType()))
                 .period(Period
                         .builder()
-                        .startDate(leaveRequestDto.getStartDate())
-                        .endDate(leaveRequestDto.getEndDate())
+                        .startDate(dto.getStartDate())
+                        .endDate(dto.getEndDate())
                         .build())
                 .build();
 
