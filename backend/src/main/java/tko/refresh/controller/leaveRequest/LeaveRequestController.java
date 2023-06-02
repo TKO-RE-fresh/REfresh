@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import tko.refresh.dto.GlobalResponseDto;
 import tko.refresh.dto.leaveRequest.LeaveRequestDto;
 import tko.refresh.service.leaveRequest.LeaveRequestService;
 
@@ -32,9 +34,8 @@ public class LeaveRequestController {
     /* 연차 신청폼에 들어온 정보를 토대로 연차 신청  */
     @PostMapping
     public ResponseEntity requestForLeave(@RequestBody LeaveRequestDto leaveRequestDto) {
-        boolean dto = leaveRequestService.createLeaveRequest(leaveRequestDto);
-
-        return ResponseEntity.ok().body(dto);
+        GlobalResponseDto leaveRequest = leaveRequestService.createLeaveRequest(leaveRequestDto);
+        return ResponseEntity.ok().body(leaveRequest);
     }
 
 }

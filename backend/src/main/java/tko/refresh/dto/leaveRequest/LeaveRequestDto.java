@@ -3,28 +3,35 @@ package tko.refresh.dto.leaveRequest;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import tko.refresh.domain.emb.Period;
+import tko.refresh.util.valid.ValidPeriod;
+
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-@Setter
 @Getter
 @ToString
 public class LeaveRequestDto {
     @NotBlank
     private String memberId;
 
-    @NotBlank
-    private double annualCount;
 
     @NotBlank
     private String annualType;
 
-    private LocalDateTime startDate;
+    @Valid
+    @ValidPeriod
+    private Period period;
 
-    private LocalDateTime endDate;
+    public LeaveRequestDto(String memberId, String annualType, LocalDateTime startDate, LocalDateTime endDate) {
+        this.memberId = memberId;
+        this.annualType = annualType;
+        this.period = Period.builder().startDate(startDate).endDate(endDate).build();
+    }
 }
