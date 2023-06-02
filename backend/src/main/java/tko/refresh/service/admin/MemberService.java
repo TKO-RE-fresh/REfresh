@@ -16,7 +16,7 @@ import javax.transaction.Transactional;
 @Service
 @RequiredArgsConstructor
 public class MemberService {
-    private final int PAGE_SIZE = 10;
+    private final int PAGE_SIZE = 1;
 
     private final MemberRepository memberRepository;
 

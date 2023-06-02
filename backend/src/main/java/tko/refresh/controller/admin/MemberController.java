@@ -16,15 +16,16 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/admin/member")
+@RequestMapping("/admin/members")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class MemberController {
 
     private final MemberService memberService;
 
-    @GetMapping("/{page}")
+    @GetMapping
     public ResponseEntity getMemberAllList(@RequestParam(required = false) MemberSearchDto searchDto,
-                                           @PathVariable Optional<Integer> page) {
-        int formatPage = page.orElse(0);
+                                           @RequestParam int page) {
+        int formatPage = page;
 
         Page<MemberDto> list;
         if(searchDto == null) {
