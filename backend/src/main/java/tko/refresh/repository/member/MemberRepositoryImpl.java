@@ -42,7 +42,9 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
                 .limit(pageable.getPageSize())
                 .fetch();
 
-        return new PageImpl<>(content, pageable, content.size());
+        Long count = getCount();
+
+        return new PageImpl<>(content, pageable, count);
     }
 
     @Override
@@ -66,7 +68,29 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
                 .limit(pageable.getPageSize())
                 .fetch();
 
-        return new PageImpl<>(content, pageable, content.size());
+        Long count = getCount(searchDto);
+
+        return new PageImpl<>(content, pageable, count);
+    }
+
+    private Long getCount(MemberSearchDto...searchDto) {
+        Long count;
+        if(searchDto.length == 0) { // 사원 전체 조회
+            count = queryFactory
+                    .select(member.count())
+                    .from(member)
+                    .where()
+                    .fetchOne();
+        } else { // 사원 검색
+            count = queryFactory
+                    .select(member.count())
+                    .from(member)
+                    .where(memberNameEq(searchDto[0].getMemberName()),
+                            departmentNameEq(searchDto[0].getDepartmentName()),
+                            memberStatusEq(searchDto[0].getStatus()))
+                    .fetchOne();
+        }
+        return count;
     }
 
     private BooleanExpression memberNameEq(String memberName) {
