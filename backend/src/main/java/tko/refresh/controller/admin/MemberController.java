@@ -17,14 +17,15 @@ import java.util.Optional;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/admin/member")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class MemberController {
 
     private final MemberService memberService;
 
-    @GetMapping("/{page}")
+    @GetMapping
     public ResponseEntity getMemberAllList(@RequestParam(required = false) MemberSearchDto searchDto,
-                                           @PathVariable Optional<Integer> page) {
-        int formatPage = page.orElse(0);
+                                           @RequestParam int page) {
+        int formatPage = page;
 
         Page<MemberDto> list;
         if(searchDto == null) {
@@ -34,6 +35,13 @@ public class MemberController {
         }
 
         return ResponseEntity.ok().body(list);
+    }
+
+    @GetMapping("/{memberId}")
+    public ResponseEntity<MemberDto> detailMember(@PathVariable String memberId) {
+        MemberDto memberDto = memberService.getMemberDetail(memberId);
+
+        return ResponseEntity.ok().body(memberDto);
     }
 
     @PatchMapping("/{memberId}")

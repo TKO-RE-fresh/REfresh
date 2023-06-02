@@ -31,7 +31,7 @@ import tko.refresh.repository.member.MemberRepository;
 @SpringBootTest
 @TestPropertySource("classpath:application-TEST.properties")
 @Transactional
-@WithMockCustomUser
+//@WithMockCustomUser
 class MemberServiceTest {
 
 

@@ -97,7 +97,6 @@ public class Member extends BaseEntity {
         annuals.add(annual);
         annual.setMember(this);
     }
-
     public void updateMember(MemberUpdateDto memberUpdateDto) {
         this.memberInfo=MemberInfo.builder()
                 .name(memberUpdateDto.getMemberName())
@@ -111,6 +110,5 @@ public class Member extends BaseEntity {
         this.memberAuth = memberUpdateDto.getMemberAuth();
         this.memberStatus = memberUpdateDto.getMemberStatus();
     }
-
 
 }

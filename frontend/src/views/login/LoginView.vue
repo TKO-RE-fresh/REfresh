@@ -1,98 +1,97 @@
 <template>
-   <main class="relative bg-gradient-to-br from-sky-50 to-gray-200">
-      <section
-        class="relative container m-auto px-6 text-gray-500 md:px-12 xl:px-40 h-screen flex justify-center items-center"
-      >
-        <article class="m-auto md:w-8/12 lg:w-6/12 xl:w-5/12">
-          <form class="bg-white p-8 rounded-lg shadow-lg" 
+  <main class="relative bg-gradient-to-br from-sky-50 to-gray-200">
+    <section
+      class="relative container m-auto px-6 text-gray-500 md:px-12 xl:px-40 h-screen flex justify-center items-center"
+    >
+      <article class="m-auto md:w-8/12 lg:w-6/12 xl:w-5/12">
+        <form
+          class="bg-white p-8 rounded-lg shadow-lg"
           @submit.prevent="onSubmit"
-          >
-            <h2 class="text-4xl font-bold mb-4 flex justify-center">
-              <span class="text-sky-500">RE</span>fresh
-            </h2>
+        >
+          <h2 class="text-4xl font-bold mb-4 flex justify-center">
+            <span class="text-sky-500">RE</span>fresh
+          </h2>
 
+          <div class="mb-4">
+            <label class="block text-gray-700 font-bold mb-2" for="id"
+              >아이디</label
+            >
             <div class="mb-4">
-              <label class="block text-gray-700 font-bold mb-2" for="id"
-                >아이디</label
-              >
-              <div class="mb-4">
-                <input
-                  id="id"
-                  v-model="memberId"
-                  class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  type="text"
-                  placeholder="아이디 입력"
-                  required
-                  autocomplete="off"
-                  aria-required="true"
-                />
-              </div>
-            </div>
-            <div class="mb-4">
-              <label class="block text-gray-700 font-bold mb-2" for="password"
-                >비밀번호</label
-              >
               <input
-                id="password"
-                v-model="password"
+                id="id"
+                v-model="memberId"
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                type="password"
+                type="text"
+                placeholder="아이디 입력"
                 required
+                autocomplete="off"
                 aria-required="true"
-                placeholder="비밀번호 입력"
               />
             </div>
-
-            <div class="flex justify-between">
-              <label class="block text-gray-500 font-bold my-4"
-                ><input type="checkbox" class="leading-loose text-pink-600" />
-                <span class="py-2 text-sm text-gray-600 leading-snug">
-                  로그인 기억
-                </span></label
-              >
-              <label class="block text-gray-500 font-bold my-4"
-                ><a
-                  href="#"
-                  class="cursor-pointer tracking-tighter inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
-                  ><span>비밀번호 찾기</span></a
-                ></label
-              >
-            </div>
-            <button
-              class="bg-blue-500 hover:bg-sky-400 text-white mt-3 text-lg font-semibold w-full rounded-lg px-6 py-3 block shadow-xl focus:outline-none focus:shadow-outline"
-              type="submit"
+          </div>
+          <div class="mb-4">
+            <label class="block text-gray-700 font-bold mb-2" for="password"
+              >비밀번호</label
             >
-              로그인
-            </button>
-          </form>
-        </article>
-      </section>
-    </main>
+            <input
+              id="password"
+              v-model="password"
+              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              type="password"
+              required
+              aria-required="true"
+              placeholder="비밀번호 입력"
+            />
+          </div>
+
+          <div class="flex justify-between">
+            <label class="block text-gray-500 font-bold my-4"
+              ><input type="checkbox" class="leading-loose text-pink-600" />
+              <span class="py-2 text-sm text-gray-600 leading-snug">
+                로그인 기억
+              </span></label
+            >
+            <label class="block text-gray-500 font-bold my-4"
+              ><a
+                href="#"
+                class="cursor-pointer tracking-tighter inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
+                ><span>비밀번호 찾기</span></a
+              ></label
+            >
+          </div>
+          <button
+            class="bg-blue-500 hover:bg-sky-400 text-white mt-3 text-lg font-semibold w-full rounded-lg px-6 py-3 block shadow-xl focus:outline-none focus:shadow-outline"
+            type="submit"
+          >
+            로그인
+          </button>
+        </form>
+      </article>
+    </section>
+  </main>
 </template>
 <script setup>
-import { ref } from 'vue';
-import mixins from '@/utils/mixins';
-import Token from '@/utils/token.js';
-import Store from '@/store/index.js';
-import Router from '@/router/index.js';
-const memberId = ref('');
-const password = ref('');
+import { ref } from "vue";
+import mixins from "@/utils/mixins";
+import Token from "@/utils/token.js";
+import Store from "@/store/index.js";
+import Router from "@/router/index.js";
+const memberId = ref("");
+const password = ref("");
 
 async function onSubmit() {
-  const res = await mixins.methods.$api('login', 'post', {
-    memberId: memberId.value, password: password.value
-  });
+  const body = {
+    memberId: memberId.value,
+    password: password.value,
+  };
+  const res = await mixins.methods.$api("login", "post", { body });
   const date = new Date();
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
   Token.setToken(res.headers.refresh_token);
-  Store.commit('setAccessToken', res.headers.access_token);
-  Router.push({ name: 'CalendarView', params: { year, month }});
+  Store.commit("setAccessToken", res.headers.access_token);
+  Router.push({ name: "CalendarView", params: { year, month } });
 }
-
-
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -80,8 +80,10 @@
 
 <script setup>
 import { defineProps, ref  } from "vue";
+import { useStore } from 'vuex';
 // import mixins from '@/utils/mixins';
 import axios from "axios";
+const store = useStore();
 
 const props = defineProps({
   isOpen: {
@@ -114,7 +116,7 @@ const accetpHandler= async () => {
     // const res = await mixins.methods.$api(`admin/annual`,'put', body);
     await axios.put('http://localhost:8090/admin/annual', body);
     props.onToggle();
-    
+    store.commit("setAnnualList");
 }
 </script>
 

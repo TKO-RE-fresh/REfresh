@@ -13,8 +13,8 @@ public class GetAnnualByNameResDto extends AnnualResponse {
     private MemberInfo memberInfo;
 
     @Builder
-    public GetAnnualByNameResDto(AnnualType annualType, Period period, MemberInfo memberInfo) {
-        super(annualType, period);
+    public GetAnnualByNameResDto(String annualType, Period period, MemberInfo memberInfo) {
+        super(annualType, period.getStartDate().toLocalDate(), period.getEndDate().toLocalDate());
         this.memberInfo = memberInfo;
     }
 }

@@ -17,7 +17,7 @@
               </div>
             </th>
             <th
-              v-for="(item, idx) in props.tData.thead"
+              v-for="(item, idx) in header"
               :key="idx"
               scope="col"
               class="px-3 py-3"
@@ -28,7 +28,7 @@
         </thead>
         <tbody>
           <tr
-            v-for="(row, idx) in props.tData.tbody"
+            v-for="(row, idx) in Store.state.annualList"
             :key="idx"
             class="bg-white border-b hover:bg-blue-50"
           >
@@ -77,17 +77,14 @@
   <AnnualStatusModal :isOpen="isOpen" :onToggle="onToggle" :uid = "uid"></AnnualStatusModal>
 </template>
 <script setup>
-import { defineProps,ref } from "vue";
+import {ref } from "vue";
 import AnnualStatusModal from "./AnnualStatusModal.vue";
+import Store from "@/store/index.js";
 
-const props = defineProps({
-  tData: {
-    type: Object,
-    required: true,
-  },
-});
+const header = ['신청일','사원명','부서명','연차 종류','기간','상태']
 
 const isOpen = ref(false);
+
 const uid = ref('');
 
 const onToggle = () => {
@@ -100,7 +97,6 @@ const handleModal=(data,id) =>{
     onToggle();
   }
 }
-
 
 
 </script>

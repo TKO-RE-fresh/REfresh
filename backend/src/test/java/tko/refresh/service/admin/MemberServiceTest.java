@@ -21,6 +21,7 @@ import tko.refresh.repository.member.MemberRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @SpringBootTest
 @TestPropertySource("classpath:application-TEST.properties")
@@ -157,6 +158,24 @@ class MemberServiceTest {
 
         Page<MemberDto> list = memberService.getAllMemberList(1);
         list.stream().forEach(System.out::println);
+    }
+
+    @Test
+    public void 관리자_사원상세정보조회() {
+        Optional<Member> member = memberRepository.findByMemberId("id");
+
+        MemberDto memberDto = MemberDto.builder()
+                .memberId(member.get().getMemberId())
+                .memberName(member.get().getMemberInfo().getName())
+                .departmentName(member.get().getDepartment().getName())
+                .memberCellphone(member.get().getMemberInfo().getCellphone())
+                .memberEmail(member.get().getMemberInfo().getEmail())
+                .createdDate(member.get().getCreatedDate())
+                .retireDate(member.get().getRetireDate())
+                .memberStatus(member.get().getMemberStatus())
+                .build();
+
+        System.out.println(memberDto);
     }
     
 }

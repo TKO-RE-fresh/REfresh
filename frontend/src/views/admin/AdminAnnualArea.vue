@@ -49,7 +49,7 @@
       </div>
     </div>
   </form>
-  <AdminAnnualTable :tData="tData" ></AdminAnnualTable>
+  <AdminAnnualTable></AdminAnnualTable>
 </template>
 <script setup>
 import { ref,reactive,onMounted } from 'vue';
@@ -83,29 +83,22 @@ const searchInput = reactive({
 function setDepartment(e){
   searchInput.departmentName = e.target.value;
 }
+
 function setStatus(e){
   searchInput.status = e.target.value;
 }
 
-const annualList = ref([]);
 const page = ref(1);
-// async function getList(){
-//   const res = await mixins.methods.$api(`admin/annual/${page.value}`,'get', { params:searchInput })
-//   annualList.value=res.data;
-// }
 
 function onFormSubmit(e) {
   e.preventDefault();
-  store.commit("setAnnualList", page.value, searchInput);
+  store.commit("setPage",1);
+  store.commit("setAnnualList");
+  store.commit("setSearchInput",searchInput);
 }
 
 onMounted(() => {
   store.commit("setAnnualList", page.value, searchInput);
 });
-const header = ['신청일','사원명','부서명','연차 종류','기간','상태']
-const tData = reactive({
-  thead : header,
-  tbody : annualList
-})
 
 </script>

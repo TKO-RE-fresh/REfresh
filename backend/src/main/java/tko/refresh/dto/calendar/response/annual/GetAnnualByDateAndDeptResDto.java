@@ -19,8 +19,8 @@ public class GetAnnualByDateAndDeptResDto extends AnnualResponse {
     private String deptName;
 
     @Builder
-    public GetAnnualByDateAndDeptResDto(String memberName, String deptName, AnnualType annualType, Period period) {
-        super(annualType, period);
+    public GetAnnualByDateAndDeptResDto(String memberName, String deptName, String annualType, Period period) {
+        super(annualType, period.getStartDate().toLocalDate(), period.getEndDate().toLocalDate());
         this.deptName = deptName;
         this.memberName = memberName;
     }

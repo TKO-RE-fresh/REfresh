@@ -1,6 +1,7 @@
 package tko.refresh.repository.calendar;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -17,8 +18,8 @@ public class DepartmentEmRepository {
 
 
     public List<GetDepartmentNameResDto> findAllDeptName() {
-        return entityManager.createQuery("SELECT new tko.refresh.dto.calendar.response.department."
-                                         + "GetDepartmentNameResDto(d.name) FROM Department d",
-                                  GetDepartmentNameResDto.class).getResultList();
+         return entityManager.createQuery("SELECT d.name FROM Department d",
+                                                            String.class).getResultList().stream()
+                             .map(e -> GetDepartmentNameResDto.builder().name(e).build()).collect(Collectors.toList());
     }
 }
