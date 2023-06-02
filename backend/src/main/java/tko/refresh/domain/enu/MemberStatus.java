@@ -5,8 +5,8 @@ import java.util.Map;
 
 
 public enum MemberStatus {
-    IN_USE("IN_USE", 0),
-    NOT_IN_USE("NOT_IN_USE", 1);
+    IN_USE("사용", 0),
+    NOT_IN_USE("휴면", 1);
 
     private final String code;
     private final int label;
