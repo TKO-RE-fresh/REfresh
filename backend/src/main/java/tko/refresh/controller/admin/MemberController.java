@@ -5,13 +5,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import lombok.RequiredArgsConstructor;
-import tko.refresh.domain.entity.Member;
 import tko.refresh.dto.admin.MemberDto;
 import tko.refresh.dto.admin.MemberSearchDto;
 import tko.refresh.dto.admin.MemberUpdateDto;
+import tko.refresh.repository.department.MemberDepartmentRepository;
 import tko.refresh.service.admin.MemberService;
 
-import java.util.Optional;
+import java.util.List;
 
 
 @RestController
@@ -21,6 +21,8 @@ import java.util.Optional;
 public class MemberController {
 
     private final MemberService memberService;
+
+    private final MemberDepartmentRepository departmentRepository;
 
     @GetMapping
     public ResponseEntity getMemberAllList(@RequestParam(required = false) MemberSearchDto searchDto,
@@ -50,6 +52,14 @@ public class MemberController {
         memberService.modifyMember(memberId, memberUpdateDto);
 
         return ResponseEntity.ok("Success");
+    }
+
+    @GetMapping("/new")
+    public ResponseEntity getNewMemberForm() {
+
+        List<String> list = departmentRepository.getDepartmentNameList();
+
+        return ResponseEntity.ok().body(list);
     }
 
 }
