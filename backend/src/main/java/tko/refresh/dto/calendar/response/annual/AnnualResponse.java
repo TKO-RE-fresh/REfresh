@@ -1,5 +1,8 @@
 package tko.refresh.dto.calendar.response.annual;
 
+import java.time.LocalDate;
+
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import lombok.Getter;
@@ -8,15 +11,18 @@ import tko.refresh.domain.enu.AnnualType;
 import tko.refresh.util.valid.ValidPeriod;
 @Getter
 public abstract class AnnualResponse {
-    @NotNull
-    private AnnualType annualType;
+    @NotBlank
+    private String annualType;
 
     @NotNull
-    @ValidPeriod
-    private Period period;
+    private LocalDate startDate;
 
-    public AnnualResponse(AnnualType annualType, Period period) {
+    @NotNull
+    private LocalDate endDate;
+
+    public AnnualResponse(String annualType, LocalDate startDate, LocalDate endDate) {
         this.annualType = annualType;
-        this.period = period;
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 }

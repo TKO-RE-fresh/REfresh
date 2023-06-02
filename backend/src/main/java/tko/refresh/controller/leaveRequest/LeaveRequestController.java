@@ -13,7 +13,7 @@ import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/leave-request")
+@RequestMapping("/leaveRequest")
 @CrossOrigin(origins = "*")
 public class LeaveRequestController {
 
@@ -31,12 +31,9 @@ public class LeaveRequestController {
 
     /* 연차 신청폼에 들어온 정보를 토대로 연차 신청  */
     @PostMapping
-    public ResponseEntity requestForLeave(@RequestBody LeaveRequestDto leaveRequestDto){
-        System.out.println("dto확인: " + leaveRequestDto);
+    public ResponseEntity requestForLeave(@RequestBody LeaveRequestDto leaveRequestDto) {
         boolean dto = leaveRequestService.createLeaveRequest(leaveRequestDto);
-        System.out.println("변환 후 dto: " + dto);
-        HttpHeaders headers = new HttpHeaders();
-        System.out.println("헤더: " + headers);
+
         return ResponseEntity.ok().body(dto);
     }
 

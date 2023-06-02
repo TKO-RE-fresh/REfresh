@@ -26,26 +26,23 @@ import tko.refresh.service.login.WithMockCustomUser;
 
 @SpringBootTest
 @TestPropertySource("classpath:application-TEST.properties")
-@WithMockCustomUser
+//@WithMockCustomUser
 @Transactional
 class AnnualControllerTest {
 
     @Autowired
+    private MockMvc mockMvc;
+    @Autowired
     private WebApplicationContext webApplicationContext;
-
-
-
 
     @BeforeEach
     void setUp() {
         Department department = new Department("개발팀", "code", "intro", "image", LocalDateTime.now(), LocalDateTime.now());
         MemberInfo memberInfo = new MemberInfo("name1245", "012-1211-2124", "position@gmail.com");
         Member member = new Member("member", "1234", memberInfo, 15, MemberStatus.IN_USE, RoleType.MEMBER , department, LocalDateTime.now(), LocalDateTime.now(), null, "sdds", "sdds");
-        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).apply(springSecurity()).build();
+//        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).apply(springSecurity()).build();
     }
 
-
-    private MockMvc mockMvc;
 
     @Test
     void 부서와_날짜로_연차_조회() throws Exception {
