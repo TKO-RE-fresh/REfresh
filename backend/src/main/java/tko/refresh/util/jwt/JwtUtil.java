@@ -3,9 +3,11 @@ package tko.refresh.util.jwt;
 import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
+import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.PostConstruct;
+import javax.security.auth.Subject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -15,6 +17,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -22,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import tko.refresh.domain.entity.RefreshToken;
 import tko.refresh.dto.member.TokenDto;
+import tko.refresh.repository.redis.RedisRepository;
 import tko.refresh.repository.refreshtoken.RefreshTokenRepository;
 
 @Component
@@ -30,14 +35,16 @@ import tko.refresh.repository.refreshtoken.RefreshTokenRepository;
 public class JwtUtil {
 
     private final MemberDetailsServiceImpl memberDetailsService;
-    private final RefreshTokenRepository refreshTokenRepository;
+    private final RedisRepository redisRepository;
 
-    private static final long ACCESS_TIME =  60 * 1000L;
-    private static final long REFRESH_TIME =  2 * 60 * 1000L;
+    @Value("${spring.jwt.live.atk}")
+    private long ACCESS_TIME;
+    @Value("${spring.jwt.live.rtk}")
+    private long REFRESH_TIME;
     public static final String ACCESS_TOKEN = "Access_Token";
     public static final String REFRESH_TOKEN = "Refresh_Token";
 
-    @Value("${jwt.token.secret}")
+    @Value("${spring.jwt.key}")
     private String secretKey;
     private Key key;
 
@@ -63,6 +70,20 @@ public class JwtUtil {
                        .build();
     }
 
+    // 토큰 재발급
+    public TokenDto reissueToken(String refreshToken) throws JsonProcessingException {
+        String rtkInRedis = redisRepository.getValues(getEmailFromToken(refreshToken));
+        if(Objects.isNull(rtkInRedis)) {
+            throw new RuntimeException("Refresh Token이 만료되었습니다.");
+        }
+
+        String atk = createToken(getEmailFromToken(refreshToken), "Access");
+        return TokenDto.builder().accessToken(atk).refreshToken(null).build();
+
+    }
+
+
+
     public String createToken(String email, String type) {
 
         Date date = new Date();
@@ -78,7 +99,7 @@ public class JwtUtil {
 
     }
 
-    // 토큰 검증
+    // Refresh 토큰 검증
     public Boolean tokenValidation(String token) {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
@@ -90,18 +111,18 @@ public class JwtUtil {
     }
 
     // refreshToken 토큰 검증
-    // db에 저장되어 있는 token과 비교
-    // db에 저장한다는 것이 jwt token을 사용한다는 강점을 상쇄시킨다.
-    // db 보다는 redis를 사용하는 것이 더욱 좋다. (in-memory db기 때문에 조회속도가 빠르고 주기적으로 삭제하는 기능이 기본적으로 존재합니다.)
+    // redis에 저장된 토큰과 비교
     public Boolean refreshTokenValidation(String token) {
 
         // 1차 토큰 검증
         if(!tokenValidation(token)) return false;
 
+        String email = getEmailFromToken(token);
         // DB에 저장한 토큰 비교
-        Optional<RefreshToken> refreshToken = refreshTokenRepository.findByAccountEmail(getEmailFromToken(token));
+        String refreshToken = redisRepository.getValues(email);
+        if(refreshToken == null) return false;
 
-        return refreshToken.isPresent() && token.equals(refreshToken.get().getRefreshToken());
+        return token.equals(refreshToken);
     }
 
     // 토큰에서 email 가져오는 기능
@@ -119,8 +140,6 @@ public class JwtUtil {
     public void setHeaderAccessToken(HttpServletResponse response, String accessToken) {
         response.setHeader("Access_Token", accessToken);
     }
-
-    // 리프레시 토큰 헤더 설정
 
     // 리프레시 토큰 헤더 설정
     public void setHeaderRefreshToken(HttpServletResponse response, String refreshToken) {

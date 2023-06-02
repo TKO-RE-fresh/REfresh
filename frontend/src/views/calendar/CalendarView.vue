@@ -53,7 +53,7 @@
   <the-sidebar></the-sidebar>
 </template>
 <script setup>
-import { ref, onMounted, reactive, watch, onBeforeMount } from "vue";
+import { ref, reactive, watch, onMounted, onBeforeMount } from "vue";
 import CalendarMain from "@/components/calendar/CalendarMain";
 import TheSidebar from "@/components/sidebar/TheSidebar.vue";
 import TheHeader from "@/components/header/TheHeader.vue";
@@ -70,7 +70,6 @@ const yearMonth = reactive({
   year: Store.state.calendarYear,
   month: Store.state.calendarMonth,
 });
-
 // 반응형 변수들
 const calendar = ref([]);
 const subCalData = reactive({
@@ -83,19 +82,22 @@ const departments = ref([]);
 const selectedDept = ref("");
 const modalFlag = ref(false);
 
-// 렌더링 사이클
 onBeforeMount(() => {
-  Store.commit("setDept", "개발팀");
+  selectedDept.value = Store.state.deptName;
 });
 
 onMounted(async () => {
   const params = makeParams();
-  const resCal = await mixins.methods.$api(`calendar`, "get", { params });
-  const resDept = await mixins.methods.$api(`calendar/department`, "get", {});
-  const cal = makeCalendarDom(resCal);
-  calendar.value = cal;
-  departments.value = resDept.data;
-  Store.commit("setDeptList", resDept.data);
+  const resCal = await mixins.methods.$api(`calendar`, "get", {
+    params,
+  });
+  console.log(resCal);
+  console.log(params);
+  // const resDept = await mixins.methods.$api(`calendar/department`, "get", {});
+  // const cal = makeCalendarDom(resCal);
+  // calendar.value = cal;
+  // departments.value = resDept.data;
+  // Store.commit("setDeptList", resDept.data);
 });
 
 // modalFlag를 통해 서브 캘린더를 렌더링
@@ -124,11 +126,11 @@ function subCalendar(e) {
 }
 
 // param 생성
-function makeParams(arg) {
+function makeParams(dept) {
   return {
     year: yearMonth.year,
     month: yearMonth.month,
-    deptName: arg ? arg : "영업팀",
+    deptName: dept ? dept : Store.state.deptName,
   };
 }
 
