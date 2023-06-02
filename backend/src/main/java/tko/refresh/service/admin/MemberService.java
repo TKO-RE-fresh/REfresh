@@ -12,6 +12,8 @@ import tko.refresh.repository.member.MemberRepository;
 import tko.refresh.util.page.Pagination;
 
 import javax.transaction.Transactional;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -33,6 +35,23 @@ public class MemberService {
         Page<MemberDto> memberSearchList = memberRepository.searchMemberPage(searchDto, pageable);
 
         return memberSearchList;
+    }
+
+    public MemberDto getMemberDetail(String memberId) {
+        Optional<Member> member = memberRepository.findByMemberId(memberId);
+
+        MemberDto memberDto = MemberDto.builder()
+                .memberId(member.get().getMemberId())
+                .memberName(member.get().getMemberInfo().getName())
+                .departmentName(member.get().getDepartment().getName())
+                .memberCellphone(member.get().getMemberInfo().getCellphone())
+                .memberEmail(member.get().getMemberInfo().getEmail())
+                .createdDate(member.get().getCreatedDate())
+                .retireDate(member.get().getRetireDate())
+                .memberStatus(member.get().getMemberStatus())
+                .build();
+
+        return memberDto;
     }
 
     @Transactional
