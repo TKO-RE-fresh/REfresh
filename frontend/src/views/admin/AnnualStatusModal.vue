@@ -116,7 +116,7 @@ const accetpHandler= async () => {
     // const res = await mixins.methods.$api(`admin/annual`,'put', body);
     await axios.put('http://localhost:8090/admin/annual', body);
     props.onToggle();
-    store.commit("setAnnualList");
+    store.commit("setAnnualList", store.state.currentPage);
 }
 </script>
 

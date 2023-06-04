@@ -28,7 +28,7 @@
         </thead>
         <tbody>
           <tr
-            v-for="(row, idx) in Store.state.annualList"
+            v-for="(row, idx) in Store.state.annualList.content"
             :key="idx"
             class="bg-white border-b hover:bg-blue-50"
           >
@@ -47,7 +47,7 @@
             <td class="px-3 py-3">{{ row.createdDate }}</td>
             <th
               scope="row"
-              class="flex items-center px-3 py-4 text-gray-900 whitespace-nowrap dark:text-white"
+              class="flex items-center px-3 py-2 text-gray-900 whitespace-nowrap dark:text-white"
             >
               <div class="pl-3">
                 <div class="text-base font-semibold">{{ row.memberName }}</div>
@@ -82,9 +82,7 @@ import AnnualStatusModal from "./AnnualStatusModal.vue";
 import Store from "@/store/index.js";
 
 const header = ['신청일','사원명','부서명','연차 종류','기간','상태']
-
 const isOpen = ref(false);
-
 const uid = ref('');
 
 const onToggle = () => {
@@ -97,6 +95,5 @@ const handleModal=(data,id) =>{
     onToggle();
   }
 }
-
 
 </script>

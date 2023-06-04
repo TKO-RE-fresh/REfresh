@@ -24,7 +24,7 @@ const routes = [
     path:"/admin",
     name: "AdminView",
     component : AdminView
-  }
+  },
 ];
 
 const router = createRouter({
