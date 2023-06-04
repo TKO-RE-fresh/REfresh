@@ -40,10 +40,11 @@ public class WebSecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Collections.singletonList("http://localhost:8080")); // 8080 포트에서 오는 요청만 허용
+        configuration.setAllowedOrigins(Collections.singletonList("http://localhost:8080")); // 80 포트에서 오는 요청만 허용
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS")); // 요청 메서드 허용
-        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type", "access_token", "refresh_token")); // 허용하는 헤더
-        configuration.setExposedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type", "access_token", "refresh_token"));
+        configuration.setAllowedHeaders(Arrays.asList("Cache-Control", "Content-Type", "access_token")); // 허용하는 헤더
+        configuration.setExposedHeaders(Arrays.asList("Cache-Control", "Content-Type", "access_token"));
+        configuration.setAllowCredentials(true); // 쿠키 허용
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration); // 모든 URL에 대해 설정 적용
 
@@ -55,10 +56,11 @@ public class WebSecurityConfig {
         http.cors();
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.authorizeRequests().antMatchers("/login/**", "/swagger-ui.html", "/swagger/**",
+        http.authorizeRequests().antMatchers("/login/**", "/swagger-ui.html", "/swagger/**","/token/**",
                                              "/swagger-resources/**","/webjars/**","/v2/api-docs").permitAll()
-                .anyRequest().authenticated()
-                .and().addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
+                .anyRequest().authenticated().and()
+                .headers().frameOptions().sameOrigin().and()
+            .addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

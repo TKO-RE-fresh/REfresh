@@ -10,13 +10,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 import lombok.RequiredArgsConstructor;
 import tko.refresh.domain.entity.Member;
 import tko.refresh.domain.enu.RoleType;
-import tko.refresh.repository.member.MemberRepository;
 
 @RequiredArgsConstructor
 public class MemberDetailsImpl implements UserDetails {
+
     private Member member;
     private RoleType role;
     private Collection<? extends GrantedAuthority> authorities;
+
 
 
     public MemberDetailsImpl(Member member, RoleType role) {
@@ -27,6 +28,7 @@ public class MemberDetailsImpl implements UserDetails {
     public RoleType getRole() {
         return role;
     }
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

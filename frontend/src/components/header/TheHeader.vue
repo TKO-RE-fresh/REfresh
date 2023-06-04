@@ -37,15 +37,13 @@
         <div class="flex items-center">
           <div class="flex items-center m-3">
             <div>
-              <form action="/logout" method="POST">
-                <!-- th:action을 action으로 변경 -->
-                <button
-                  type="submit"
-                  class="bg-blue-500 hover:bg-blue-700 text-white text-sm py-2 px-4 rounded-xl font-semibold shadow-sm"
-                >
-                  로그아웃
-                </button>
-              </form>
+              <button
+                type="button"
+                class="bg-blue-500 hover:bg-blue-700 text-white text-sm py-2 px-4 rounded-xl font-semibold shadow-sm"
+                @click="logout"
+              >
+                로그아웃
+              </button>
             </div>
             <div
               id="dropdown-user"
@@ -179,4 +177,9 @@
   </header>
 </template>
 
-<script setup></script>
+<script setup>
+import Router from "@/router/index.js";
+function logout() {
+  Router.push({ path: "/" });
+}
+</script>

@@ -73,16 +73,8 @@
 <script setup>
 import { ref } from "vue";
 import mixins from "@/utils/mixins";
-<<<<<<< HEAD
-import Store from "@/store/index.js";
-import Cookies from "@/utils/token.js";
 import Router from "@/router/index.js";
 
-=======
-import Token from "@/utils/token.js";
-import Store from "@/store/index.js";
-import Router from "@/router/index.js";
->>>>>>> f8529818cdf89fd77d50027f41936c9a1ea4053d
 const memberId = ref("");
 const password = ref("");
 
@@ -93,35 +85,15 @@ async function onSubmit() {
   };
   try {
     const res = await mixins.methods.$api("login", "post", { data: body });
-    commitData(res);
-    Cookies.setToken(res.headers.access_token);
-    Router.push({ path: "/calendar" });
+    if (res.status !== 200 || !res) {
+      throw new Error("로그인 실패");
+    } else {
+      Router.push({ path: "/calendar" });
+    }
   } catch (err) {
-    Router.back();
+    console.log(err);
   }
-<<<<<<< HEAD
-}
-function commitData(res) {
-  Store.commit("setAccessToken", res.headers.access_token);
-  Store.commit("setMemberId", res.data.memberId);
-  Store.commit("setMemberName", res.data.memberName);
-  Store.commit("setDeptName", res.data.deptName);
-  Store.commit("setAuth", res.data.auth);
-}
-</script>
-
-<style scoped>
-</style>
-=======
-  const res = await mixins.methods.$api('login', 'post', { body });
-  const date = new Date();
-  const year = date.getFullYear();
-  const month = date.getMonth() + 1;
-  Token.setToken(res.headers.refresh_token);
-  Store.commit("setAccessToken", res.headers.access_token);
-  Router.push({ name: "CalendarView", params: { year, month } });
 }
 </script>
 
 <style scoped></style>
->>>>>>> f8529818cdf89fd77d50027f41936c9a1ea4053d

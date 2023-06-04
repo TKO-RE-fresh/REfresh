@@ -1,7 +1,8 @@
 import { createStore } from "vuex";
+import axios from "axios";
 import mixins from "@/utils/mixins";
 
-export default createStore({
+const store =  createStore({
   state: {
     token: null,
     annualList: [],
@@ -10,10 +11,7 @@ export default createStore({
     deptName: null,
     memberId: null,
     memberName: null,
-<<<<<<< HEAD
     auth: null,
-    deptList: []
-=======
     deptList: [],
     searchInput: {
       memberName: "",
@@ -21,7 +19,6 @@ export default createStore({
       status: "",
     },
     page: 1,
->>>>>>> f8529818cdf89fd77d50027f41936c9a1ea4053d
   },
   getters: {
     getAccessToken: (state) => {
@@ -39,7 +36,6 @@ export default createStore({
     getDepartmentList: (state) => {
       return state.deptList;
     },
-<<<<<<< HEAD
     getMemberId: (state) => {
       return state.memberId;
     },
@@ -48,8 +44,7 @@ export default createStore({
     },
     getAuth: (state) => {
       return state.auth;
-    }
-=======
+    },
     getAnnualList: (state) => {
       return state.annualList;
     },
@@ -59,7 +54,6 @@ export default createStore({
     getPage: (state) => {
       return state.page;
     },
->>>>>>> f8529818cdf89fd77d50027f41936c9a1ea4053d
   },
   mutations: {
     setDeptName: (state, deptName) => {
@@ -93,19 +87,53 @@ export default createStore({
     setDeptList: (state, deptList) => {
       state.deptList = deptList;
     },
-<<<<<<< HEAD
     setAuth: (state, auth) => {
       state.auth = auth;
-=======
+    },
     setSearchInput: (state, searchInput) => {
       state.searchInput = searchInput;
     },
     setPage: (state, page) => {
       state.page = page;
->>>>>>> f8529818cdf89fd77d50027f41936c9a1ea4053d
     },
   },
-  actions: {},
+  actions: {
+    updateToken({ commit }, token) {
+      commit("setAccessToken", token);
+      axios.defaults.headers.common.access_token = `Bearer ${token}`;
+    },
+    async checkCookie({commit}) {
+      try {
+        const res = await axios.post('token/cookie', {});
+        commit('setAccessToken', res.data.access_token);
+        commit('setMemberId', res.data.memberId);
+        commit('setMemberName', res.data.memberName);
+        commit('setAuth', res.data.auth);
+        commit('setDept', res.data.deptName);
+        return res;
+      } catch (e) {
+        console.log('Failed to Auth', e);
+      }
+    },
+    
+  },
   modules: {},
   plugins: [],
 });
+
+store.watch((state) => state.token, () => {
+  if (store.state.token === null) {
+    store.dispatch('checkCookie');
+  }
+});
+
+
+store.subscribe((mutation, state) => {
+  if (mutation.type === 'setAccessToken') {
+    axios.defaults.headers.common.access_token = `Bearer ${state.token}`;
+  }
+});
+
+
+
+export default store;

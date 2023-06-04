@@ -53,7 +53,7 @@
   <the-sidebar></the-sidebar>
 </template>
 <script setup>
-import { ref, reactive, watch, onMounted, onBeforeMount } from "vue";
+import { ref, reactive, watch, onMounted } from "vue";
 import CalendarMain from "@/components/calendar/CalendarMain";
 import TheSidebar from "@/components/sidebar/TheSidebar.vue";
 import TheHeader from "@/components/header/TheHeader.vue";
@@ -82,22 +82,15 @@ const departments = ref([]);
 const selectedDept = ref("");
 const modalFlag = ref(false);
 
-onBeforeMount(() => {
-  selectedDept.value = Store.state.deptName;
-});
-
 onMounted(async () => {
   const params = makeParams();
-  const resCal = await mixins.methods.$api(`calendar`, "get", {
+  const calData = await mixins.methods.$api(`calendar`, "get", {
     params,
   });
-  console.log(resCal);
-  console.log(params);
-  // const resDept = await mixins.methods.$api(`calendar/department`, "get", {});
-  // const cal = makeCalendarDom(resCal);
-  // calendar.value = cal;
-  // departments.value = resDept.data;
-  // Store.commit("setDeptList", resDept.data);
+  calendar.value = makeCalendarDom(calData);
+  const deptData = await mixins.methods.$api(`calendar/department`, "get", {});
+  departments.value = deptData.data;
+  Store.commit("setDeptList", deptData.data);
 });
 
 // modalFlag를 통해 서브 캘린더를 렌더링

@@ -1,23 +1,25 @@
 package tko.refresh.service.login;
 import static org.springframework.http.HttpStatus.*;
+import static tko.refresh.domain.enu.RedisData.*;
+import static tko.refresh.domain.enu.RedisData.MEMBER_AUTH;
+import static tko.refresh.domain.enu.RedisData.MEMBER_NAME;
+import static tko.refresh.util.jwt.JwtUtil.*;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.Optional;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.MultiValueMap;
 
 import lombok.RequiredArgsConstructor;
 import tko.refresh.domain.emb.MemberInfo;
 import tko.refresh.domain.entity.Department;
 import tko.refresh.domain.entity.Member;
-import tko.refresh.domain.entity.RefreshToken;
 import tko.refresh.domain.enu.MemberStatus;
 import tko.refresh.domain.enu.RoleType;
 import tko.refresh.dto.GlobalResponseDto;
@@ -27,7 +29,7 @@ import tko.refresh.dto.member.TokenDto;
 import tko.refresh.dto.member.response.MemberLoginResDto;
 import tko.refresh.repository.calendar.DepartmentRepository;
 import tko.refresh.repository.member.MemberRepository;
-import tko.refresh.repository.refreshtoken.RefreshTokenRepository;
+import tko.refresh.util.jwt.redis.RedisTokenRepository;
 import tko.refresh.util.jwt.JwtUtil;
 
 @Service
@@ -40,7 +42,7 @@ public class LoginService {
 
     private final DepartmentRepository departmentRepository;
 
-    private final RefreshTokenRepository refreshTokenRepository;
+    private final RedisTokenRepository redisRepository;
 
     @Transactional
     public GlobalResponseDto signup(MemberJoinDto dto) {
@@ -80,7 +82,7 @@ public class LoginService {
 
 
         // 아이디 검사
-        Member member = memberRepository.findLoginMemberId(loginDto.getMemberId()).get();
+        Member member = memberRepository.findByMemberId(loginDto.getMemberId()).get();
         if(member == null) {
             return MemberLoginResDto.builder().statusCode(UNAUTHORIZED.value()).message("아이디가 올바르지 않습니다.").build();
         }
@@ -90,36 +92,41 @@ public class LoginService {
         if(!passwordEncoder.matches(loginDto.getPassword(), member.getPassword())) {
             return MemberLoginResDto.builder().statusCode(UNAUTHORIZED.value()).message("비밀번호가 올바르지 않습니다.").build();
         }
+        //--유효한 계정--
 
         // 아이디 정보로 Token생성
-        TokenDto tokenDto = jwtUtil.createAllToken(loginDto.getMemberId());
-
-        // Refresh토큰 있는지 확인
-        Optional<RefreshToken> refreshToken = refreshTokenRepository.findByAccountEmail(member.getMemberInfo().getEmail());
-
-        // 있다면 새토큰 발급후 업데이트
-        // 없다면 새로 만들고 디비 저장
-        if(refreshToken.isPresent()) {
-            refreshTokenRepository.save(refreshToken.get().updateToken(tokenDto.getRefreshToken(),
-                                                                                member.getMemberInfo().getEmail()));
-        }else {
-            RefreshToken newToken = RefreshToken.builder()
-                    .accountEmail(member.getMemberInfo().getEmail())
-                    .refreshToken(tokenDto.getRefreshToken()).build();
-            refreshTokenRepository.save(newToken);
-        }
-
-        // response 헤더에 Access Token / Refresh Token 넣음
+        TokenDto tokenDto = jwtUtil.createAllToken(member.getMemberId(), member.getMemberInfo().getEmail());
+        // 레디스에 정보 저장
+        redisRegistry(member, tokenDto);
+        addTokenCookieToResponse(response, tokenDto.getRefreshToken());
+        // response 헤더에 Access Token
         setHeaderToken(response, tokenDto);
-
         return MemberLoginResDto.builder().statusCode(OK.value()).message("로그인 성공").auth(member.getMemberAuth().getValue()).memberId(
                 member.getMemberId()).memberName(member.getMemberInfo().getName()).deptName(member.getDepartment().getName()).build();
 
     }
+    // 토큰 값을 쿠키로 설정하여 HTTP 응답에 추가하는 메소드
+    public void addTokenCookieToResponse(HttpServletResponse response, String token) {
+        Cookie tokenCookie = new Cookie(REFRESH_TOKEN, token);
+        tokenCookie.setHttpOnly(true);
+//        tokenCookie.setSecure(true); HTTPS 연결에서만 전송
+        tokenCookie.setPath("/"); // 쿠키의 유효 경로
+        tokenCookie.setComment("SameSite=Origin"); // CSRF 공격 방지
+        tokenCookie.setMaxAge(300000); // 쿠키의 만료 시간 (초 단위)
+        response.addCookie(tokenCookie);
+    }
+
+
+    private void redisRegistry(Member member, TokenDto tokenDto) {
+        redisRepository.setValues(member.getMemberInfo().getEmail(), REFRESH_TOKEN , tokenDto.getRefreshToken());
+        redisRepository.setValues(member.getMemberInfo().getEmail(), MEMBER_ID.getName(), member.getMemberId());
+        redisRepository.setValues(member.getMemberInfo().getEmail(), MEMBER_AUTH.getName(), member.getMemberAuth().getValue());
+        redisRepository.setValues(member.getMemberInfo().getEmail(), MEMBER_NAME.getName(), member.getMemberInfo().getName());
+        redisRepository.setValues(member.getMemberInfo().getEmail(), MEMBER_DEPT.getName(), member.getDepartment().getName());
+    }
 
     private void setHeaderToken(HttpServletResponse response, TokenDto tokenDto) {
-        response.setHeader(JwtUtil.ACCESS_TOKEN, tokenDto.getAccessToken());
-        response.setHeader(JwtUtil.REFRESH_TOKEN, tokenDto.getRefreshToken());
+        response.setHeader(ACCESS_TOKEN, tokenDto.getAccessToken());
     }
 
 

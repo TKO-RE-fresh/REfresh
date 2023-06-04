@@ -4,10 +4,9 @@ import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
 import java.util.Objects;
-import java.util.Optional;
 
 import javax.annotation.PostConstruct;
-import javax.security.auth.Subject;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -24,10 +23,8 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import tko.refresh.domain.entity.RefreshToken;
 import tko.refresh.dto.member.TokenDto;
-import tko.refresh.repository.redis.RedisRepository;
-import tko.refresh.repository.refreshtoken.RefreshTokenRepository;
+import tko.refresh.util.jwt.redis.RedisTokenRepository;
 
 @Component
 @RequiredArgsConstructor
@@ -35,7 +32,7 @@ import tko.refresh.repository.refreshtoken.RefreshTokenRepository;
 public class JwtUtil {
 
     private final MemberDetailsServiceImpl memberDetailsService;
-    private final RedisRepository redisRepository;
+    private final RedisTokenRepository redisRepository;
 
     @Value("${spring.jwt.live.atk}")
     private long ACCESS_TIME;
@@ -58,40 +55,51 @@ public class JwtUtil {
     }
 
     // header 토큰을 가져오는 기능
-    public String getHeaderToken(HttpServletRequest request, String type) {
-        return type.equals("Access") ? request.getHeader(ACCESS_TOKEN) :request.getHeader(REFRESH_TOKEN);
+    public String getHeaderToken(HttpServletRequest request) {
+        return request.getHeader(ACCESS_TOKEN);
     }
+
+    // 쿠키에서 refresh 토큰을 가져오는 기능
+    public String getCookieToken(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        if(!Objects.isNull(cookies)) {
+            for(Cookie cookie : cookies) {
+                if(cookie.getName().equals(REFRESH_TOKEN)) {
+                    return cookie.getValue();
+                }
+            }
+        }
+        return null;
+    }
+
 
     // 토큰 생성
-    public TokenDto createAllToken(String email) {
+    public TokenDto createAllToken(String id, String email) {
         return TokenDto.builder()
-                       .accessToken(createToken(email, "Access"))
-                       .refreshToken(createToken(email, "Refresh"))
-                       .build();
+                       .accessToken(createToken(id, email, "Access")).refreshToken(createToken(id, email, "Refresh")).build();
     }
 
-    // 토큰 재발급
+    // 토큰 재발급 요청을 위한 메소드
     public TokenDto reissueToken(String refreshToken) throws JsonProcessingException {
-        String rtkInRedis = redisRepository.getValues(getEmailFromToken(refreshToken));
+        if(!refreshTokenValidation(refreshToken)) return TokenDto.builder().build();
+        String rtkInRedis = (String) redisRepository.getValues(getEmailFromToken(refreshToken), REFRESH_TOKEN);
         if(Objects.isNull(rtkInRedis)) {
-            throw new RuntimeException("Refresh Token이 만료되었습니다.");
+            return TokenDto.builder().build();
         }
+        String atk = createToken(getIdFromToken(rtkInRedis), getEmailFromToken(rtkInRedis), "Access");
 
-        String atk = createToken(getEmailFromToken(refreshToken), "Access");
-        return TokenDto.builder().accessToken(atk).refreshToken(null).build();
-
+        return TokenDto.builder().accessToken(atk).build();
     }
 
-
-
-    public String createToken(String email, String type) {
+    public String createToken(String memberId, String email, String type) {
 
         Date date = new Date();
 
         long time = type.equals("Access") ? ACCESS_TIME : REFRESH_TIME;
 
         return Jwts.builder()
-                   .setSubject(email)
+                .claim("email", email)
+                   .claim("id", memberId)
                    .setExpiration(new Date(date.getTime() + time))
                    .setIssuedAt(date)
                    .signWith(key, signatureAlgorithm)
@@ -119,20 +127,25 @@ public class JwtUtil {
 
         String email = getEmailFromToken(token);
         // DB에 저장한 토큰 비교
-        String refreshToken = redisRepository.getValues(email);
-        if(refreshToken == null) return false;
+        String refreshToken = (String) redisRepository.getValues(email, REFRESH_TOKEN);
+        if(Objects.isNull(refreshToken)) return false;
 
         return token.equals(refreshToken);
     }
 
     // 토큰에서 email 가져오는 기능
     public String getEmailFromToken(String token) {
-        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().getSubject();
+        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().get("email", String.class);
+    }
+    // 토큰에서 id 가져오는 기능
+    public String getIdFromToken(String token) {
+        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().get("id", String.class);
     }
 
+
     // 인증 객체 생성
-    public Authentication createAuthentication(String email) {
-        UserDetails userDetails = memberDetailsService.loadUserByUsername(email);
+    public Authentication createAuthentication(String id) {
+        UserDetails userDetails = memberDetailsService.loadUserByUsername(id);
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
@@ -141,8 +154,4 @@ public class JwtUtil {
         response.setHeader("Access_Token", accessToken);
     }
 
-    // 리프레시 토큰 헤더 설정
-    public void setHeaderRefreshToken(HttpServletResponse response, String refreshToken) {
-        response.setHeader("Refresh_Token", refreshToken);
-    }
 }

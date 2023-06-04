@@ -5,20 +5,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import tko.refresh.repository.redis.RedisRepository;
+import tko.refresh.util.jwt.redis.RedisTokenRepository;
 
 @SpringBootTest
 public class RedisTest {
 
     @Autowired
-    private RedisRepository redisRepository;
+    private RedisTokenRepository redisRepository;
 
     @Test
     @Transactional
     public void redisTest() {
-        redisRepository.setValues("test", "test");
-        String test = redisRepository.getValues("test");
-        Assertions.assertThat(test).isEqualTo("test");
+        // 한글 테스트
+        redisRepository.setValues("test","memberName", "김민성");
+        String test = (String) redisRepository.getValues("test", "memberName");
+        Assertions.assertThat(test).isEqualTo("김민성");
 
     }
 }
