@@ -16,7 +16,7 @@ export default createStore({
       departmentName: "",
       status: "",
     },
-    page: 1,
+    currentPage : 1,
   },
   getters: {
     getAccessToken: (state) => {
@@ -40,17 +40,17 @@ export default createStore({
     getSearchInput: (state) => {
       return state.searchInput;
     },
-    getPage: (state) => {
-      return state.page;
-    },
+    getCurrentPage : (state) => {
+      return state.currentPage
+    }
   },
   mutations: {
     setAccessToken: (state, token) => {
       state.token = token;
     },
-    setAnnualList: async (state) => {
+    setAnnualList: async (state,page) => {
       const res = await mixins.methods.$api(
-        `admin/annual/${state.page}`,
+        `admin/annual/${page}`,
         "get",
         { params: state.searchInput }
       );
@@ -70,8 +70,8 @@ export default createStore({
     setSearchInput: (state, searchInput) => {
       state.searchInput = searchInput;
     },
-    setPage: (state, page) => {
-      state.page = page;
+    setCurrentPage1: (state,page) => {
+      state.currentPage = page;
     },
   },
   actions: {},

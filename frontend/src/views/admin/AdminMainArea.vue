@@ -1,7 +1,7 @@
 <template>
   <div>
     <section class="h-[calc(100%-4rem)] pt-14 w-screen ">
-      <article class="sm:ml-64 sm:mt-10">
+      <article class="sm:ml-64 sm:mt-8">
         <div class="mx-20">
           <h2 class="text-3xl font-semibold sr-only">관리자 페이지</h2>
 

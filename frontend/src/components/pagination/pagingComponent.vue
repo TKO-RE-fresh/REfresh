@@ -73,6 +73,9 @@ const props = defineProps({
 const currentPagePos = computed(() =>
   Math.ceil(props.currentPage / props.displayPageCount)
 );
+console.log(currentPagePos);
+
+console.log(currentPagePos);
 
 //마지막 페이지 번호
 const lastPage = computed(() => {
