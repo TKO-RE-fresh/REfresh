@@ -2,7 +2,10 @@ package tko.refresh.domain.entity;
 import static javax.persistence.CascadeType.*;
 import static javax.persistence.FetchType.*;
 import static lombok.AccessLevel.*;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -106,17 +109,31 @@ public class Member extends BaseEntity {
         this.department = department;
         this.annualCount = memberUpdateDto.getAnnualCount();
         this.modifiedBy = memberUpdateDto.getModifiedBy();
+        if(memberUpdateDto.getCreatedDate().equals(null) || memberUpdateDto.getCreatedDate().equals("")) {
+            this.createdDate = null;
+        } else {
+            this.createdDate = dateFormat(memberUpdateDto.getCreatedDate());
+        }
         this.modifiedDate = LocalDateTime.now();
-        this.retireDate = memberUpdateDto.getRetireDate();
+        if(memberUpdateDto.getRetireDate().equals(null) || memberUpdateDto.getRetireDate().equals("")) {
+            this.retireDate = null;
+        } else {
+            this.retireDate = dateFormat(memberUpdateDto.getRetireDate());
+        }
         this.memberAuth = memberUpdateDto.getMemberAuth();
         this.memberStatus = memberUpdateDto.getMemberStatus();
     }
-
 
     public void updateAnnualCount(double annualCount) {
         this.annualCount = annualCount;
     }
 
+    public LocalDateTime dateFormat(String date) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate localDate = LocalDate.parse(date, formatter);
+        LocalDateTime localDateTime = localDate.atStartOfDay();
+        return localDateTime;
+    }
 
 
 }

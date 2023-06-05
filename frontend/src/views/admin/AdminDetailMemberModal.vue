@@ -43,9 +43,6 @@
                                     'disabled:opacity-100 shadow border rounded py-1 text-gray-700 outline-none ring border-blue-50': editMode}">
                                 <option v-for="(department, idx) in member.departmentNameList" :key="idx" :selected="department == member.departmentName">{{ department }}</option>
                               </select>
-                              <!-- <input v-model="member.departmentName" type="text" :readonly=!editMode 
-                                :class="{'shadow border rounded py-1 text-gray-700 hover:bg-gray-100' : !editMode, 
-                                    'shadow border rounded py-1 text-gray-700 outline-none ring border-blue-50': editMode}"> -->
                             </div>
                             <div class="m-2">
                               <input v-model="member.memberCellphone" type="text" :readonly=!editMode 
@@ -83,11 +80,9 @@
                                     'shadow border rounded py-1 text-gray-700 outline-none ring border-blue-50': editMode}">
                         </div>
                         <div class="m-2">
-                          <!-- <input v-model="member.createdDate" type="date" :readonly=!editMode
+                          <input v-model="member.createdDate" type="date" :readonly=!editMode
                             :class="{'shadow border rounded py-1 text-gray-700 hover:bg-gray-100' : !editMode, 
-                                    'shadow border rounded py-1 text-gray-700 outline-none ring border-blue-50': editMode}"/> -->
-                          <input v-model="member.createdDate" type="text" :readonly=true
-                            class="shadow border rounded py-1 text-gray-700 hover:bg-gray-100">
+                                    'shadow border rounded py-1 text-gray-700 outline-none ring border-blue-50': editMode}"/>
                         </div>
                         <div class="m-2">
                           <input v-model="member.retireDate" type="date" :readonly=!editMode
@@ -95,7 +90,6 @@
                                     'shadow border rounded py-1 text-gray-700 outline-none ring border-blue-50': editMode}"/>
                         </div>
                         <div class="m-2">
-                          <!-- <span :class="member.memberStatus == 'IN_USE' ? 'text-blue-500' : 'text-red-200'" class="py-1 mx-2">{{ member.memberStatus }}</span> -->
                           <select v-model="member.memberStatus" :disabled=!editMode 
                             :class="{'disabled:opacity-100 shadow border rounded py-1 text-gray-700 hover:bg-gray-100' : !editMode, 
                                     'disabled:opacity-100 shadow border rounded py-1 text-gray-700 outline-none ring border-blue-50': editMode}">
@@ -165,7 +159,6 @@
                   >
                     닫기
                   </button>
-                  <!-- <button type="submit">submit</button> -->
                 </div>
               </div>
             </div>
@@ -215,24 +208,17 @@
     if(newValue) {
       getMemberInfo();
     }
-  })
+  });
 
   async function getMemberInfo() {
     try {
       const res = await axios.get('http://localhost:8090/admin/member/' + props.memberId);
-      console.log("불러온 멤버 정보 : ");
-      console.log(res.data);
-      console.log(res.data.memberId);
 
       member.value = res.data;
 
-      console.log(formatDate(member.value.createdDate));
-      console.log("날짜객체 타입 : " + typeof member.value.modifiedDate);
-      console.log(typeof res.data.memberStatus);
-
-      member.value.createdDate = formatDate(member.value.createdDate);
-      member.value.modifiedDate = formatDate(member.value.modifiedDate);
-      member.value.retireDate = formatDate(member.value.retireDate);
+      (member.value.createdDate != null) ? member.value.createdDate = formatDate(member.value.createdDate) : member.value.createdDate =null;
+      (member.value.modifiedDate != null) ? member.value.modifiedDate = formatDate(member.value.modifiedDate) : member.value.modifiedDate =null;
+      (member.value.retireDate != null) ? member.value.retireDate = formatDate(member.value.retireDate) : member.value.retireDate =null;
 
     } catch (error) {
       console.error('Error get data: ', error);
@@ -250,8 +236,6 @@
       editMode.value = false;
       buttonType.value = 'submit';
     }
-    
-    // editMode.value = !editMode.value;
   }
 
   // date 포맷(yyy-mm-dd) 변경 메서드
@@ -270,8 +254,8 @@ const handleSubmit = (event) => {
       memberEmail: member.value.memberEmail,
       departmentName: member.value.departmentName,
       annualCount: member.value.annualCount,
-      modifiedBy: "admin",
-      modifiedDate: "2023-05-30T14:32:14.551757",
+      modifiedBy: "admin", // 로그인한 관리자의 아이디
+      createdDate: member.value.createdDate,
       retireDate: member.value.retireDate,
       memberAuth: member.value.memberAuth,
       memberStatus: member.value.memberStatus
@@ -285,6 +269,9 @@ const handleSubmit = (event) => {
     .catch(error => {
       alert("사원 정보 수정에 실패했습니다.");
       console.log(error + " : 사원 정보 업데이트 실패");
+      btn.value = '저장';
+      editMode.value = true;
+      buttonType.value = 'button';
     });
   };
   </script>

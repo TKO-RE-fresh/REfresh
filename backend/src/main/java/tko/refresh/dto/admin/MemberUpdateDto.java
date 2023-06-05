@@ -10,7 +10,6 @@ import javax.persistence.Convert;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import java.time.LocalDateTime;
 
 @Getter
 @ToString
@@ -35,11 +34,13 @@ public class MemberUpdateDto {
 
     private double annualCount;
 
-    private  String modifiedBy;
+    private String modifiedBy;
 
-    private LocalDateTime modifiedDate;
+    private String createdDate;
 
-    private LocalDateTime retireDate;
+    private String modifiedDate;
+
+    private String retireDate;
 
     @NotNull
     @Convert(converter = RoleTypeConverter.class)
@@ -50,7 +51,7 @@ public class MemberUpdateDto {
     private MemberStatus memberStatus;
 
     @Builder
-    public MemberUpdateDto(String memberId, String memberName, String memberCellphone, String memberEmail, String departmentName, double annualCount, String modifiedBy, LocalDateTime modifiedDate, LocalDateTime retireDate, RoleType memberAuth, MemberStatus memberStatus) {
+    public MemberUpdateDto(String memberId, String memberName, String memberCellphone, String memberEmail, String departmentName, double annualCount, String modifiedBy, String createdDate, String modifiedDate, String retireDate, RoleType memberAuth, MemberStatus memberStatus) {
         this.memberId = memberId;
         this.memberName = memberName;
         this.memberCellphone = memberCellphone;
@@ -58,6 +59,7 @@ public class MemberUpdateDto {
         this.departmentName = departmentName;
         this.annualCount = annualCount;
         this.modifiedBy = modifiedBy;
+        this.createdDate = createdDate;
         this.modifiedDate = modifiedDate;
         this.retireDate = retireDate;
         this.memberAuth = memberAuth;
