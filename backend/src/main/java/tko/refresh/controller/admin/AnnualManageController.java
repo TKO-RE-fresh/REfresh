@@ -26,7 +26,13 @@ public class AnnualManageController {
     public ResponseEntity getSearchList(@ModelAttribute AnnualSearchDto searchDto,
                                         @PathVariable Optional<Integer> page){
         int formatPage = page.orElse(1);
-        Page<AnnualManageDto> list = annualManageService.getSearchAnnualMangeList(searchDto,formatPage);
+        Page<AnnualManageDto> list;
+
+        if (searchDto == null) {
+           list = annualManageService.getAnnualManageAllList(formatPage);
+        }else{
+            list=annualManageService.getSearchAnnualMangeList(searchDto,formatPage);
+        }
 
         return ResponseEntity.ok().body(list);
     }

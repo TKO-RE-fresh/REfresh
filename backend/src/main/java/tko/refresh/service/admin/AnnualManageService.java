@@ -2,7 +2,6 @@ package tko.refresh.service.admin;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import tko.refresh.domain.emb.Period;
@@ -36,30 +35,16 @@ public class AnnualManageService {
     private final HolidayRepository holidayRepository;
     private final AnnualCountRepository annualCountRepository;
 
-/*    public List<AnnualManageDto> getAnnualManageAllList(int page){
+    public List<AnnualManageDto> getAnnualManageAllList(int page){
         Pageable pageable = Pagination.setPageable(page,PAGE_SIZE);
         List<Annual> list = annualManageRepo.findAllWithMember(pageable);
         return entityToDto(list);
-    }*/
+    }
 
     public Page<AnnualManageDto> getSearchAnnualMangeList(AnnualSearchDto searchDto,int page){
         Pageable pageable = Pagination.setPageable(page,PAGE_SIZE);
         Page<Annual> list = annualManageRepo.searchAnnual(searchDto,pageable);
-
-        List<AnnualManageDto> resultList = new ArrayList<>();
-        for(Annual data : list ){
-            resultList.add(AnnualManageDto.builder()
-                    .annualUid(String.valueOf(data.getUid()))
-                    .memberName(data.getMember().getMemberInfo().getName())
-                    .email(data.getMember().getMemberInfo().getEmail())
-                    .departmentName(data.getMember().getDepartment().getName())
-                    .annualType(data.getAnnualType())
-                    .annualStatus(data.getAnnualStatus())
-                    .period(data.getPeriod())
-                    .createdDate(data.getCreatedDate())
-                    .build());
-        }
-        return new PageImpl<>(resultList,pageable,list.getTotalElements());
+        return entityToDto(list);
     }
 
     @Transactional
@@ -113,7 +98,7 @@ public class AnnualManageService {
 //                    .build()
 //            );
 //        }
-//        return new PageImpl<>(list,pageable,count);
+//        return resultList;
 //    }
 
 
