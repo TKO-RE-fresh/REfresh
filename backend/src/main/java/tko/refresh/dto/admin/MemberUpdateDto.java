@@ -18,36 +18,44 @@ import java.time.LocalDateTime;
 public class MemberUpdateDto {
 
     @NotNull
-    private final String memberName;
+    private String memberId;
+
+    @NotNull
+    private String memberName;
 
     @Pattern(regexp = "\\d{3}-\\d{4}-\\d{4}", message = "Invalid phone number format. Valid format: XXX-XXXX-XXXX")
     @NotNull
-    private final String memberCellphone;
+    private String memberCellphone;
 
     @Email
     @NotNull
-    private final String memberEmail;
+    private String memberEmail;
 
-    private final double annualCount;
+    private String departmentName;
 
-    private final String modifiedBy;
+    private double annualCount;
 
-    private final LocalDateTime modifiedDate;
+    private  String modifiedBy;
 
-    private final LocalDateTime retireDate;
+    private LocalDateTime modifiedDate;
+
+    private LocalDateTime retireDate;
 
     @NotNull
     @Convert(converter = RoleTypeConverter.class)
-    private final RoleType memberAuth;
+    private RoleType memberAuth;
 
+    @NotNull
     @Convert(converter = MemberStatusConverter.class)
     private MemberStatus memberStatus;
 
     @Builder
-    public MemberUpdateDto(String memberName, String memberCellphone, String memberEmail, double annualCount, String modifiedBy, LocalDateTime modifiedDate, LocalDateTime retireDate, RoleType memberAuth, MemberStatus memberStatus) {
+    public MemberUpdateDto(String memberId, String memberName, String memberCellphone, String memberEmail, String departmentName, double annualCount, String modifiedBy, LocalDateTime modifiedDate, LocalDateTime retireDate, RoleType memberAuth, MemberStatus memberStatus) {
+        this.memberId = memberId;
         this.memberName = memberName;
         this.memberCellphone = memberCellphone;
         this.memberEmail = memberEmail;
+        this.departmentName = departmentName;
         this.annualCount = annualCount;
         this.modifiedBy = modifiedBy;
         this.modifiedDate = modifiedDate;

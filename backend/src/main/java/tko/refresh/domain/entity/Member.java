@@ -92,20 +92,21 @@ public class Member extends BaseEntity {
         this.department = d;
     }
 
-
     public void addAnnual(Annual annual) {
         annuals.add(annual);
         annual.setMember(this);
     }
-    public void updateMember(MemberUpdateDto memberUpdateDto) {
+    public void updateMember(MemberUpdateDto memberUpdateDto, Department department) {
         this.memberInfo=MemberInfo.builder()
                 .name(memberUpdateDto.getMemberName())
                 .cellphone(memberUpdateDto.getMemberCellphone())
                 .email(memberUpdateDto.getMemberEmail())
                 .build();
+        this.memberId = memberUpdateDto.getMemberId();
+        this.department = department;
         this.annualCount = memberUpdateDto.getAnnualCount();
         this.modifiedBy = memberUpdateDto.getModifiedBy();
-        this.modifiedDate = memberUpdateDto.getModifiedDate();
+        this.modifiedDate = LocalDateTime.now();
         this.retireDate = memberUpdateDto.getRetireDate();
         this.memberAuth = memberUpdateDto.getMemberAuth();
         this.memberStatus = memberUpdateDto.getMemberStatus();
