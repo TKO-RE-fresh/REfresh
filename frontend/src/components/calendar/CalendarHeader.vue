@@ -8,12 +8,18 @@
     </select>
   </th>
   <th>
-    <a class="cursor-pointer" @click="debouncePrevEvent"> &lt; </a>
+    <a class="text-4xl cursor-pointer" @click="debouncePrevEvent"> &lt; </a>
   </th>
-  <th>{{ dateRef.year }}년 {{ dateRef.month }}월</th>
+  <div class="w-36">
+    <th class="overflow-visible whitespace-nowrap text-4xl">
+      {{ dateRef.year }}년 {{ dateRef.month }}월
+    </th>
+  </div>
+
   <th>
-    <a class="cursor-pointer" @click="debounceNextEvent"> &gt; </a>
+    <a class="text-4xl cursor-pointer" @click="debounceNextEvent"> &gt; </a>
   </th>
+  <div class="mb-12"></div>
 </template>
 
 <script setup>

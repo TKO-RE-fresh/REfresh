@@ -1,5 +1,7 @@
 package tko.refresh.dto.member.response;
 
+import org.springframework.http.HttpHeaders;
+
 import lombok.Builder;
 import lombok.Getter;
 import tko.refresh.util.valid.ValidDeptName;
@@ -15,6 +17,7 @@ public class MemberLoginResDto {
     private final String deptName;
 
     private final String memberName;
+
 
 
     private final String message;

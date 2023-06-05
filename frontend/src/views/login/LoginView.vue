@@ -73,24 +73,26 @@
 <script setup>
 import { ref } from "vue";
 import mixins from "@/utils/mixins";
-import Token from "@/utils/token.js";
-import Store from "@/store/index.js";
 import Router from "@/router/index.js";
+
 const memberId = ref("");
 const password = ref("");
 
 async function onSubmit() {
-
   const body = {
-    memberId: memberId.value, password: password.value
+    memberId: memberId.value,
+    password: password.value,
+  };
+  try {
+    const res = await mixins.methods.$api("login", "post", { data: body });
+    if (res.status !== 200 || !res) {
+      throw new Error("로그인 실패");
+    } else {
+      Router.push({ path: "/calendar" });
+    }
+  } catch (err) {
+    console.log(err);
   }
-  const res = await mixins.methods.$api('login', 'post', { body });
-  const date = new Date();
-  const year = date.getFullYear();
-  const month = date.getMonth() + 1;
-  Token.setToken(res.headers.refresh_token);
-  Store.commit("setAccessToken", res.headers.access_token);
-  Router.push({ name: "CalendarView", params: { year, month } });
 }
 </script>
 

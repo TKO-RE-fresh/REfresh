@@ -1,5 +1,5 @@
 <template>
-  <div class="relative w-screen h-screen">
+  <div class="relative w-full h-full">
     <data-table class="absolute top-tableT left-tableL">
       <!-- 헤더 구현 -->
       <template v-slot:header>
@@ -10,7 +10,10 @@
           @deptEvent="fetchCalendarByDept"
           @yearMonthEvent="fetchCalendarByRefsData"
         ></calendar-header>
-        <a class="relative inline-block cursor-pointer" @click="subCalendar">
+        <a
+          class="absolute left-subModalBtn top-10 inline-block cursor-pointer"
+          @click="subCalendar"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -47,13 +50,15 @@
       @closeModal="closeSubCalendar"
       @yearMonthEvent="fetchCalendarByRefsData"
     ></calendar-modal>
-    <calendar-aside> </calendar-aside>
+    <div class="absolute top-tableT left-asideR">
+      <calendar-aside></calendar-aside>
+    </div>
   </div>
   <the-header></the-header>
   <the-sidebar></the-sidebar>
 </template>
 <script setup>
-import { ref, onMounted, reactive, watch, onBeforeMount } from "vue";
+import { ref, reactive, watch, onMounted } from "vue";
 import CalendarMain from "@/components/calendar/CalendarMain";
 import TheSidebar from "@/components/sidebar/TheSidebar.vue";
 import TheHeader from "@/components/header/TheHeader.vue";
@@ -70,7 +75,6 @@ const yearMonth = reactive({
   year: Store.state.calendarYear,
   month: Store.state.calendarMonth,
 });
-
 // 반응형 변수들
 const calendar = ref([]);
 const subCalData = reactive({
@@ -83,19 +87,15 @@ const departments = ref([]);
 const selectedDept = ref("");
 const modalFlag = ref(false);
 
-// 렌더링 사이클
-onBeforeMount(() => {
-  Store.commit("setDept", "개발팀");
-});
-
 onMounted(async () => {
   const params = makeParams();
-  const resCal = await mixins.methods.$api(`calendar`, "get", { params });
-  const resDept = await mixins.methods.$api(`calendar/department`, "get", {});
-  const cal = makeCalendarDom(resCal);
-  calendar.value = cal;
-  departments.value = resDept.data;
-  Store.commit("setDeptList", resDept.data);
+  const calData = await mixins.methods.$api(`calendar`, "get", {
+    params,
+  });
+  calendar.value = makeCalendarDom(calData);
+  const deptData = await mixins.methods.$api(`calendar/department`, "get", {});
+  departments.value = deptData.data;
+  Store.commit("setDeptList", deptData.data);
 });
 
 // modalFlag를 통해 서브 캘린더를 렌더링
@@ -124,11 +124,11 @@ function subCalendar(e) {
 }
 
 // param 생성
-function makeParams(arg) {
+function makeParams(dept) {
   return {
     year: yearMonth.year,
     month: yearMonth.month,
-    deptName: arg ? arg : "영업팀",
+    deptName: dept ? dept : Store.state.deptName,
   };
 }
 

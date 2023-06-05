@@ -17,7 +17,6 @@ import tko.refresh.repository.calendar.DepartmentRepository;
 
 @RestController
 @RequestMapping("/calendar/department")
-@CrossOrigin("*")
 @RequiredArgsConstructor
 public class DepartmentController {
 
