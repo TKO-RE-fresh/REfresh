@@ -5,8 +5,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import lombok.RequiredArgsConstructor;
-import tko.refresh.domain.enu.MemberStatus;
-import tko.refresh.domain.enu.RoleType;
 import tko.refresh.dto.admin.MemberDetailDto;
 import tko.refresh.dto.admin.MemberDto;
 import tko.refresh.dto.admin.MemberSearchDto;
@@ -20,7 +18,6 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/admin/member")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class MemberController {
 
     private final MemberService memberService;
@@ -46,6 +43,7 @@ public class MemberController {
 
     @GetMapping("/{memberId}")
     public ResponseEntity<MemberDetailDto> detailMember(@PathVariable String memberId) {
+
         MemberDetailDto memberDetailDto = memberService.getMemberDetail(memberId);
 
         return ResponseEntity.ok().body(memberDetailDto);

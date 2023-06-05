@@ -21,9 +21,7 @@ import tko.refresh.repository.calendar.DepartmentRepository;
 import tko.refresh.repository.member.MemberRepository;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @SpringBootTest
 @TestPropertySource("classpath:application-TEST.properties")
@@ -152,8 +150,9 @@ class MemberServiceTest {
                 .departmentName("인사팀")
                 .annualCount(16)
                 .modifiedBy("madmin")
-                .modifiedDate(LocalDateTime.now())
-                .retireDate(LocalDateTime.now())
+                .createdDate("2023-05-05")
+                .modifiedDate(null)
+                .retireDate("2023-12-12")
                 .memberAuth(RoleType.MEMBER)
                 .memberStatus(MemberStatus.IN_USE)
                 .build();

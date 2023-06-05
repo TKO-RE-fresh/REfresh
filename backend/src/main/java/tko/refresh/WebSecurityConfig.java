@@ -41,7 +41,7 @@ public class WebSecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Collections.singletonList("http://localhost:8080")); // 80 포트에서 오는 요청만 허용
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS")); // 요청 메서드 허용
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "OPTIONS")); // 요청 메서드 허용
         configuration.setAllowedHeaders(Arrays.asList("Cache-Control", "Content-Type", "access_token")); // 허용하는 헤더
         configuration.setExposedHeaders(Arrays.asList("Cache-Control", "Content-Type", "access_token"));
         configuration.setAllowCredentials(true); // 쿠키 허용

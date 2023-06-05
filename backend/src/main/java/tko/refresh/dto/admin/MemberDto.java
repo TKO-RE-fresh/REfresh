@@ -1,5 +1,6 @@
 package tko.refresh.dto.admin;
 
+import com.querydsl.core.annotations.QueryProjection;
 import lombok.*;
 import tko.refresh.domain.enu.MemberStatus;
 import tko.refresh.util.converter.DateConverter;
@@ -32,6 +33,7 @@ public class MemberDto {
     private MemberStatus memberStatus;
 
     @Builder
+    @QueryProjection
     public MemberDto(String memberId, String memberName, String departmentName, String memberCellphone, String memberEmail, LocalDateTime createdDate, LocalDateTime retireDate, MemberStatus memberStatus) {
         this.memberId = memberId;
         this.memberName = memberName;

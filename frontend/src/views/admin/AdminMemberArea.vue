@@ -64,7 +64,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watchEffect } from 'vue';
+import { ref, onMounted, watchEffect, watch } from 'vue';
 import PagingView from '../../components/pagination/pagingComponent.vue';
 import AdminDetailMemberModal from './AdminDetailMemberModal.vue';
 import mixins from '@/utils/mixins';
@@ -117,13 +117,16 @@ const onToggle = () => {
 };
 
 const handleModal=(id) =>{
-//   if(data == '대기'){
-//     uid.value = id;
-//     onToggle();
-//   }
     memberId.value = id;
     console.log("넘길 아이디 : " + memberId.value);
     onToggle();
 }
+
+watch(() => isOpen.value, (newValue) => {
+    console.log("창을 닫으면 현재 페이지 새로 고침");
+    if(!newValue) {
+        selectPage(currentPage.value);
+    }
+  });
 
 </script>

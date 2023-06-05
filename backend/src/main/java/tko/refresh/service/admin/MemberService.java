@@ -17,11 +17,9 @@ import tko.refresh.repository.member.MemberRepository;
 import tko.refresh.util.page.Pagination;
 
 import javax.transaction.Transactional;
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -35,8 +33,7 @@ public class MemberService {
     public Page<MemberDto> getAllMemberList(int page) {
         Pageable pageable = Pagination.setPageable(page,PAGE_SIZE);
         Page<MemberDto> list = memberRepository.allMemberPage(pageable);
-        System.out.println("조회 결과 : " + list);
-        System.out.println(list.getContent());
+
         return list;
     }
 
@@ -86,18 +83,6 @@ public class MemberService {
     public void editMember(String memberId, MemberUpdateDto memberUpdateDto) {
         Member member = memberRepository.findByMemberId(memberId).orElseThrow();
         Department department = memberDepartmentRepository.getDepartmentByName(memberUpdateDto.getDepartmentName());
-        System.out.println("memberUpdatedto.getdepartmentName : " + memberUpdateDto.getDepartmentName());
-        System.out.println("부서 정보 : " + department);
-//        UUID uuid = UUID.fromString(String.valueOf(department.getUid()));
-//        ByteBuffer bb = ByteBuffer.wrap(new byte[16]);
-//        bb.putLong(uuid.getMostSignificantBits());
-//        bb.putLong(uuid.getLeastSignificantBits());
-//        byte[] uuidBytes = bb.array();
-
-//        String hexUUID = String.valueOf(department.getUid());
-//        UUID uuid = UUID.fromString(hexUUID);
-//        System.out.println(hexUUID);
-//        System.out.println("인사팀 uuid : " + uuid);
 
         member.updateMember(memberUpdateDto, department);
     }
