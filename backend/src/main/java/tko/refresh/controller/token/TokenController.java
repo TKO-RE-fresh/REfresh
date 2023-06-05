@@ -3,28 +3,14 @@ package tko.refresh.controller.token;
 import static org.springframework.http.HttpStatus.*;
 import static tko.refresh.util.jwt.JwtUtil.*;
 import static tko.refresh.util.jwt.JwtUtil.ACCESS_TOKEN;
-
-import java.util.Arrays;
-import java.util.Optional;
-
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-
 import lombok.RequiredArgsConstructor;
-import tko.refresh.domain.entity.Member;
-import tko.refresh.dto.member.TokenDto;
 import tko.refresh.dto.member.response.MemberLoginResDto;
 import tko.refresh.util.jwt.JwtAuthMember;
 import tko.refresh.util.jwt.JwtUtil;

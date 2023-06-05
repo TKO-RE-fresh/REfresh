@@ -1,13 +1,10 @@
-<template>
-
-</template>
+<template></template>
 
 <script>
 export default {
-  name: "MyPageView"
-}
+  name: "MyPageView",
+};
 </script>
 
 <style scoped>
-
 </style>
