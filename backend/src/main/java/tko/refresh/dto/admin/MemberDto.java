@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 @Getter
 @ToString
 @NoArgsConstructor
-@Setter
 public class MemberDto {
 
     @NotEmpty

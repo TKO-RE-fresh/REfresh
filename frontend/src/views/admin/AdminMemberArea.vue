@@ -17,6 +17,7 @@
                     <th>입사일자</th>
                     <th>퇴사일자</th>
                     <th>사용상태</th>
+                    <th>상세정보</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -48,9 +49,9 @@
                     <td>{{ member.createdDate }}</td>
                     <td>{{ member.retireDate }}</td>
                     <td>{{ member.memberStatus }}</td>
-                    <th>
-                    <button class="btn btn-ghost btn-xs">details</button>
-                    </th>
+                    <td>
+                    <button class="btn btn-ghost btn-xs" @click="handleModal(member.memberId)">details</button>
+                    </td>
                 </tr>
                 </tbody>
             </table>
@@ -59,11 +60,13 @@
     <div>
         <PagingView :currentPage="currentPage" :totalPages="totalPages" @selectPage="selectPage"/>
     </div>
+    <AdminDetailMemberModal :isOpen="isOpen" :onToggle="onToggle" :memberId="memberId"></AdminDetailMemberModal>
 </template>
 
 <script setup>
 import { ref, onMounted, watchEffect } from 'vue';
 import PagingView from '../../components/pagination/pagingComponent.vue';
+import AdminDetailMemberModal from './AdminDetailMemberModal.vue';
 import mixins from '@/utils/mixins';
 
 const members = ref([]);
@@ -105,4 +108,22 @@ function selectPage(idx) {
         currentPage.value = idx;
     });
 }
+
+const isOpen = ref(false);
+const memberId = ref('');
+
+const onToggle = () => {
+  isOpen.value = !isOpen.value;
+};
+
+const handleModal=(id) =>{
+//   if(data == '대기'){
+//     uid.value = id;
+//     onToggle();
+//   }
+    memberId.value = id;
+    console.log("넘길 아이디 : " + memberId.value);
+    onToggle();
+}
+
 </script>
