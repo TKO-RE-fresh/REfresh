@@ -1,5 +1,6 @@
 package tko.refresh.repository.admin;
 
+import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,7 @@ import tko.refresh.domain.entity.QAnnual;
 import tko.refresh.domain.entity.QDepartment;
 import tko.refresh.domain.entity.QMember;
 import tko.refresh.domain.enu.AnnualStatus;
+import tko.refresh.dto.admin.AnnualManageDto;
 import tko.refresh.dto.admin.AnnualSearchDto;
 
 
@@ -26,11 +28,12 @@ public class AnnualManageRepositoryImpl implements AnnualManageRepositoryCustom 
     QDepartment department = QDepartment.department;
 
 
+
+
     @Override
-    public Page<Annual> searchAnnual(AnnualSearchDto searchDto, Pageable pageable) {
-        List<Annual> content = searchAnnualList(searchDto,pageable);
+    public Page<AnnualManageDto> searchAnnual(AnnualSearchDto searchDto, Pageable pageable) {
+        List<AnnualManageDto> content = searchAnnualList(searchDto,pageable);
         Long count = getCount(searchDto);
-        System.out.println("!!!!!!!!!!!!!!!!!+ count"+count);
         return new PageImpl<>(content,pageable,count);
     }
 
@@ -48,15 +51,23 @@ public class AnnualManageRepositoryImpl implements AnnualManageRepositoryCustom 
                 .fetchOne();
     }
 
-    public List<Annual> searchAnnualList(AnnualSearchDto searchDto, Pageable pageable) {
-        System.out.println("!!!!!!pageOffset"+pageable.getOffset());
-        System.out.println("!!!!!!PageSize"+pageable.getPageSize());
-        return queryFactory
-                .selectFrom(annual)
+    public List<AnnualManageDto> searchAnnualList(AnnualSearchDto searchDto, Pageable pageable) {
+
+         return queryFactory
+                .select(Projections.constructor(AnnualManageDto.class,
+                        annual.uid,
+                        annual.member.memberInfo.name,
+                        annual.member.memberInfo.email,
+                        annual.member.department.name,
+                        annual.annualType,
+                        annual.annualStatus,
+                        annual.period,
+                        annual.createdDate,
+                        annual.rejectReason
+                ))
+                .from(annual)
                 .leftJoin(annual.member, member)
-                .fetchJoin()
-                .leftJoin(member.department,department)
-                .fetchJoin()
+                .leftJoin(member.department, department)
                 .where(
                         memberNameEq(searchDto.getMemberName()),
                         departmentNameEq(searchDto.getDepartmentName()),
@@ -69,17 +80,12 @@ public class AnnualManageRepositoryImpl implements AnnualManageRepositoryCustom 
     }
 
 
-
-
-
-
-
     private BooleanExpression memberNameEq(String memberName){
-        return memberName.isEmpty() ? null :member.memberInfo.name.contains(memberName);
+        return memberName == null ? null :member.memberInfo.name.contains(memberName);
     }
 
     private BooleanExpression departmentNameEq(String departmentName){
-        return departmentName.isEmpty()? null : department.name.eq(departmentName);
+        return departmentName == null ? null : department.name.eq(departmentName);
     }
 
     private BooleanExpression annualStatusEq(AnnualStatus status){

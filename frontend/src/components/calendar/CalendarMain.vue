@@ -1,18 +1,26 @@
 <template>
+  <div class="mt-6"></div>
   <tr v-for="(it, idx) in calendar" :key="idx">
     <td
       v-for="(day, dayIdx) in it"
-      id="calendar"
+      :id="dayIdx"
       :key="dayIdx"
-      class="border-2 px-8 py-12 w-1/7"
+      class="border-2 w-48 h-36 relative"
+      :class="{ 'cursor-pointer': day.hoName !== '' && day.sumCount !== 0 }"
+      @click="showDayModal(day.hoName, day.sumCount, $event)"
     >
-      <a
-        :id="dayIdx"
-        :class="{ 'cursor-pointer': day.hoName !== '' && day.sumCount !== 0 }"
-        @click="showDayModal(day.hoName, day.sumCount, $event)"
+      <div
+        :class="{ 'text-red-500': isHoliday(day) }"
+        class="absolute max-w-full top-2 left-3"
       >
         {{ day.day }}
-      </a>
+      </div>
+      <div class="absolute text-sm md:text-base lg:text-lg top-2 left-10">
+        {{ isSpecialHoliday(day) ? parseHoliday(day) : "" }}
+      </div>
+      <div class="absolute max-w-full">
+        {{ day.sumCount === 0 ? "" : day.sumCount }}
+      </div>
     </td>
   </tr>
   <calendar-small-modal
@@ -35,6 +43,20 @@ const curY = ref("");
 
 function closeModal() {
   showModal.value = false;
+}
+
+function isSpecialHoliday(day) {
+  return (
+    day.hoName !== "평일" && day.hoName !== "토요일" && day.hoName !== "일요일"
+  );
+}
+
+function isHoliday(day) {
+  return day.hoName !== "평일" && day.hoName !== "";
+}
+
+function parseHoliday(day) {
+  return day.hoName.substring(1, day.hoName.length - 1);
 }
 
 defineProps({

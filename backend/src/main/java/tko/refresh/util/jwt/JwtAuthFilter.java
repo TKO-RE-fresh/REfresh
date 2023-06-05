@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -23,6 +24,9 @@ import tko.refresh.dto.GlobalResponseDto;
 public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
+    private final String ACCESS = "Access";
+    private final String UNAUTHORIZED = "Unauthorized";
+
     // HTTP 요청이 오면 WAS(tomcat)가 HttpServletRequest, HttpServletResponse 객체를 만들고
     // 만든 인자 값을 받아온다.
     // 요청이 들어오면 diFilterInternal 이 딱 한번 실행된다.
@@ -30,35 +34,42 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
         // Access / Refresh 헤더에서 토큰을 가져옴.
-        String accessToken = jwtUtil.getHeaderToken(request, "Access");
-        String refreshToken = jwtUtil.getHeaderToken(request, "Refresh");
-
+        String accessToken = extractTokenFromHeader(jwtUtil.getHeaderToken(request));
+        String refreshToken = jwtUtil.getCookieToken(request);
         if(accessToken != null) {
-            // Access 토큰이 유효한지 확인
             if(jwtUtil.tokenValidation(accessToken)) {
-                setAuthentication(jwtUtil.getEmailFromToken(accessToken));
-            } else if(refreshToken != null) {
-                // Access 토큰이 만료되었고, Refresh 토큰이 유효한지 확인
-                if(jwtUtil.tokenValidation(refreshToken)) {
-                    // Refresh 토큰이 유효하면 Access 토큰 재발급
+                String id = jwtUtil.getIdFromToken(accessToken);
+                setAuthentication(id);
+            } else {
+                // Access 토큰이 만료된 경우
+                if (refreshToken != null && jwtUtil.tokenValidation(refreshToken)) {
+                    // Refresh 토큰이 유효한 경우
+                    String id = jwtUtil.getIdFromToken(refreshToken);
                     String email = jwtUtil.getEmailFromToken(refreshToken);
-                    setAuthentication(email);
-                    String newAccessToken = jwtUtil.createToken(email, "Access");
-                    response.setHeader("Access_Token", newAccessToken);
+                    setAuthentication(id);
+                    String newAccessToken = jwtUtil.createToken(id, email ,ACCESS);
+                    response.setHeader(jwtUtil.ACCESS_TOKEN, newAccessToken);
                 } else {
-                    jwtExceptionHandler(response, "Refresh 토큰이 유효하지 않습니다.", HttpStatus.UNAUTHORIZED);
+                    // Refresh 토큰이 유효하지 않은 경우
+                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, UNAUTHORIZED);
                     return;
                 }
             }
-
         }
-
         filterChain.doFilter(request, response);
     }
 
+
+    private String extractTokenFromHeader(String headerValue) {
+        if (StringUtils.hasText(headerValue) && headerValue.startsWith("Bearer ")) {
+            return headerValue.substring(7).equals("null") ? null : headerValue.substring(7);
+        }
+        return null;
+    }
+
     // SecurityContext 에 Authentication 객체를 저장합니다.
-    public void setAuthentication(String email) {
-        Authentication authentication = jwtUtil.createAuthentication(email);
+    public void setAuthentication(String id) {
+        Authentication authentication = jwtUtil.createAuthentication(id);
         // security가 만들어주는 securityContextHolder 그 안에 authentication을 넣어준다.
         // security가 securitycontextholder에서 인증 객체를 확인하는데
         // jwtAuthfilter에서 authentication을 넣어주면 UsernamePasswordAuthenticationFilter 내부에서 인증이 된 것을 확인하고 추가적인 작업을 진행하지 않는다

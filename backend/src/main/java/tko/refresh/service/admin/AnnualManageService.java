@@ -35,16 +35,10 @@ public class AnnualManageService {
     private final HolidayRepository holidayRepository;
     private final AnnualCountRepository annualCountRepository;
 
-    public List<AnnualManageDto> getAnnualManageAllList(int page){
+    public Page<AnnualManageDto> getSearchAnnualMangeList(AnnualSearchDto searchDto,int page){
         Pageable pageable = Pagination.setPageable(page,PAGE_SIZE);
-        List<Annual> list = annualManageRepo.findAllWithMember(pageable);
-        return entityToDto(list);
-    }
-
-    public List<AnnualManageDto> getSearchAnnualMangeList(AnnualSearchDto searchDto,int page){
-        Pageable pageable = Pagination.setPageable(page,PAGE_SIZE);
-        Page<Annual> list = annualManageRepo.searchAnnual(searchDto,pageable);
-        return entityToDto(list.toList());
+        Page<AnnualManageDto> list = annualManageRepo.searchAnnual(searchDto,pageable);
+        return list;
     }
 
     @Transactional
@@ -57,9 +51,10 @@ public class AnnualManageService {
         // 연차는 계산한 값, 반차는 0.5
         double discount= annual.getAnnualType().equals(AnnualType.ANNUAL_LEAVE) ? WorkingDaysCounter(period) : 0.5 ;
 
-        if(discount < 0) return false;
-
+        if(discount < 0 && member.getAnnualCount() - discount < 1) return false;
+        //사원 연차 차감
         discountResult = memberRepository.discountAnnualCount(member.getMemberId(), discount);
+        //연차 집계 증가
         sumResult = annualCountRepository.setAnnualSumCount(period.getStartDate(), period.getEndDate(), member.getDepartment().getUid());
         //승인 상태 변경
         statusResult = annualManageRepo.acceptAnnualStatus(uid,AnnualStatus.AGREE,"admin");
@@ -79,26 +74,6 @@ public class AnnualManageService {
         Period period = annual.getPeriod();
         Member member = annual.getMember();
         return annualManageRepo.rejectAnnualStatus(uid, AnnualStatus.REJECT, "admin",msg) > 0;
-    }
-
-
-    public List<AnnualManageDto> entityToDto(List<Annual> list){
-        List<AnnualManageDto> resultList = new ArrayList<>();
-
-        for(Annual data : list ){
-            resultList.add(AnnualManageDto.builder()
-                    .annualUid(String.valueOf(data.getUid()))
-                    .memberName(data.getMember().getMemberInfo().getName())
-                    .email(data.getMember().getMemberInfo().getEmail())
-                    .departmentName(data.getMember().getDepartment().getName())
-                    .annualType(data.getAnnualType())
-                    .annualStatus(data.getAnnualStatus())
-                    .period(data.getPeriod())
-                    .createdDate(data.getCreatedDate())
-                    .build()
-            );
-        }
-        return resultList;
     }
 
 

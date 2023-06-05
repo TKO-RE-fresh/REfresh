@@ -3,7 +3,7 @@
     <div
       class="flex bg-base-80 border border-slate-300 rounded-lg shadow-md shadow-slate-300/40 my-10 mx-16"
     >
-      <div class="py-3 flex items-center justify-between space-x-16 w-full mx-10">
+      <div class="py-2 flex items-center justify-between space-x-16 w-full mx-10">
         <div class="flex space-x-6">
           <!-- 부서 검색 -->
           <div class="flex items-center space-x-3">
@@ -50,14 +50,19 @@
     </div>
   </form>
   <AdminAnnualTable></AdminAnnualTable>
+  <div>
+        <PagingView :currentPage="currentPage" :totalPages="totalPages" @selectPage="selectPage"/>
+  </div>
 </template>
 <script setup>
 import { ref,reactive,onMounted } from 'vue';
-import { useStore } from 'vuex';
+import PagingView from '../../components/pagination/pagingComponent.vue';
 import AdminAnnualTable from './AdminAnnualTable';
+import Store from "@/store/index.js";
+
+
 //import mixins from '@/utils/mixins';
 
-const store = useStore();
 
 const deptOptions = [
   {option : "부서 선택", value : ""},
@@ -88,17 +93,25 @@ function setStatus(e){
   searchInput.status = e.target.value;
 }
 
-const page = ref(1);
+const currentPage = ref(1);
+const totalPages = ref(0);
 
 function onFormSubmit(e) {
   e.preventDefault();
-  store.commit("setPage",1);
-  store.commit("setAnnualList");
-  store.commit("setSearchInput",searchInput);
+  Store.commit("setAnnualList");
+  Store.commit("setSearchInput",searchInput);
 }
 
 onMounted(() => {
-  store.commit("setAnnualList", page.value, searchInput);
+  Store.commit("setAnnualList", currentPage.value);
+  totalPages.value=Store.state.annualList.totalPages;
 });
+
+function selectPage(idx) {
+  currentPage.value=idx;
+  Store.commit("setCurrentPage", idx);
+  Store.commit("setAnnualList", currentPage.value, searchInput);
+  totalPages.value = Store.state.annualList.totalPages;
+}
 
 </script>

@@ -11,7 +11,7 @@
       </tr>
     </thead>
     <tbody>
-      <slot name="body"> </slot>
+      <slot name="body"></slot>
     </tbody>
   </table>
 </template>
