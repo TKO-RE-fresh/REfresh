@@ -26,8 +26,14 @@ const routes = [
     path:"/admin",
     name: "AdminView",
     component : AdminView
+<<<<<<< HEAD
   }
 ]
+=======
+  },
+];
+
+>>>>>>> 58cd43cc3fe017c30ad8fcd66650b6cb642b709a
 const router = createRouter({
   history: createWebHistory("/"), // 또는 원하는 경로를 직접 입력해도 됩니다.
   routes, // 'routes: routes'와 동일

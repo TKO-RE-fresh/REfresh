@@ -1,5 +1,5 @@
 <template>
-  <div class="absolute right-tableL top-tableT w-tableT h-tableT">
+  <div class="w-96 flex justify-evenly">
     <CalendarAsideHeader
       :list="selectList"
       @selectedOption="handleData"
@@ -14,8 +14,8 @@
       v-show="select === 1"
       @selectedMember="handleMember"
     ></CalendarAsideMemberSearch>
-    <CalendarAsideMain :list="annualList"></CalendarAsideMain>
   </div>
+  <CalendarAsideMain :list="annualList"></CalendarAsideMain>
 </template>
 <script setup>
 import { ref, watch } from "vue";

@@ -112,7 +112,7 @@ public class LoginService {
 //        tokenCookie.setSecure(true); HTTPS 연결에서만 전송
         tokenCookie.setPath("/"); // 쿠키의 유효 경로
         tokenCookie.setComment("SameSite=Origin"); // CSRF 공격 방지
-        tokenCookie.setMaxAge(300000); // 쿠키의 만료 시간 (초 단위)
+        tokenCookie.setMaxAge(7776000); // 쿠키의 만료 시간 (초 단위) 3개월
         response.addCookie(tokenCookie);
     }
 

@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 import tko.refresh.domain.emb.MemberInfo;
@@ -31,7 +32,7 @@ import java.util.List;
 @Transactional
 class AnnualManageServiceTest {
 
-    private List<AnnualManageDto> list;
+    private Page<AnnualManageDto> list;
 
     @Autowired
     private AnnualRepository annualRepository;
@@ -82,10 +83,10 @@ class AnnualManageServiceTest {
     @Test
     public void 관리자_연차관리정보_불러오기(){
 
-        list = annualManageService.getAnnualManageAllList(1);
+        list = annualManageService.getSearchAnnualMangeList(new AnnualSearchDto(),1);
         list.stream().forEach(System.out::println);
 
-        Assertions.assertEquals(list.size(),1);
+        Assertions.assertEquals(list.getContent().size(),1);
     }
 
     @Test
@@ -99,7 +100,7 @@ class AnnualManageServiceTest {
         list=annualManageService.getSearchAnnualMangeList(searchDto,1);
         list.forEach(System.out::println);
 
-        Assertions.assertEquals(list.size(),1);
+        Assertions.assertEquals(list.getContent().size(),1);
 
     }
 
@@ -116,7 +117,7 @@ class AnnualManageServiceTest {
         list=annualManageService.getSearchAnnualMangeList(searchDto,1);
         list.forEach(System.out::println);
 
-        Assertions.assertEquals(list.size(),0);
+        Assertions.assertEquals(list.getContent().size(),0);
     }
 
     @Test

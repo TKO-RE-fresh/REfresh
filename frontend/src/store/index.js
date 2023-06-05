@@ -18,7 +18,7 @@ const store =  createStore({
       departmentName: "",
       status: "",
     },
-    page: 1,
+    currentPage : 1,
   },
   getters: {
     getAccessToken: (state) => {
@@ -51,9 +51,9 @@ const store =  createStore({
     getSearchInput: (state) => {
       return state.searchInput;
     },
-    getPage: (state) => {
-      return state.page;
-    },
+    getCurrentPage : (state) => {
+      return state.currentPage
+    }
   },
   mutations: {
     setDeptName: (state, deptName) => {
@@ -68,9 +68,9 @@ const store =  createStore({
     setAccessToken: (state, token) => {
       state.token = token;
     },
-    setAnnualList: async (state) => {
+    setAnnualList: async (state,page) => {
       const res = await mixins.methods.$api(
-        `admin/annual/${state.page}`,
+        `admin/annual/${page}`,
         "get",
         { params: state.searchInput }
       );
@@ -93,8 +93,8 @@ const store =  createStore({
     setSearchInput: (state, searchInput) => {
       state.searchInput = searchInput;
     },
-    setPage: (state, page) => {
-      state.page = page;
+    setCurrentPage1: (state,page) => {
+      state.currentPage = page;
     },
   },
   actions: {

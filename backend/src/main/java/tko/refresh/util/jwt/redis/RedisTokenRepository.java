@@ -14,7 +14,7 @@ public class RedisTokenRepository {
     }
 
     public void setValues(String key, String field ,String data) {
-        redisTemplate.expire(key, 300000, TimeUnit.SECONDS);
+        redisTemplate.expire(key, 7776000, TimeUnit.SECONDS);
         HashOperations<String, Object, Object> values = redisTemplate.opsForHash();
         values.put(key, field , data);
     }

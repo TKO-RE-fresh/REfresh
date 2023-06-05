@@ -1,5 +1,5 @@
 <template>
-  <div class="relative w-screen h-screen">
+  <div class="relative w-full h-full">
     <data-table class="absolute top-tableT left-tableL">
       <!-- 헤더 구현 -->
       <template v-slot:header>
@@ -10,7 +10,10 @@
           @deptEvent="fetchCalendarByDept"
           @yearMonthEvent="fetchCalendarByRefsData"
         ></calendar-header>
-        <a class="relative inline-block cursor-pointer" @click="subCalendar">
+        <a
+          class="absolute left-subModalBtn top-10 inline-block cursor-pointer"
+          @click="subCalendar"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -47,7 +50,9 @@
       @closeModal="closeSubCalendar"
       @yearMonthEvent="fetchCalendarByRefsData"
     ></calendar-modal>
-    <calendar-aside> </calendar-aside>
+    <div class="absolute top-tableT left-asideR">
+      <calendar-aside></calendar-aside>
+    </div>
   </div>
   <the-header></the-header>
   <the-sidebar></the-sidebar>
