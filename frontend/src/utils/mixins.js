@@ -39,7 +39,7 @@ export default {
         url,
         data,
         params,
-      }).catch(e => console.log(e)))
+      }))
     },
     async logout() {
         await axios.post('token/logout', {});
@@ -48,6 +48,6 @@ export default {
         Store.commit('setMemberName', null);
         Store.commit('setAuth', null);
         Store.commit('setDept', null); 
-    }
+    },
   }
 }

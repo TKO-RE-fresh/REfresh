@@ -82,6 +82,7 @@ public class JwtUtil {
     // 토큰 재발급 요청을 위한 메소드
     public TokenDto reissueToken(String refreshToken) throws JsonProcessingException {
         if(!refreshTokenValidation(refreshToken)) return TokenDto.builder().build();
+
         String rtkInRedis = (String) redisRepository.getValues(getEmailFromToken(refreshToken), REFRESH_TOKEN);
         if(Objects.isNull(rtkInRedis)) {
             return TokenDto.builder().build();

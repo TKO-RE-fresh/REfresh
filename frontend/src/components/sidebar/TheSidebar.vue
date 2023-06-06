@@ -24,7 +24,9 @@
           </div>
           <div class="mt-2">
             <label class="ml-6">예정 일정</label>
-            <a href="/mypage/history" class="ml-6 text-blue-500">예정휴가(하드)</a>
+            <a href="/mypage/history" class="ml-6 text-blue-500"
+              >예정휴가(하드)</a
+            >
           </div>
         </div>
       </div>
@@ -107,7 +109,9 @@
                 d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
               ></path>
             </svg>
-            <span class="flex-1 ml-3 whitespace-nowrap">관리자 페이지</span>
+            <span v-if="auth === 'admin'" class="flex-1 ml-3 whitespace-nowrap"
+              >관리자 페이지</span
+            >
           </router-link>
         </li>
       </ul>
@@ -116,12 +120,7 @@
 </template>
 
 <script setup>
-// export default {
-//   name: "TheSidebar",
-//   computed: {
-//     isAdmin() {
-//       return this.$session.MemberLogin.authority === "admin";
-//     },
-//   },
-// };
+import { ref } from "vue";
+import Store from "@/store/index.js";
+const auth = ref(Store.state.auth);
 </script>

@@ -1,11 +1,15 @@
 package tko.refresh.service.calendar;
 
+import static java.time.LocalDate.now;
 import static tko.refresh.dto.calendar.response.calendar.CalendarResDto.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+
+import net.bytebuddy.asm.Advice.Local;
 
 import lombok.RequiredArgsConstructor;
 import tko.refresh.domain.entity.Holiday;
@@ -46,6 +50,12 @@ public class CalendarService {
         List<CalendarResDto> result = new ArrayList<>();
         int year = calendarReqDto.getYearMonth().getYear();
         int month = calendarReqDto.getYearMonth().getMonth();
+        int todayDay = new Date().getDate();
+
+        int todayYear = LocalDate.now().getYear();
+        int todayMonth = LocalDate.now().getMonthValue();
+
+
 
 
         // 현재 달 정보
@@ -91,6 +101,9 @@ public class CalendarService {
 
             if(size > dayCount && dayIdx >= minimumDay && minimumDay > 0) {
                 builder.sumCount(annualCountByDept.get(dayCount++).getSumCount());
+            }
+            if(todayDay == dayIdx && year == todayYear  && month == todayMonth) {
+                builder.today(true);
             }
 
             if(binarySearch(holidayDataList, dayIdx)) {

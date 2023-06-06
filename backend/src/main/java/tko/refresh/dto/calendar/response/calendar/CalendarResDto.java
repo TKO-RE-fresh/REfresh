@@ -12,5 +12,7 @@ public class CalendarResDto  {
 
     private final int sumCount;
 
+    private final boolean today;
+
 
 }

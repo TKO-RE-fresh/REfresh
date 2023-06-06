@@ -4,12 +4,13 @@ module.exports = {
   theme: {
     extend: {
       spacing: {
-        tableL: "400px",
+        tableL: "300px",
         tableT: "80px",
         asideR: "1300px",
         asideW: "200px",
         tableTd: "100px",
-        subModalBtn: "calc(50% + 7rem)",
+        
+        subModalBtn: "calc(24% + 4rem)",
       }
     },
   },

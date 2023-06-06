@@ -121,11 +121,7 @@ const store =  createStore({
   plugins: [],
 });
 
-store.watch((state) => state.token, () => {
-  if (store.state.token === null) {
-    store.dispatch('checkCookie');
-  }
-});
+
 
 
 store.subscribe((mutation, state) => {
