@@ -27,40 +27,28 @@ public class LeaveRequestService {
     private final LeaveRequesterInfoRepository leaveRequesterInfoRepository;
     private final MemberRepository memberRepository;
     private final AnnualManageService annualManageService;
-
-
     private final AnnualRepository annualRepository;
     private final LeaveRequestRepository leaveRequestRepository;
 
     /* 사용한 연차일 수 받아오기 */
     public Map<String, Double> getUsedAnnualLeave(String memberId) {
-        double annualCount = leaveRequesterInfoRepository.findByAnnualCount(memberId);
-        double usedAnnualCount = 15 - annualCount;
+        double restLeaveCount = leaveRequesterInfoRepository.findByAnnualCount(memberId);
+        double usedLeaveCount = 15 - restLeaveCount;
         Map<String, Double> annualLeaveMap = new HashMap<>();
-        annualLeaveMap.put("annualCount", annualCount);
-        annualLeaveMap.put("usedAnnualCount", usedAnnualCount);
+        annualLeaveMap.put("restLeaveCount", restLeaveCount);
+        annualLeaveMap.put("usedLeaveCount", usedLeaveCount);
         return annualLeaveMap;
     }
-//
-//    public boolean filterHoliday(){
-//
-//        Period period = Period.builder().startDate(leaveRequestDto.getStartDate()).endDate(leaveRequestDto.getEndDate()).build();
-//        int notholidays = annualManageService.WorkingDaysCounter(period);
-//        // 휴가기간중 공휴일 제외 (메서드명 바꿔야함을 강력 추천)
-//
-//        leaveRequestDto.setAnnualCount(notholidays);
-//
-//
-//        System.out.println("공휴이 아닌 휴가일수: " + notholidays);
-//    }
-
-
 
     /* 클라이언트로부터 들어온 정보를 토대로 연차를 신청 */
     @Transactional
     public GlobalResponseDto createLeaveRequest(LeaveRequestDto dto) {
+        System.out.println("createleaverequest의 dto 확인: " + dto);
+
         // 이름을 가지고 Member 객체를 찾는다.
         Optional<Member> member = memberRepository.findByMemberId(dto.getMemberId());
+        System.out.println("멤버 확인 tq: " + member);
+        System.out.println("멤버 존재여부 확인: " + member.isPresent());
 
         /* 멤버 객체 존재여부 확인 */
         if(!member.isPresent()) {
@@ -70,6 +58,8 @@ public class LeaveRequestService {
                     .build();
         }
         double workday = WorkdayCalReq(member.get().getAnnualCount(), dto);
+
+        System.out.println("workday 확인: "+ workday);
 
         /* 연차 개수보다 더 많은 연차 신청 시 */
         if(workday < 0) {
@@ -81,10 +71,19 @@ public class LeaveRequestService {
 
         Member existMember = member.get();
 
+        System.out.println("exist member check: "+ existMember.getMemberInfo());
+        System.out.println("exist member chekc: " + existMember.getMemberId());
+        System.out.println("exist member chekc: " + existMember.getAnnualCount());
+        System.out.println("서비스 시작일 확인: " +dto.getPeriod().getStartDate());
+        System.out.println("서비스 종료일 확인: " +dto.getPeriod().getEndDate());
+
         /* 연차 신청하려는 날짜가 이미 신청된 날짜인지 확인 */
-        int count = annualRepository.countAnnualByMemberUidAndPeriod(existMember.getUid(),
+        int count = annualRepository.countAnnualByMemberUidAndPeriod(existMember.getMemberId(),
                                                                  dto.getPeriod().getStartDate(),
                                                                  dto.getPeriod().getEndDate());
+
+//        System.out.println("카운트 확인: " + count);
+
         if(count > 0) {
             return GlobalResponseDto.builder()
                     .statusCode(HttpServletResponse.SC_BAD_REQUEST)
@@ -92,7 +91,10 @@ public class LeaveRequestService {
                     .build();
         }
 
+//        System.out.println("메이크에뉴얼바이멤버: "+ makeAnnualByMember(existMember, dto));
+
         Annual save = leaveRequestRepository.save(makeAnnualByMember(existMember, dto));
+//        System.out.println("세이브: "+ save);
         existMember.addAnnual(save);
         save.setMember(existMember);
 
@@ -102,7 +104,11 @@ public class LeaveRequestService {
                 .build();
     }
 
+
     private Annual makeAnnualByMember(Member member, LeaveRequestDto dto) {
+//        System.out.println("멤버 확인 ㅋㅋㅋㅋㅋ: "+ member);
+        System.out.println("디티오 확인 ㅋㅋㅋ  : " + dto);
+        System.out.println("지금 시간 확인" + LocalDateTime.now());
         return Annual
                 .builder()
                 .member(member)

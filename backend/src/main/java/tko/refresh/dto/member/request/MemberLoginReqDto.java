@@ -8,15 +8,19 @@ import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
 @Getter
-@Builder
 @ToString
 @RequiredArgsConstructor
 public class MemberLoginReqDto {
 
     @NotBlank
-    private final String memberId;
+    private  String memberId;
     @NotBlank
-    private final String password;
+    private  String password;
 
+    @Builder
 
+    public MemberLoginReqDto(String memberId, String password) {
+        this.memberId = memberId;
+        this.password = password;
+    }
 }
