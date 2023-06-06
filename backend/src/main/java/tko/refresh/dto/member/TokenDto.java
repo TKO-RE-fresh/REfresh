@@ -4,13 +4,11 @@ import static lombok.AccessLevel.PROTECTED;
 
 import javax.validation.constraints.NotBlank;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 @Getter
 @Builder
+@ToString
 @RequiredArgsConstructor
 public class TokenDto {
     @NotBlank

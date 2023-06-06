@@ -1,6 +1,6 @@
 <template lang="ko">
   <div>
-    <div class="navbar bg-slate-200 rounded-lg shadow-sm px-6">
+    <div class="navbar  px-6 rounded-lg shadow-sm bg-slate-200 ">
       <div class="flex-1">
         <h3 class="normal-case text-3xl font-bold">연차 신청</h3>
         <!-- <a class="btn btn-ghost normal-case text-xl">연차 신청</a> -->
@@ -14,5 +14,6 @@
       </div>
     </div>
   </div>
+  
 </template>
 <script setup></script>
