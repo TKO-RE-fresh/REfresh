@@ -122,10 +122,6 @@ const props = defineProps({
     type: Array,
     required: true,
   },
-  modalFlag: {
-    type: Boolean,
-    required: true,
-  },
   monthList: {
     type: Array,
     required: true,

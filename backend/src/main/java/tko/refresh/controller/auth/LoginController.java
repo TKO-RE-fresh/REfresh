@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 import tko.refresh.dto.member.MemberJoinDto;
 import tko.refresh.dto.member.request.MemberLoginReqDto;
+import tko.refresh.dto.member.response.MemberLoginResDto;
 import tko.refresh.service.login.LoginService;
 
 @RestController
@@ -26,7 +27,8 @@ public class LoginController {
     @PostMapping
     public ResponseEntity login(@RequestBody MemberLoginReqDto dto, HttpServletResponse response)
             throws IOException {
-        return ResponseEntity.ok().body(memberService.login(dto, response));
+        MemberLoginResDto login = memberService.login(dto, response);
+        return ResponseEntity.status(login.getStatusCode()).body(login);
     }
 
     @PostMapping("/join")

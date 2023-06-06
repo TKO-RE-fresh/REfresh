@@ -20,12 +20,18 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import lombok.RequiredArgsConstructor;
 import tko.refresh.util.jwt.JwtAuthFilter;
 import tko.refresh.util.jwt.JwtUtil;
+import tko.refresh.util.jwt.MemberLogoutHandler;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class WebSecurityConfig {
     private final JwtUtil jwtUtil;
+
+    @Bean
+    public MemberLogoutHandler memberLogoutHandler() {
+        return new MemberLogoutHandler();
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -40,7 +46,7 @@ public class WebSecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Collections.singletonList("http://localhost:8080")); // 80 포트에서 오는 요청만 허용
+        configuration.setAllowedOrigins(Collections.singletonList("http://localhost:8080")); // 8080 포트에서 오는 요청만 허용
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS")); // 요청 메서드 허용
         configuration.setAllowedHeaders(Arrays.asList("Cache-Control", "Content-Type", "access_token")); // 허용하는 헤더
         configuration.setExposedHeaders(Arrays.asList("Cache-Control", "Content-Type", "access_token"));
@@ -53,14 +59,16 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        MemberLogoutHandler logoutHandler = memberLogoutHandler();
         http.cors();
+        http.logout().addLogoutHandler(logoutHandler);
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeRequests().antMatchers("/login/**", "/swagger-ui.html", "/swagger/**","/token/**",
                                              "/swagger-resources/**","/webjars/**","/v2/api-docs").permitAll()
                 .anyRequest().authenticated().and()
                 .headers().frameOptions().sameOrigin().and()
-            .addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
+            .addFilterBefore(new JwtAuthFilter(jwtUtil, logoutHandler), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
