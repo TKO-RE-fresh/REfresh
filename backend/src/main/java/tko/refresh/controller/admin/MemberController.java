@@ -5,22 +5,24 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import lombok.RequiredArgsConstructor;
-import tko.refresh.domain.entity.Member;
+import tko.refresh.dto.admin.MemberDetailDto;
 import tko.refresh.dto.admin.MemberDto;
 import tko.refresh.dto.admin.MemberSearchDto;
 import tko.refresh.dto.admin.MemberUpdateDto;
+import tko.refresh.repository.department.MemberDepartmentRepository;
 import tko.refresh.service.admin.MemberService;
 
-import java.util.Optional;
+import java.util.List;
 
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/admin/member")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class MemberController {
 
     private final MemberService memberService;
+
+    private final MemberDepartmentRepository departmentRepository;
 
     @GetMapping
     public ResponseEntity getMemberAllList(@RequestParam(required = false) MemberSearchDto searchDto,
@@ -29,8 +31,10 @@ public class MemberController {
 
         Page<MemberDto> list;
         if(searchDto == null) {
+            System.out.println("전체 사원 조회");
             list = memberService.getAllMemberList(formatPage);
         } else {
+            System.out.println("검색 사원 조회");
             list = memberService.getSearchMemberList(searchDto, formatPage);
         }
 
@@ -38,18 +42,27 @@ public class MemberController {
     }
 
     @GetMapping("/{memberId}")
-    public ResponseEntity<MemberDto> detailMember(@PathVariable String memberId) {
-        MemberDto memberDto = memberService.getMemberDetail(memberId);
+    public ResponseEntity<MemberDetailDto> detailMember(@PathVariable String memberId) {
 
-        return ResponseEntity.ok().body(memberDto);
+        MemberDetailDto memberDetailDto = memberService.getMemberDetail(memberId);
+
+        return ResponseEntity.ok().body(memberDetailDto);
     }
 
     @PatchMapping("/{memberId}")
-    public ResponseEntity<String> modifyMember(@PathVariable String memberId, @RequestBody MemberUpdateDto memberUpdateDto) {
+    public ResponseEntity<String> editMember(@PathVariable String memberId, @RequestBody MemberUpdateDto memberUpdateDto) {
 
-        memberService.modifyMember(memberId, memberUpdateDto);
+        memberService.editMember(memberId, memberUpdateDto);
 
         return ResponseEntity.ok("Success");
+    }
+
+    @GetMapping("/new")
+    public ResponseEntity getNewMemberForm() {
+
+        List<String> list = departmentRepository.getDepartmentNameList();
+
+        return ResponseEntity.ok().body(list);
     }
 
 }

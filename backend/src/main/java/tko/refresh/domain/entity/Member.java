@@ -2,7 +2,10 @@ package tko.refresh.domain.entity;
 import static javax.persistence.CascadeType.*;
 import static javax.persistence.FetchType.*;
 import static lombok.AccessLevel.*;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -92,30 +95,45 @@ public class Member extends BaseEntity {
         this.department = d;
     }
 
-
     public void addAnnual(Annual annual) {
         annuals.add(annual);
         annual.setMember(this);
     }
-    public void updateMember(MemberUpdateDto memberUpdateDto) {
+    public void updateMember(MemberUpdateDto memberUpdateDto, Department department) {
         this.memberInfo=MemberInfo.builder()
                 .name(memberUpdateDto.getMemberName())
                 .cellphone(memberUpdateDto.getMemberCellphone())
                 .email(memberUpdateDto.getMemberEmail())
                 .build();
+        this.memberId = memberUpdateDto.getMemberId();
+        this.department = department;
         this.annualCount = memberUpdateDto.getAnnualCount();
         this.modifiedBy = memberUpdateDto.getModifiedBy();
-        this.modifiedDate = memberUpdateDto.getModifiedDate();
-        this.retireDate = memberUpdateDto.getRetireDate();
+        if(memberUpdateDto.getCreatedDate().equals(null) || memberUpdateDto.getCreatedDate().equals("")) {
+            this.createdDate = null;
+        } else {
+            this.createdDate = dateFormat(memberUpdateDto.getCreatedDate());
+        }
+        this.modifiedDate = LocalDateTime.now();
+        if(memberUpdateDto.getRetireDate().equals(null) || memberUpdateDto.getRetireDate().equals("")) {
+            this.retireDate = null;
+        } else {
+            this.retireDate = dateFormat(memberUpdateDto.getRetireDate());
+        }
         this.memberAuth = memberUpdateDto.getMemberAuth();
         this.memberStatus = memberUpdateDto.getMemberStatus();
     }
-
 
     public void updateAnnualCount(double annualCount) {
         this.annualCount = annualCount;
     }
 
+    public LocalDateTime dateFormat(String date) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate localDate = LocalDate.parse(date, formatter);
+        LocalDateTime localDateTime = localDate.atStartOfDay();
+        return localDateTime;
+    }
 
 
 }
