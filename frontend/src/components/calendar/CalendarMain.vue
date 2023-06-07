@@ -2,7 +2,7 @@
   <tr v-for="(it, idx) in calendar" :key="idx">
     <td
       v-for="(day, dayIdx) in it"
-      :id="dayIdx"
+      :id="day.day"
       :key="dayIdx"
       class="border-2 w-48 h-28 relative"
       :class="{

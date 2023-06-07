@@ -260,7 +260,8 @@ export default {
       let data = {
         memberId: memberId.value,
         annualType: annualType.value,
-        period,
+        startDate: period.startDate,
+        endDate: period.endDate,
       };
 
       if (selectedLeaveType.value.includes("반차")) {
@@ -283,7 +284,8 @@ export default {
         data = {
           memberId: memberId.value,
           annualType: annualType.value,
-          period,
+          startDate: period.startDate,
+          endDate: period.endDate,
         };
       }
 

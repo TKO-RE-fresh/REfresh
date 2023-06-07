@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,6 +33,7 @@ public class LoginController {
     }
 
     @PostMapping("/join")
+    @Transactional
     public String join() {
         memberService.signup(MemberJoinDto.builder().deptName("서비스팀").memberId("chang").password("qwer1234").email("chang@daum.net").build());
         return "success";

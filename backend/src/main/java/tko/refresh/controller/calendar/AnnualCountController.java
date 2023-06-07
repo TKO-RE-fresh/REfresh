@@ -17,7 +17,6 @@ import tko.refresh.repository.calendar.AnnualCountEmRepository;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/calendar/annualCount")
 public class AnnualCountController {
 
     private final AnnualCountEmRepository annualCountEmRepository;

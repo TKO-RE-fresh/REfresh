@@ -3,6 +3,8 @@ import static lombok.AccessLevel.PROTECTED;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -30,5 +32,7 @@ public class Period {
         this.startDate = startDate;
         this.endDate = endDate;
     }
+
+
     
 }

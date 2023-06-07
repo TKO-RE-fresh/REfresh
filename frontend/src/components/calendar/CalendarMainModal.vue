@@ -26,35 +26,35 @@
                       <p
                         class="text-xs font-medium text-gray-900 truncate dark:text-white"
                       >
-                        {{ item.memberInfo.name }}
+                        {{ val.memberName }}
                       </p>
                       <p
                         class="text-xs text-gray-500 truncate dark:text-gray-400"
                       >
-                        {{ item.memberInfo.email }}
+                        {{}}
                       </p>
                     </div>
                     <div>
                       <span
                         :class="{
                           'bg-yellow-100':
-                            item.annualType === '오전 반차' ||
-                            item.annualType === '오후 반차',
-                          'bg-green-100': item.annualType === '연차',
-                          'text-green-800': item.annualType === '연차',
+                            val.annualType === '오전 반차' ||
+                            val.annualType === '오후 반차',
+                          'bg-green-100': val.annualType === '연차',
+                          'text-green-800': val.annualType === '연차',
                           'text-yellow-800':
-                            item.annualType === '오전 반차' ||
-                            item.annualType === '오후 반차',
+                            val.annualType === '오전 반차' ||
+                            val.annualType === '오후 반차',
                         }"
                         class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
                       >
-                        {{ item.annualType }}
+                        {{ val.annualType }}
                       </span>
                     </div>
                     <div
                       class="inline-flex items-center text-xs font-semibold text-gray-900 dark:text-white"
                     >
-                      {{ item.startDate }} ~ {{ item.endDate }}
+                      {{ val.startDate }} ~ {{ val.endDate }}
                     </div>
                   </div>
                 </li>
@@ -93,7 +93,6 @@ import Store from "@/store/index.js";
 import mixins from "@/utils/mixins";
 
 const emit = defineEmits(["closeEvent"]);
-
 function closeEvent() {
   emit("closeEvent");
 }
@@ -110,6 +109,7 @@ watch(props, async (oldValue, newValue) => {
 });
 onMounted(async () => {
   await fetchDataForModal();
+  console.log(annualList);
 });
 
 async function fetchDataForModal() {
