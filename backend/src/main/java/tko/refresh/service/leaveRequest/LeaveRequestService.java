@@ -14,6 +14,8 @@ import tko.refresh.repository.leaveRequest.LeaveRequestRepository;
 import tko.refresh.repository.leaveRequest.LeaveRequesterInfoRepository;
 import tko.refresh.repository.member.MemberRepository;
 import tko.refresh.service.admin.AnnualManageService;
+import tko.refresh.util.jwt.JwtAuthMember;
+
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
@@ -30,9 +32,10 @@ public class LeaveRequestService {
     private final AnnualRepository annualRepository;
     private final LeaveRequestRepository leaveRequestRepository;
 
+    private final JwtAuthMember jwtAuthMember;
     /* 사용한 연차일 수 받아오기 */
-    public Map<String, Double> getUsedAnnualLeave(String memberId) {
-        double restLeaveCount = leaveRequesterInfoRepository.findByAnnualCount(memberId);
+    public Map<String, Double> getUsedAnnualLeave() {
+        double restLeaveCount = leaveRequesterInfoRepository.findByAnnualCount(jwtAuthMember.getJwtAuthMember().getMemberId());
         double usedLeaveCount = 15 - restLeaveCount;
         Map<String, Double> annualLeaveMap = new HashMap<>();
         annualLeaveMap.put("restLeaveCount", restLeaveCount);
@@ -56,7 +59,6 @@ public class LeaveRequestService {
         }
         double workday = WorkdayCalReq(member.get().getAnnualCount(), dto);
 
-
         /* 연차 개수보다 더 많은 연차 신청 시 */
         if(workday < 0) {
             return GlobalResponseDto.builder()
@@ -71,7 +73,6 @@ public class LeaveRequestService {
         /* 연차 신청하려는 날짜가 이미 신청된 날짜인지 확인 */
         int count = annualRepository.countAnnualByMemberUidAndPeriod(existMember.getMemberId(),
                                                                  dto.getPeriod().getStartDate(), dto.getPeriod().getEndDate());
-
 
         if(count > 0) {
             return GlobalResponseDto.builder()
@@ -90,7 +91,6 @@ public class LeaveRequestService {
                 .message("연차 신청이 완료되었습니다.")
                 .build();
     }
-
 
     private Annual makeAnnualByMember(Member member, LeaveRequestDto dto) {
 
