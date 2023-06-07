@@ -86,8 +86,15 @@ function selectPage(idx) {
 
     watchEffect(async () => {
         const res = await mixins.methods.$api(`/admin/member`, `get`, { params });
+
+        console.log("date 포맷 로그 : ");
+        console.log(res);
+        console.log(res.data);
+        console.log(res.data.content[0].createdDate);
         
         for (let i=0; i<res.data.content.length; i++) {
+            (res.data.content[i].createdDate != null) ? res.data.content[i].createdDate = formatDate(res.data.content[i].createdDate) : res.data.content[i].createdDate =null;
+            (res.data.content[i].retireDate != null) ? res.data.content[i].retireDate = formatDate(res.data.content[i].retireDate) : res.data.content[i].retireDate =null;
             arr.push(res.data.content[i]);
         }
 
@@ -131,4 +138,11 @@ watch(() => props.status, (newValue) => {
     console.log(newValue);
     selectPage(1);
 });
+
+// date 포맷(yyy-mm-dd) 변경 메서드
+const formatDate = (value) => {
+const dateParts = value.substr(0, 10).split('-');
+const formatted = `${dateParts[0]}-${dateParts[1]}-${dateParts[2]}`;
+return formatted;
+};
 </script>
