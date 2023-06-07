@@ -79,8 +79,10 @@
 </template>
 
 <script setup>
+import Swal from "sweetalert2/dist/sweetalert2.js";
 import { defineProps, ref  } from "vue";
 import { useStore } from 'vuex';
+
 // import mixins from '@/utils/mixins';
 import axios from "axios";
 const store = useStore();
@@ -114,9 +116,19 @@ const accetpHandler= async () => {
     const body = makeBody();
     console.log(body);
     // const res = await mixins.methods.$api(`admin/annual`,'put', body);
-    await axios.put('http://localhost:8090/admin/annual', body);
+    await axios.put('http://localhost:8090/admin/annual', body)
+      .then(()=>{
+        Swal.Swal.fire({
+          toast: true,
+          icon: 'success',
+          title: '연차 신청 처리를 성공',
+          timer: 2000,
+          timerProgressBar: true
+        })
+
+    });
     props.onToggle();
-    store.commit("setAnnualList", store.state.currentPage);
+    store.commit("setAnnualList", 1);
 }
 </script>
 

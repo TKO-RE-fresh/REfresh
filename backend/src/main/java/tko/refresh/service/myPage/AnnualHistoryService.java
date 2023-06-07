@@ -16,6 +16,7 @@ import tko.refresh.repository.calendar.AnnualCountRepository;
 import tko.refresh.repository.member.MemberRepository;
 import tko.refresh.repository.myPage.AnnualHistoryRepository;
 import tko.refresh.service.admin.AnnualManageService;
+import tko.refresh.util.jwt.JwtAuthMember;
 import tko.refresh.util.page.Pagination;
 
 import javax.transaction.Transactional;
@@ -51,7 +52,7 @@ public class AnnualHistoryService {
         double periodCount = annual.getAnnualType().equals(AnnualType.ANNUAL_LEAVE) ? annualManageService.WorkingDaysCounter(period) : 0.5;
         if(periodCount < 1) return false;
 
-        statusResult = annualHistoryRepository.cancelAnnualStatus(uid, AnnualStatus.CANCEL, "juhee");
+        statusResult = annualHistoryRepository.cancelAnnualStatus(uid, AnnualStatus.CANCEL, member.getMemberId());
 
         //연차 승인상태 일 때,
         if (annual.getAnnualStatus().equals(AnnualStatus.AGREE)) {
