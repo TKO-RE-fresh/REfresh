@@ -9,7 +9,6 @@ import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
 
-
 @Getter
 @ToString
 public class LeaveRequestDto {
@@ -22,6 +21,9 @@ public class LeaveRequestDto {
     @Valid
     @ValidPeriod
     private Period period;
+
+    public LeaveRequestDto() {
+    }
 
     public LeaveRequestDto(String memberId, String annualType, LocalDateTime startDate, LocalDateTime endDate) {
         this.memberId = memberId;

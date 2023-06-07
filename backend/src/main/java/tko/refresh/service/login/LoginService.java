@@ -8,6 +8,7 @@ import static tko.refresh.util.jwt.JwtUtil.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -22,8 +23,6 @@ import lombok.RequiredArgsConstructor;
 import tko.refresh.domain.emb.MemberInfo;
 import tko.refresh.domain.entity.Department;
 import tko.refresh.domain.entity.Member;
-import tko.refresh.domain.enu.MemberStatus;
-import tko.refresh.domain.enu.RoleType;
 import tko.refresh.dto.GlobalResponseDto;
 import tko.refresh.dto.member.MemberJoinDto;
 import tko.refresh.dto.member.request.MemberLoginReqDto;
@@ -64,7 +63,7 @@ public class LoginService {
         Member member = Member.builder()
                 .memberId(dto.getMemberId())
                 .password(dto.getPassword())
-                .memberAuth(RoleType.ADMIN)
+                .memberAuth(dto.getMemberAuth())
                 .memberInfo(MemberInfo.builder()
                             .name(dto.getMemberName())
                             .email(dto.getMemberEmail())
@@ -72,7 +71,6 @@ public class LoginService {
                             .build())
                 .memberStatus(dto.getMemberStatus())
                 .annualCount(dto.getAnnualCount())
-                .modifiedDate(LocalDateTime.now())
                 .department(dept)
                 .createdDate(dateFormat(dto.getCreatedDate()))
                 .modifiedBy(dto.getModifiedBy())
@@ -91,15 +89,16 @@ public class LoginService {
 
 
         // 아이디 검사
-        Member member = memberRepository.findByMemberId(loginDto.getMemberId()).get();
-        if(member == null) {
-            return MemberLoginResDto.builder().statusCode(UNAUTHORIZED.value()).message("아이디가 올바르지 않습니다.").build();
+        Optional<Member> existMember = memberRepository.findByMemberId(loginDto.getMemberId());
+        if(existMember.isEmpty()) {
+            return MemberLoginResDto.builder().statusCode(FORBIDDEN.value()).message("id").build();
         }
 
+        Member member = existMember.get();
 
         // 비밀번호 검사
         if(!passwordEncoder.matches(loginDto.getPassword(), member.getPassword())) {
-            return MemberLoginResDto.builder().statusCode(UNAUTHORIZED.value()).message("비밀번호가 올바르지 않습니다.").build();
+            return MemberLoginResDto.builder().statusCode(FORBIDDEN.value()).message("pwd").build();
         }
         //--유효한 계정--
 
@@ -144,8 +143,5 @@ public class LoginService {
         LocalDateTime localDateTime = localDate.atStartOfDay();
         return localDateTime;
     }
-
-
-
 
 }

@@ -7,11 +7,13 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 import java.time.LocalDateTime;
 
+import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -43,11 +45,14 @@ class MemberServiceTest {
     @Autowired
     private DepartmentRepository departmentRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     @BeforeEach
     void setUp() {
         Department department = new Department("개발팀", "code", "intro", "image", LocalDateTime.now(), LocalDateTime.now());
         MemberInfo memberInfo = new MemberInfo("name1245", "012-1211-2124", "position@gmail.com");
-        Member member = new Member("member", "1234", memberInfo, 15, MemberStatus.IN_USE, RoleType.MEMBER , department, LocalDateTime.now(), LocalDateTime.now(), null, "sdds", "sdds");
+        String encode = passwordEncoder.encode("1234");
+        Member member = new Member("member", encode, memberInfo, 15, MemberStatus.IN_USE, RoleType.ADMIN , department, LocalDateTime.now(), LocalDateTime.now(), null, "sdds", "sdds");
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).apply(springSecurity()).build();
         departmentRepository.save(department);
         memberRepository.save(member);
@@ -57,9 +62,16 @@ class MemberServiceTest {
 
     @Test
     void 로그인_테스트() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(post("/login").contentType(MediaType.APPLICATION_FORM_URLENCODED).
-                                                            param("memberId", "member")
-                                                            .param("password", "1234")).andReturn();
+        // 요청 본문 데이터 생성
+        JSONObject requestBody = new JSONObject();
+        requestBody.put("memberId", "member");
+        requestBody.put("password", "1234");
+
+        MvcResult mvcResult = mockMvc.perform(post("/login")
+                                                      .contentType(MediaType.APPLICATION_JSON)
+                                                      .content(requestBody.toString()))
+                                     .andReturn();
+
         assertThat(mvcResult.getResponse().getStatus()).isEqualTo(200);
 
     }

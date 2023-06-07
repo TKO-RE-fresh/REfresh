@@ -41,8 +41,8 @@ public class AnnualManageRepositoryImpl implements AnnualManageRepositoryCustom 
         return queryFactory
                 .select(annual.count())
                 .from(annual)
-                .join(annual.member, member)
-                .join(member.department,department)
+                .leftJoin(annual.member, member)
+                .leftJoin(member.department,department)
                 .where(
                         memberNameEq(searchDto.getMemberName()),
                         departmentNameEq(searchDto.getDepartmentName()),
@@ -51,8 +51,8 @@ public class AnnualManageRepositoryImpl implements AnnualManageRepositoryCustom 
                 .fetchOne();
     }
 
-    public List<AnnualManageDto> searchAnnualList(AnnualSearchDto searchDto, Pageable pageable) {
 
+    public List<AnnualManageDto> searchAnnualList(AnnualSearchDto searchDto, Pageable pageable) {
          return queryFactory
                 .select(Projections.constructor(AnnualManageDto.class,
                         annual.uid,
@@ -67,7 +67,7 @@ public class AnnualManageRepositoryImpl implements AnnualManageRepositoryCustom 
                 ))
                 .from(annual)
                 .leftJoin(annual.member, member)
-                .leftJoin(member.department, department)
+                .leftJoin(annual.member.department, department)
                 .where(
                         memberNameEq(searchDto.getMemberName()),
                         departmentNameEq(searchDto.getDepartmentName()),
@@ -81,11 +81,11 @@ public class AnnualManageRepositoryImpl implements AnnualManageRepositoryCustom 
 
 
     private BooleanExpression memberNameEq(String memberName){
-        return memberName == null ? null :member.memberInfo.name.contains(memberName);
+        return memberName.isEmpty() ? null :member.memberInfo.name.contains(memberName);
     }
 
     private BooleanExpression departmentNameEq(String departmentName){
-        return departmentName == null ? null : department.name.eq(departmentName);
+        return departmentName.isEmpty() ? null : department.name.eq(departmentName);
     }
 
     private BooleanExpression annualStatusEq(AnnualStatus status){

@@ -25,7 +25,6 @@ import tko.refresh.repository.calendar.*;
 import tko.refresh.repository.member.MemberRepository;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @SpringBootTest
 @TestPropertySource("classpath:application-TEST.properties")
@@ -48,9 +47,6 @@ class AnnualManageServiceTest {
 
     @Autowired
     private AnnualManageService annualManageService;
-
-    @Autowired
-    private HolidayRepository holidayRepository;
 
     @BeforeEach
     public void setup(){
@@ -83,7 +79,11 @@ class AnnualManageServiceTest {
     @Test
     public void 관리자_연차관리정보_불러오기(){
 
+<<<<<<< HEAD
+        list = annualManageService.getSearchAnnualMangeList(AnnualSearchDto.builder().build(), 1);
+=======
         list = annualManageService.getSearchAnnualMangeList(new AnnualSearchDto(),1);
+>>>>>>> e374b5570e1079a0fed83bfff24415906be6d973
         list.stream().forEach(System.out::println);
 
         Assertions.assertEquals(list.getContent().size(),1);

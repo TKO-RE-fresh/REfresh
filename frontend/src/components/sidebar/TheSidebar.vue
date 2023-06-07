@@ -24,7 +24,9 @@
           </div>
           <div class="mt-2">
             <label class="ml-6">예정 일정</label>
-            <a href="/mypage/history" class="ml-6 text-blue-500">예정휴가(하드)</a>
+            <a href="/mypage/history" class="ml-6 text-blue-500"
+              >예정휴가(하드)</a
+            >
           </div>
         </div>
       </div>
@@ -71,7 +73,7 @@
         </li>
         <li>
           <router-link
-            to="#"
+            to="/mypage/history"
             class="flex items-center p-2 text-gray-500 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
           >
             <svg
@@ -90,7 +92,7 @@
             <span class="flex-1 ml-3 whitespace-nowrap">마이페이지</span>
           </router-link>
         </li>
-        <li>
+        <li v-if="auth === 'admin'">
           <!--        <li v-if="isAdmin">-->
           <router-link
             to="/admin"
@@ -116,12 +118,7 @@
 </template>
 
 <script setup>
-// export default {
-//   name: "TheSidebar",
-//   computed: {
-//     isAdmin() {
-//       return this.$session.MemberLogin.authority === "admin";
-//     },
-//   },
-// };
+import { ref } from "vue";
+import Store from "@/store/index.js";
+const auth = ref(Store.state.auth);
 </script>

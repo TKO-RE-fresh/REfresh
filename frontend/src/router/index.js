@@ -3,9 +3,9 @@ import LoginView from "../views/login/LoginView";
 import CalendarView from "../views/calendar/CalendarView";
 import LeaveRequestView from "../views/leaveRequest/LeaveRequestView";
 import AdminView from "../views/admin/AdminView";
+import HistoryView from "../views/mypage/history/HistoryView";
 import Store from '@/store/index';
 import mixins from '@/utils/mixins';
-
 const routes = [
   {
     path: "/",
@@ -26,6 +26,11 @@ const routes = [
     path:"/admin",
     name: "AdminView",
     component : AdminView
+  },
+  {
+    path:"/mypage/history",
+    name: "HistoryView",
+    component: HistoryView,
   }
 ]
 
@@ -36,34 +41,34 @@ const router = createRouter({
 
 
 router.beforeEach(async (to, from, next) => {
-
-  if (to.path === '/' && from.path === '/') {
-    // 첫 로그인이거나 url로 접근
-    try {
-      // 권한이 있는지 확인
-      const res = await Store.dispatch('checkCookie');
-          if (res.status === 200) {
-          next('/calendar');
-        }
+  console.log(to, from);
+  try {
+    // 권한이 있는지 확인
+    const res = await Store.dispatch('checkCookie');
+    if (res.status === 200) {
+      if (to.path === '/') {
+        next('calendar');
+        return;
+      }
+      next();
       return;
-    } catch (e) {
+    } else if (to.path === '/') {
+      if (Store.state.token !== null) {
+        next();
+        return; 
+      }
+      mixins.methods.logout();
       next();
       return;
     }
-  } else if (to.path === '/') {
-    // 로그아웃 시
-    await mixins.methods.logout();
+  } catch (e) {
     next();
     return;
   }
+
   if (Store.state.token === null) {
-    try {
-      await Store.dispatch('checkCookie');
-      next();
-      return;
-    } catch (e) {
-      next('/');
-    }
+    next();
+    return;  
   }
   next();
 });

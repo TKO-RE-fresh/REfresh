@@ -179,7 +179,10 @@
 
 <script setup>
 import Router from "@/router/index.js";
-function logout() {
+import mixins from "@/utils/mixins";
+
+async function logout() {
+  await mixins.methods.logout();
   Router.push({ path: "/" });
 }
 </script>

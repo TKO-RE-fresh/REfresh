@@ -1,8 +1,15 @@
 import { createApp } from "vue";
+import VueSweetalert2 from 'vue-sweetalert2';
 import App from "./App.vue";
 import router from "./router";
 import store from "./store/index";
 import mixins from "./utils/mixins";
 import "./style.css";
 
-createApp(App).use(store).mixin(mixins).use(router).mount("#app");
+import 'sweetalert2/dist/sweetalert2.min.css';
+
+
+
+createApp(App).use(store).use(VueSweetalert2).mixin(mixins).use(router).mount("#app");
+
+

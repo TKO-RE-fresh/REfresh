@@ -98,8 +98,8 @@ const totalPages = ref(0);
 
 function onFormSubmit(e) {
   e.preventDefault();
-  Store.commit("setAnnualList");
-  Store.commit("setSearchInput",searchInput);
+  Store.commit("setManageSearch", searchInput);
+  Store.commit("setAnnualList", 1);
 }
 
 onMounted(() => {
@@ -109,8 +109,7 @@ onMounted(() => {
 
 function selectPage(idx) {
   currentPage.value=idx;
-  Store.commit("setCurrentPage", idx);
-  Store.commit("setAnnualList", currentPage.value, searchInput);
+  Store.commit("setAnnualList", currentPage.value);
   totalPages.value = Store.state.annualList.totalPages;
 }
 

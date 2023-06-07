@@ -1,36 +1,114 @@
 <template>
-  <th>
-    <button class="border-2" @click="resetYearMonth">오늘</button>
-  </th>
-  <th>
-    <select @change="handleDept">
-      <option v-for="(item, idx) in dept" :key="idx">{{ item.name }}</option>
-    </select>
-  </th>
-  <th>
-    <a class="text-4xl cursor-pointer" @click="debouncePrevEvent"> &lt; </a>
-  </th>
-  <div class="w-36">
-    <th class="overflow-visible whitespace-nowrap text-4xl">
-      {{ dateRef.year }}년 {{ dateRef.month }}월
-    </th>
+  <div class="flex space-x-36 mb-12 items-center">
+    <div class="w-fit">
+      <div class="h-fit p-3 whitespace-nowrap flex items-center">
+        <svg
+          class="w-12 h-12 text-gray-500 transition-all duration-300 transform rotate-180 hover:scale-110 cursor-pointer"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          xmlns="http://www.w3.org/2000/svg"
+          @click="debouncePrevEvent"
+        >
+          <path
+            d="M9 18l6-6-6-6"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+        <div class="text-4xl">{{ dateRef.year }}년 {{ dateRef.month }}월</div>
+        <svg
+          class="w-12 h-12 text-gray-500 transition-all duration-300 transform rotate-180 hover:scale-110 cursor-pointer"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          xmlns="http://www.w3.org/2000/svg"
+          @click="debounceNextEvent"
+        >
+          <path
+            d="M15 18l-6-6 6-6"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+        <div class="fit-content">
+          <a
+            class="m-auto cursor-pointer text-gray-700 hover:text-gray-900 transition-all duration-300"
+            @click="subCalendar"
+          >
+            <svg
+              class="fill-current w-12 h-12 ml-2 transform transition-all duration-300"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M10 13a1 1 0 0 1-.707-.293l-3-3a1 1 0 1 1 1.414-1.414L10 10.586l2.293-2.293a1 1 0 1 1 1.414 1.414l-3 3A1 1 0 0 1 10 13z"
+              />
+            </svg>
+          </a>
+        </div>
+        <div>
+          <button
+            class="w-16 h-6 bg-blue-500 hover:bg-blue-700 text-white px-1 rounded"
+            @click="resetYearMonth"
+          >
+            오늘
+          </button>
+        </div>
+      </div>
+    </div>
+    <div v-if="auth === 'admin'">
+      <select
+        class="block appearance-none py-2 px-40 relative border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+        @change="handleDept"
+      >
+        <option v-for="(item, idx) in dept" :key="idx">
+          <div class="absolute">
+            {{ item.name }}
+          </div>
+        </option>
+      </select>
+    </div>
+    <div v-else>
+      <div class="text-4xl">{{ Store.state.deptName }}</div>
+    </div>
+    <div v-if="auth === 'admin'">
+      <button
+        class="w-24 h-6 bg-blue-500 hover:bg-blue-700 text-white px-1 rounded"
+        @click="ocSearchModal"
+      >
+        사원 검색하기
+      </button>
+    </div>
+    <calendar-search-modal
+      v-if="searchModal"
+      @closeSearchEvent="ocSearchModal"
+    ></calendar-search-modal>
   </div>
-
-  <th>
-    <a class="text-4xl cursor-pointer" @click="debounceNextEvent"> &gt; </a>
-  </th>
-  <div class="mb-12"></div>
 </template>
 
 <script setup>
-import { defineProps, defineEmits, reactive, watch } from "vue";
+import { defineProps, defineEmits, reactive, watch, ref } from "vue";
 import Store from "@/store/index.js";
-const emit = defineEmits(["deptEvent", "yearMonthEvent"]);
+import CalendarSearchModal from "@/components/calendar/CalendarSearchModal.vue";
+const emit = defineEmits(["deptEvent", "yearMonthEvent", "subCalendarEvent"]);
 
 let prevEventTimeOut;
 let nextEventTimeOut;
+const year = new Date().getFullYear();
+const month = new Date().getMonth() + 1;
+const auth = ref(Store.state.auth);
+console.log(Store.state.auth);
+const searchModal = ref(false);
+
 const debouncePrevEvent = () => debounce(prevEvent, prevEventTimeOut);
 const debounceNextEvent = () => debounce(nextEvent, nextEventTimeOut);
+
+function ocSearchModal() {
+  searchModal.value = !searchModal.value;
+}
 function debounce(fn, time) {
   if (time) {
     clearTimeout(time);
@@ -44,6 +122,10 @@ const dateRef = reactive({
   year: props.year,
   month: props.month,
 });
+
+function subCalendar(e) {
+  emit("subCalendarEvent", e);
+}
 
 Store.watch((newState) => {
   dateRef.year = newState.calendarYear;
@@ -73,8 +155,11 @@ function prevEvent() {
 }
 
 function resetYearMonth() {
-  dateRef.year = new Date().getFullYear();
-  dateRef.month = new Date().getMonth() + 1;
+  if (dateRef.year === year && dateRef.month === month) {
+    return;
+  }
+  dateRef.year = year;
+  dateRef.month = month;
   Store.commit("setCalendarDate", { year: dateRef.year, month: dateRef.month });
 }
 
@@ -110,6 +195,9 @@ const props = defineProps({
   },
 });
 function handleDept(e) {
+  if (Store.state.auth !== "admin") {
+    return;
+  }
   const dept = e.target.value;
   emit("deptEvent", dept);
 }

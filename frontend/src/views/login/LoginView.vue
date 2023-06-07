@@ -28,6 +28,7 @@
                 aria-required="true"
               />
             </div>
+            <span>{{ alertIdMsg }}</span>
           </div>
           <div class="mb-4">
             <label class="block text-gray-700 font-bold mb-2" for="password"
@@ -42,8 +43,8 @@
               aria-required="true"
               placeholder="비밀번호 입력"
             />
+            <span>{{ alertPwMsg }}</span>
           </div>
-
           <div class="flex justify-between">
             <label class="block text-gray-500 font-bold my-4"
               ><input type="checkbox" class="leading-loose text-pink-600" />
@@ -71,12 +72,34 @@
   </main>
 </template>
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import mixins from "@/utils/mixins";
 import Router from "@/router/index.js";
 
 const memberId = ref("");
 const password = ref("");
+const alertIdMsg = ref("");
+const alertPwMsg = ref("");
+
+watch(memberId, () => {
+  idCheck();
+});
+
+watch(password, () => {
+  passwordCheck();
+});
+
+function idCheck() {
+  if (alertIdMsg.value !== "") {
+    alertIdMsg.value = "";
+  }
+}
+
+function passwordCheck() {
+  if (alertPwMsg.value !== "") {
+    alertPwMsg.value = "";
+  }
+}
 
 async function onSubmit() {
   const body = {
@@ -85,12 +108,20 @@ async function onSubmit() {
   };
   try {
     const res = await mixins.methods.$api("login", "post", { data: body });
-    if (res.status !== 200 || !res) {
-      throw new Error("로그인 실패");
-    } else {
+    if (res && res.status === 200) {
       Router.push({ path: "/calendar" });
     }
   } catch (err) {
+    if (err.response.status === 403) {
+      if (err.response.data.message === "id") {
+        alertIdMsg.value = "아이디를 확인해주세요.";
+      } else {
+        alertPwMsg.value = "비밀번호를 확인해주세요.";
+      }
+    } else {
+      alertIdMsg.value = "아이디를 확인해주세요.";
+      alertPwMsg.value = "비밀번호를 확인해주세요.";
+    }
     console.log(err);
   }
 }
