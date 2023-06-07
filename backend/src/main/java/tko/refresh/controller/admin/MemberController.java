@@ -5,14 +5,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import lombok.RequiredArgsConstructor;
-import tko.refresh.dto.admin.MemberDetailDto;
-import tko.refresh.dto.admin.MemberDto;
-import tko.refresh.dto.admin.MemberSearchDto;
-import tko.refresh.dto.admin.MemberUpdateDto;
+import tko.refresh.dto.admin.*;
+import tko.refresh.dto.member.MemberJoinDto;
 import tko.refresh.repository.department.MemberDepartmentRepository;
 import tko.refresh.service.admin.MemberService;
+import tko.refresh.service.login.LoginService;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @RestController
@@ -24,19 +24,16 @@ public class MemberController {
 
     private final MemberDepartmentRepository departmentRepository;
 
+    private final LoginService loginService;
+
     @GetMapping
-    public ResponseEntity getMemberAllList(@RequestParam(required = false) MemberSearchDto searchDto,
-                                           @RequestParam int page) {
-        int formatPage = page;
+    public ResponseEntity getMemberAllList(@ModelAttribute MemberSearchDto searchDto,
+                                           @RequestParam Optional<Integer> page) {
+        int formatPage = page.orElse(1);
 
         Page<MemberDto> list;
-        if(searchDto == null) {
-            System.out.println("전체 사원 조회");
-            list = memberService.getAllMemberList(formatPage);
-        } else {
-            System.out.println("검색 사원 조회");
-            list = memberService.getSearchMemberList(searchDto, formatPage);
-        }
+
+        list = memberService.getSearchMemberList(searchDto, formatPage);
 
         return ResponseEntity.ok().body(list);
     }
@@ -64,5 +61,22 @@ public class MemberController {
 
         return ResponseEntity.ok().body(list);
     }
+
+    @GetMapping("/searchForm")
+    public ResponseEntity getSearchFrom() {
+
+        SearchFormDto searchFormDto = memberService.getSearchForm();
+
+        return ResponseEntity.ok().body(searchFormDto);
+    }
+
+    @PostMapping
+    public ResponseEntity createMember(@RequestBody MemberJoinDto memberJoinDto) {
+
+        loginService.signup(memberJoinDto);
+
+        return ResponseEntity.ok("Success");
+    }
+
 
 }

@@ -5,7 +5,9 @@ import static tko.refresh.domain.enu.RedisData.MEMBER_AUTH;
 import static tko.refresh.domain.enu.RedisData.MEMBER_NAME;
 import static tko.refresh.util.jwt.JwtUtil.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 import javax.servlet.http.Cookie;
@@ -21,8 +23,6 @@ import lombok.RequiredArgsConstructor;
 import tko.refresh.domain.emb.MemberInfo;
 import tko.refresh.domain.entity.Department;
 import tko.refresh.domain.entity.Member;
-import tko.refresh.domain.enu.MemberStatus;
-import tko.refresh.domain.enu.RoleType;
 import tko.refresh.dto.GlobalResponseDto;
 import tko.refresh.dto.member.MemberJoinDto;
 import tko.refresh.dto.member.request.MemberLoginReqDto;
@@ -52,26 +52,32 @@ public class LoginService {
             return GlobalResponseDto.builder().message("중복된 아이디입니다.").statusCode(BAD_REQUEST.value()).build();
         }
         // email 중복검사
-        if(memberRepository.findByLoginEmail(dto.getEmail()).isPresent()){
+        if(memberRepository.findByLoginEmail(dto.getMemberEmail()).isPresent()){
             return GlobalResponseDto.builder().message("중복된 이메일입니다.").statusCode(BAD_REQUEST.value()).build();
         }
-        Department dept = departmentRepository.findByName(dto.getDeptName());
+
+        Department dept = departmentRepository.findByName(dto.getDepartmentName());
 
         // 패스워드 암호화
         dto.setEncodePwd(passwordEncoder.encode(dto.getPassword()));
         Member member = Member.builder()
                 .memberId(dto.getMemberId())
                 .password(dto.getPassword())
-                .memberAuth(RoleType.MEMBER)
-                              .memberInfo(MemberInfo.builder().name("김창헌").email(dto.getEmail()).cellphone("010-4537-7123").build())
-                              .memberStatus(MemberStatus.IN_USE)
-                              .annualCount(15.0)
-                              .modifiedDate(LocalDateTime.now())
+                .memberAuth(dto.getMemberAuth())
+                .memberInfo(MemberInfo.builder()
+                            .name(dto.getMemberName())
+                            .email(dto.getMemberEmail())
+                            .cellphone(dto.getMemberCellphone())
+                            .build())
+                .memberStatus(dto.getMemberStatus())
+                .annualCount(dto.getAnnualCount())
                 .department(dept)
-                .createdDate(LocalDateTime.now())
-                .modifiedBy("admin")
+                .createdDate(dateFormat(dto.getCreatedDate()))
+                .modifiedBy(dto.getModifiedBy())
                 .modifiedDate(LocalDateTime.now())
-                .createdBy("admin").build();
+                .createdBy(dto.getCreatedBy())
+                .build();
+
         dept.addMember(member);
         // 회원가입 성공
         memberRepository.save(member);
@@ -131,7 +137,11 @@ public class LoginService {
         response.setHeader(ACCESS_TOKEN, tokenDto.getAccessToken());
     }
 
-
-
+    public LocalDateTime dateFormat(String date) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate localDate = LocalDate.parse(date, formatter);
+        LocalDateTime localDateTime = localDate.atStartOfDay();
+        return localDateTime;
+    }
 
 }

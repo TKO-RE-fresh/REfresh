@@ -109,13 +109,13 @@ public class Member extends BaseEntity {
         this.department = department;
         this.annualCount = memberUpdateDto.getAnnualCount();
         this.modifiedBy = memberUpdateDto.getModifiedBy();
-        if(memberUpdateDto.getCreatedDate().equals(null) || memberUpdateDto.getCreatedDate().equals("")) {
+        if(memberUpdateDto.getCreatedDate() == null || memberUpdateDto.getCreatedDate() == "") {
             this.createdDate = null;
         } else {
             this.createdDate = dateFormat(memberUpdateDto.getCreatedDate());
         }
         this.modifiedDate = LocalDateTime.now();
-        if(memberUpdateDto.getRetireDate().equals(null) || memberUpdateDto.getRetireDate().equals("")) {
+        if(memberUpdateDto.getRetireDate() == null || memberUpdateDto.getRetireDate() == "") {
             this.retireDate = null;
         } else {
             this.retireDate = dateFormat(memberUpdateDto.getRetireDate());

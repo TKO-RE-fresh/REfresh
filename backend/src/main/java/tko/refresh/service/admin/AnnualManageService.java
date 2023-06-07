@@ -6,15 +6,18 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import tko.refresh.domain.emb.Period;
 import tko.refresh.domain.entity.Annual;
+import tko.refresh.domain.entity.Department;
 import tko.refresh.domain.entity.Member;
 import tko.refresh.domain.enu.AnnualStatus;
 import tko.refresh.domain.enu.AnnualType;
 import tko.refresh.dto.admin.AnnualManageDto;
 import tko.refresh.dto.admin.AnnualSearchDto;
+import tko.refresh.dto.member.AuthMemberDto;
 import tko.refresh.repository.admin.AnnualManageRepository;
 import tko.refresh.repository.calendar.AnnualCountRepository;
 import tko.refresh.repository.calendar.HolidayRepository;
 import tko.refresh.repository.member.MemberRepository;
+import tko.refresh.util.jwt.JwtAuthMember;
 import tko.refresh.util.page.Pagination;
 
 import javax.transaction.Transactional;
@@ -26,12 +29,13 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class AnnualManageService {
-    private final int PAGE_SIZE = 1;
+    private final int PAGE_SIZE = 5;
 
     private final AnnualManageRepository annualManageRepo;
     private final MemberRepository memberRepository;
     private  final HolidayRepository holidayRepository;
     private final AnnualCountRepository annualCountRepository;
+    private final JwtAuthMember jwtAuthMember;
 
     public Page<AnnualManageDto> getSearchAnnualMangeList(AnnualSearchDto searchDto,int page){
         Pageable pageable = Pagination.setPageable(page,PAGE_SIZE);
@@ -51,13 +55,15 @@ public class AnnualManageService {
 
         if(periodCount < 0 && member.getAnnualCount() - periodCount < 1) return false;
 
+        AuthMemberDto authMember = jwtAuthMember.getJwtAuthMember();
+
         //사원 연차 차감
         annualCountResult = memberRepository.setSubAnnualCount(member.getMemberId(), periodCount);
         //연차 집계 증가
         sumResult = annualCountRepository.setAnnualSumCount(period.getStartDate(), period.getEndDate(), member.getDepartment().getUid());
 
         //승인 상태 변경
-        statusResult = annualManageRepo.acceptAnnualStatus(uid,AnnualStatus.AGREE,"admin");
+        statusResult = annualManageRepo.acceptAnnualStatus(uid,AnnualStatus.AGREE,authMember.getMemberId());
 
         return successTransaction(annualCountResult, sumResult, statusResult);
     }
@@ -68,7 +74,7 @@ public class AnnualManageService {
     };
 
 
-    @Transactional(rollbackOn = RuntimeException.class)
+    @Transactional
     public boolean RejectAnnualRequest(UUID uid,String msg){
         Annual annual = annualManageRepo.findById(uid).orElse(null);
         if(annual == null) return false;
