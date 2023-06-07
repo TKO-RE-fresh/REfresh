@@ -1,9 +1,12 @@
 package tko.refresh.dto.calendar.response.annual;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import lombok.Builder;
 import lombok.Getter;
+import tko.refresh.domain.emb.MemberInfo;
 import tko.refresh.domain.emb.Period;
 import tko.refresh.domain.enu.AnnualType;
 import tko.refresh.util.valid.ValidDeptName;
@@ -11,18 +14,14 @@ import tko.refresh.util.valid.ValidDeptName;
 @Getter
 public class GetAnnualByDateAndDeptResDto extends AnnualResponse {
 
-    @NotBlank
-    private String memberName;
+    @NotNull
+    private MemberInfo memberInfo;
 
-    @NotBlank
-    @ValidDeptName
-    private String deptName;
 
     @Builder
-    public GetAnnualByDateAndDeptResDto(String memberName, String deptName, String annualType, Period period) {
+    public GetAnnualByDateAndDeptResDto(MemberInfo memberInfo, String annualType, Period period) {
         super(annualType, period.getStartDate().toLocalDate(), period.getEndDate().toLocalDate());
-        this.deptName = deptName;
-        this.memberName = memberName;
+        this.memberInfo = memberInfo;
     }
 
 

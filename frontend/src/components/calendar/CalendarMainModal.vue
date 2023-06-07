@@ -26,12 +26,12 @@
                       <p
                         class="text-xs font-medium text-gray-900 truncate dark:text-white"
                       >
-                        {{ val.memberName }}
+                        {{ val.memberInfo.name }}
                       </p>
                       <p
                         class="text-xs text-gray-500 truncate dark:text-gray-400"
                       >
-                        {{}}
+                        {{ val.memberInfo.email }}
                       </p>
                     </div>
                     <div>
@@ -66,6 +66,7 @@
                 <paging-component
                   :currentPage="curPage"
                   :totalPages="totalPage"
+                  @selectPage="fetchDataForModal"
                 ></paging-component>
               </div>
               <div
@@ -99,25 +100,30 @@ function closeEvent() {
 const year = ref(Store.state.calendarYear);
 const month = ref(Store.state.calendarMonth);
 const annualList = reactive([]);
-const curPage = ref(0);
+const curPage = ref(1);
 const totalPage = ref(0);
 
 watch(props, async (oldValue, newValue) => {
   if (oldValue.day !== newValue.day) {
+    curPage.value = 1;
     await fetchDataForModal();
   }
 });
 onMounted(async () => {
-  await fetchDataForModal();
+  const pages = await fetchDataForModal();
   console.log(annualList);
+  totalPage.value = pages;
 });
 
-async function fetchDataForModal() {
+async function fetchDataForModal(num) {
+  if (num) {
+    curPage.value = num;
+  }
   const params = makeParams();
   const res = await mixins.methods.$api("calendar/annual", "get", { params });
   annualList.splice(0, annualList.length, ...res.data.content);
-  curPage.value = res.data.curPage;
-  totalPage.value = res.data.totalPage;
+
+  return res.data.totalPage;
 }
 
 function makeParams() {
@@ -130,7 +136,7 @@ function makeParams() {
     day: Number(props.day),
     year,
     month,
-    page: 1,
+    page: curPage.value,
     size: 5,
   };
 }
