@@ -6,6 +6,7 @@ const store =  createStore({
   state: {
     token: null,
     annualList: [],
+    historyList : [],
     calendarYear: new Date().getFullYear(),
     calendarMonth: new Date().getMonth() + 1,
     deptName: null,
@@ -13,12 +14,16 @@ const store =  createStore({
     memberName: null,
     auth: null,
     deptList: [],
-    searchInput: {
+    manageSearch: {
       memberName: "",
       departmentName: "",
       status: "",
     },
-    currentPage : 1,
+    historySearch : {
+      status: '',
+      type: '',
+      year: 0
+    }
   },
   getters: {
     getAccessToken: (state) => {
@@ -48,11 +53,14 @@ const store =  createStore({
     getAnnualList: (state) => {
       return state.annualList;
     },
-    getSearchInput: (state) => {
-      return state.searchInput;
+    getManageSearch: (state) => {
+      return state.manageSearch;
     },
-    getCurrentPage : (state) => {
-      return state.currentPage
+    getHistoryList: (state) => {
+      return state.historyList;
+    },
+    getHistorySearch: (state) => {
+      return state.historySearch;
     }
   },
   mutations: {
@@ -72,9 +80,17 @@ const store =  createStore({
       const res = await mixins.methods.$api(
         `admin/annual/${page}`,
         "get",
-        { params: state.searchInput }
+        { params: state.manageSearch }
       );
       state.annualList = res.data;
+    },
+    setHistoryList: async (state, page) => {
+      const res = await mixins.methods.$api(
+        `myPage/history/${page}`,
+        'get',
+        {params: state.historySearch}
+      )
+      state.historyList = res.data;
     },
     setCalendarDate: (state, date) => {
       const { year, month } = date;
@@ -87,14 +103,14 @@ const store =  createStore({
     setDeptList: (state, deptList) => {
       state.deptList = deptList;
     },
+    setManageSearch: (state, manageSearch) => {
+      state.manageSearch = manageSearch;
+    },
+    setHistorySearch: (state,searchInput) =>{
+      state.historySearch = searchInput;
+    },
     setAuth: (state, auth) => {
       state.auth = auth;
-    },
-    setSearchInput: (state, searchInput) => {
-      state.searchInput = searchInput;
-    },
-    setCurrentPage1: (state,page) => {
-      state.currentPage = page;
     },
   },
   actions: {
@@ -120,9 +136,6 @@ const store =  createStore({
   modules: {},
   plugins: [],
 });
-
-
-
 
 store.subscribe((mutation, state) => {
   if (mutation.type === 'setAccessToken') {

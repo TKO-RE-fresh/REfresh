@@ -20,19 +20,17 @@ import tko.refresh.util.page.Pagination;
 import javax.transaction.Transactional;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class AnnualManageService {
-    private final int PAGE_SIZE = 5;
+    private final int PAGE_SIZE = 1;
 
     private final AnnualManageRepository annualManageRepo;
     private final MemberRepository memberRepository;
-    private final HolidayRepository holidayRepository;
+    private  final HolidayRepository holidayRepository;
     private final AnnualCountRepository annualCountRepository;
 
     public Page<AnnualManageDto> getSearchAnnualMangeList(AnnualSearchDto searchDto,int page){
@@ -47,35 +45,38 @@ public class AnnualManageService {
         if(annual == null) return false;
         Period period = annual.getPeriod();
         Member member = annual.getMember();
-        int sumResult = 0,discountResult=0 ,statusResult =0;
+        int sumResult = 0, annualCountResult=0 ,statusResult =0;
         // 연차는 계산한 값, 반차는 0.5
-        double discount= annual.getAnnualType().equals(AnnualType.ANNUAL_LEAVE) ? WorkingDaysCounter(period) : 0.5 ;
+        double periodCount= annual.getAnnualType().equals(AnnualType.ANNUAL_LEAVE) ? WorkingDaysCounter(period) : 0.5 ;
 
-        if(discount < 0 && member.getAnnualCount() - discount < 1) return false;
+        if(periodCount < 0 && member.getAnnualCount() - periodCount < 1) return false;
+
         //사원 연차 차감
-        discountResult = memberRepository.discountAnnualCount(member.getMemberId(), discount);
+        annualCountResult = memberRepository.setSubAnnualCount(member.getMemberId(), periodCount);
         //연차 집계 증가
         sumResult = annualCountRepository.setAnnualSumCount(period.getStartDate(), period.getEndDate(), member.getDepartment().getUid());
         //승인 상태 변경
         statusResult = annualManageRepo.acceptAnnualStatus(uid,AnnualStatus.AGREE,"admin");
-        return successTransaction(discountResult, sumResult, statusResult);
+
+        return successTransaction(annualCountResult, sumResult, statusResult);
     }
 
     // 연차 차감, 연차 집계, 상태 변경이 ALL VALID CHECK FUNCTION
-    private boolean successTransaction(int ...args){
+    public boolean successTransaction(int ...args){
         return Arrays.stream(args).allMatch(e -> e > 0);
     };
 
 
-    @Transactional
+    @Transactional(rollbackOn = RuntimeException.class)
     public boolean RejectAnnualRequest(UUID uid,String msg){
         Annual annual = annualManageRepo.findById(uid).orElse(null);
         if(annual == null) return false;
-        Period period = annual.getPeriod();
-        Member member = annual.getMember();
-        return annualManageRepo.rejectAnnualStatus(uid, AnnualStatus.REJECT, "admin",msg) > 0;
-    }
 
+        boolean check = annualManageRepo.rejectAnnualStatus(uid, AnnualStatus.REJECT, "admin",msg) > 0;
+        if(!check) throw new RuntimeException("연차 반려 처리를 실패 했습니다.");
+
+        return check;
+    }
 
     public int WorkingDaysCounter(Period period){
         int workingDays=0;

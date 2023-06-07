@@ -9,15 +9,12 @@ import tko.refresh.dto.admin.AnnualManageDto;
 import tko.refresh.dto.admin.AnnualSearchDto;
 import tko.refresh.dto.admin.AnnualStatusDto;
 import tko.refresh.service.admin.AnnualManageService;
-
-import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/admin/annual")
-@CrossOrigin("*")
+@CrossOrigin(origins="http://localhost:8080")
 public class AnnualManageController {
 
     private final AnnualManageService annualManageService;
@@ -25,11 +22,7 @@ public class AnnualManageController {
     @GetMapping("/{page}")
     public ResponseEntity getSearchList(@ModelAttribute AnnualSearchDto searchDto,
                                         @PathVariable Optional<Integer> page){
-        int formatPage = page.orElse(1);
-        Page<AnnualManageDto> list;
-
-        list=annualManageService.getSearchAnnualMangeList(searchDto,formatPage);
-
+        Page<AnnualManageDto> list = annualManageService.getSearchAnnualMangeList(searchDto,page.orElse(1));
         return ResponseEntity.ok().body(list);
     }
 

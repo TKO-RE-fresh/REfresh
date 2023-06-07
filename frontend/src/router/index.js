@@ -3,6 +3,7 @@ import LoginView from "../views/login/LoginView";
 import CalendarView from "../views/calendar/CalendarView";
 import LeaveRequestView from "../views/leaveRequest/LeaveRequestView";
 import AdminView from "../views/admin/AdminView";
+import HistoryView from "../views/mypage/history/HistoryView";
 import Store from '@/store/index';
 import mixins from '@/utils/mixins';
 const routes = [
@@ -25,6 +26,11 @@ const routes = [
     path:"/admin",
     name: "AdminView",
     component : AdminView
+  },
+  {
+    path:"/mypage/history",
+    name: "HistoryView",
+    component: HistoryView,
   }
 ]
 

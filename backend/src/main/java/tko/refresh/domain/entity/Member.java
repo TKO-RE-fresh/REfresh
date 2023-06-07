@@ -128,12 +128,11 @@ public class Member extends BaseEntity {
         this.annualCount = annualCount;
     }
 
+
     public LocalDateTime dateFormat(String date) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate localDate = LocalDate.parse(date, formatter);
         LocalDateTime localDateTime = localDate.atStartOfDay();
         return localDateTime;
     }
-
-
 }
