@@ -17,7 +17,10 @@ import java.util.UUID;
 public interface AnnualCountRepository extends JpaRepository<AnnualCount, Long> {
 
     @Modifying
-    @Transactional
     @Query("UPDATE AnnualCount ac set ac.sumCount = ac.sumCount +1 where ac.annualDate between FUNCTION('DATE', :startDate) and FUNCTION('DATE', :endDate) and ac.department.uid = :uid")
     int setAnnualSumCount(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate, @Param("uid") UUID uid);
+
+    @Modifying
+    @Query("UPDATE AnnualCount ac set ac.sumCount = ac.sumCount -1 where ac.annualDate between FUNCTION('DATE', :startDate) and FUNCTION('DATE', :endDate) and ac.department.uid = :uid")
+    int setAnnualSubCount(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate, @Param("uid") UUID uid);
 }

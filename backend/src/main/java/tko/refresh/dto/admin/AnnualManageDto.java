@@ -16,7 +16,7 @@ import java.util.UUID;
 
 @Getter
 @ToString
-public class AnnualManageDto implements GlobalPage {
+public class AnnualManageDto {
 
     @NotEmpty
     private String annualUid;
@@ -56,5 +56,6 @@ public class AnnualManageDto implements GlobalPage {
         this.startDate = DateConverter.format(period.getStartDate(),format);
         this.endDate = DateConverter.format(period.getEndDate(),format);
         this.createdDate = DateConverter.format(createdDate,format);
+        this.rejectReason = rejectReason;
     }
 }

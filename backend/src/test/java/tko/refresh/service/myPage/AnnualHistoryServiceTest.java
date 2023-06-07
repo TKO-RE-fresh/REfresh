@@ -1,4 +1,4 @@
-package tko.refresh.service.admin;
+package tko.refresh.service.myPage;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,20 +18,22 @@ import tko.refresh.domain.enu.AnnualStatus;
 import tko.refresh.domain.enu.AnnualType;
 import tko.refresh.domain.enu.MemberStatus;
 import tko.refresh.domain.enu.RoleType;
-import tko.refresh.dto.admin.AnnualManageDto;
-
-import tko.refresh.dto.admin.AnnualSearchDto;
-import tko.refresh.repository.calendar.*;
+import tko.refresh.dto.myPage.AnnualHistoryDto;
+import tko.refresh.dto.myPage.HistorySearchDto;
+import tko.refresh.repository.calendar.AnnualCountRepository;
+import tko.refresh.repository.calendar.AnnualRepository;
+import tko.refresh.repository.calendar.DepartmentRepository;
 import tko.refresh.repository.member.MemberRepository;
+import tko.refresh.service.admin.AnnualManageService;
 
 import java.time.LocalDateTime;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @TestPropertySource("classpath:application-TEST.properties")
 @Transactional
-class AnnualManageServiceTest {
-
-    private Page<AnnualManageDto> list;
+class AnnualHistoryServiceTest {
 
     @Autowired
     private AnnualRepository annualRepository;
@@ -46,13 +48,13 @@ class AnnualManageServiceTest {
     private AnnualCountRepository annualCountRepository;
 
     @Autowired
-    private AnnualManageService annualManageService;
+    private AnnualHistoryService annualHistoryService;
 
     @BeforeEach
     public void setup(){
         Department department = new Department("개발팀", "code", "intro", "image", LocalDateTime.now(), LocalDateTime.now());
         MemberInfo memberInfo = new MemberInfo("name1245", "012-1211-2124", "position@gmail.com");
-        Member member = new Member("id", "1234", memberInfo, 15, MemberStatus.IN_USE, RoleType.MEMBER , department, LocalDateTime.now(), LocalDateTime.now(), null, "dds", "sdds");
+        Member member = new Member("juhee", "1234", memberInfo, 15, MemberStatus.IN_USE, RoleType.MEMBER , department, LocalDateTime.now(), LocalDateTime.now(), null, "dds", "sdds");
         department.addMember(member);
         member.setDepartment(department);
 
@@ -73,59 +75,37 @@ class AnnualManageServiceTest {
         annualCountRepository.save(annualCount);
     }
 
-
-
+    private Page<AnnualHistoryDto> list;
 
     @Test
-    public void 관리자_연차관리정보_불러오기(){
-
-<<<<<<< HEAD
-        list = annualManageService.getSearchAnnualMangeList(AnnualSearchDto.builder().build(), 1);
-=======
-        list = annualManageService.getSearchAnnualMangeList(new AnnualSearchDto(),1);
->>>>>>> e374b5570e1079a0fed83bfff24415906be6d973
+    public void 마이페이지_연차내역_전체조회(){
+        list = annualHistoryService.getAnnualHistoryPage(new HistorySearchDto(),1);
         list.stream().forEach(System.out::println);
-
-        Assertions.assertEquals(list.getContent().size(),1);
-    }
-
-    @Test
-    public void 관리자_연차정보_검색_부서(){
-        //given
-        AnnualSearchDto searchDto = AnnualSearchDto
-                .builder()
-                .departmentName("개발팀")
-                .build();
-
-        list=annualManageService.getSearchAnnualMangeList(searchDto,1);
-        list.forEach(System.out::println);
-
         Assertions.assertEquals(list.getContent().size(),1);
 
     }
 
-
     @Test
-    public void 관리자_연차정보_검색_부서_상태(){
-        //given
-        AnnualSearchDto searchDto = AnnualSearchDto
+    public void 마이페이지_연차내역_연도조회(){
+        HistorySearchDto searchDto = HistorySearchDto
                 .builder()
-                .status(AnnualStatus.AGREE)
-                .departmentName("영업팀")
+                .year(2022)
                 .build();
-
-        list=annualManageService.getSearchAnnualMangeList(searchDto,1);
-        list.forEach(System.out::println);
-
+        list = annualHistoryService.getAnnualHistoryPage(searchDto,1);
+        list.stream().forEach(System.out::println);
         Assertions.assertEquals(list.getContent().size(),0);
     }
 
+
     @Test
-    public void 주말_공휴일_제외_기간계산_메소드(){
-        Period period = new Period(LocalDateTime.of(2023,05,26,0,0,0),LocalDateTime.of(2023, 5,26,0,0,0));
-        int workingDay = annualManageService.WorkingDaysCounter(period);
-
-        Assertions.assertEquals(workingDay,1);
+    public void 마이페이지_연차내역_연도_상태조회(){
+        HistorySearchDto searchDto = HistorySearchDto
+                .builder()
+                .year(2023)
+                .status(AnnualStatus.AGREE)
+                .build();
+        list = annualHistoryService.getAnnualHistoryPage(searchDto,1);
+        list.stream().forEach(System.out::println);
+        Assertions.assertEquals(list.getContent().size(),1);
     }
-
 }

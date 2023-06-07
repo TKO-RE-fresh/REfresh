@@ -1,9 +1,7 @@
 package tko.refresh.repository.member;
 
 import com.querydsl.core.types.Projections;
-import com.querydsl.core.types.SubQueryExpression;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -12,7 +10,6 @@ import org.springframework.data.domain.Pageable;
 import tko.refresh.domain.enu.MemberStatus;
 import tko.refresh.dto.admin.MemberDto;
 import tko.refresh.dto.admin.MemberSearchDto;
-import tko.refresh.dto.admin.MemberUpdateDto;
 
 import java.util.List;
 

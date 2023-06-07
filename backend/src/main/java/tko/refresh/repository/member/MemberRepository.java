@@ -21,5 +21,12 @@ public interface MemberRepository extends JpaRepository<Member, UUID>, MemberRep
 
     @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query("UPDATE Member m set m.annualCount = m.annualCount-:count where m.memberId = :memberId")
-    int discountAnnualCount(@Param("memberId") String memberId, @Param("count")double count);
+    int setSubAnnualCount(@Param("memberId") String memberId, @Param("count")double count);
+
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
+    @Query("UPDATE Member m set m.annualCount = m.annualCount+:count where m.memberId = :memberId")
+    int setAnnualCount(@Param("memberId") String memberId, @Param("count")double count);
+
+    @Query("select YEAR(m.createdDate) from Member m where m.memberId = :memberId")
+    int getMemberCreationYear(@Param("memberId") String memberId);
 }

@@ -27,6 +27,9 @@
           </tr>
         </thead>
         <tbody>
+          <tr v-if="!Store.state.annualList.content">
+            <th>검색 결과가 없습니다.</th>
+          </tr>
           <tr
             v-for="(row, idx) in Store.state.annualList.content"
             :key="idx"

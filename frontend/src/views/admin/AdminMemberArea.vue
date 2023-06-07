@@ -74,39 +74,38 @@ const totalPages = ref(0);
 const currentPage = ref(1);
 
 onMounted(async () => {
-    const params = {
-        page: currentPage.value
-    }
-    const res = await mixins.methods.$api(`/admin/member`, `get`, { params });
-    const arr = [];
+  const params = {
+    page: currentPage.value,
+  };
+  const res = await mixins.methods.$api(`/admin/member`, `get`, { params });
+  const arr = [];
 
-    for (let i=0; i<res.data.content.length; i++) {
-        arr.push(res.data.content[i]);
+  for (let i = 0; i < res.data.content.length; i++) {
+    arr.push(res.data.content[i]);
+  }
+  members.value = arr;
+
+  totalPages.value = res.data.totalPages;
+});
+
+function selectPage(idx) {
+  const params = {
+    page: idx,
+  };
+  const arr = [];
+
+  watchEffect(async () => {
+    const res = await mixins.methods.$api(`/admin/member`, `get`, { params });
+
+    for (let i = 0; i < res.data.content.length; i++) {
+      arr.push(res.data.content[i]);
     }
+
     members.value = arr;
 
     totalPages.value = res.data.totalPages;
-
-})
-
-function selectPage(idx) {
-    const params = {
-        page: idx
-    }
-    const arr = [];
-
-    watchEffect(async () => {
-        const res = await mixins.methods.$api(`/admin/member`, `get`, { params });
-        
-        for (let i=0; i<res.data.content.length; i++) {
-            arr.push(res.data.content[i]);
-        }
-
-        members.value = arr;
-
-        totalPages.value = res.data.totalPages;
-        currentPage.value = idx;
-    });
+    currentPage.value = idx;
+  });
 }
 
 const isOpen = ref(false);
