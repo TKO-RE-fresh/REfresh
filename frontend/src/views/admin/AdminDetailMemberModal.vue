@@ -34,7 +34,7 @@
                         <div class="w-2/3 text-sm" name="detailInfo">
                             <div class="m-2">
                               <input v-model="member.memberName" type="text" :readonly=!editMode 
-                                :class="{'shadow border rounded py-1 text-gray-700 hover:bg-gray-100' : !editMode, 
+                                :class="{'shadow border rounded py-1 text-gray-700 hover:bg-gray-100 focus:outline-none' : !editMode, 
                                     'shadow border rounded py-1 text-gray-700 outline-none ring border-blue-50': editMode}">
                             </div>
                             <div class="m-2">
@@ -46,12 +46,12 @@
                             </div>
                             <div class="m-2">
                               <input v-model="member.memberCellphone" type="text" :readonly=!editMode 
-                                :class="{'shadow border rounded py-1 text-gray-700 hover:bg-gray-100' : !editMode, 
+                                :class="{'shadow border rounded py-1 text-gray-700 hover:bg-gray-100 focus:outline-none' : !editMode, 
                                     'shadow border rounded py-1 text-gray-700 outline-none ring border-blue-50': editMode}">
                             </div>
                             <div class="m-2">
                               <input v-model="member.memberEmail" type="text" :readonly=!editMode
-                                :class="{'shadow border rounded py-1 text-gray-700 hover:bg-gray-100' : !editMode, 
+                                :class="{'shadow border rounded py-1 text-gray-700 hover:bg-gray-100 focus:outline-none' : !editMode, 
                                     'shadow border rounded py-1 text-gray-700 outline-none ring border-blue-50': editMode}">
                             </div>
                         </div>
@@ -76,17 +76,17 @@
                       <div class="text-sm" name="detailInfo">
                         <div class="m-2">
                           <input v-model="member.memberId" type="text" :readonly=!editMode
-                            :class="{'shadow border rounded py-1 text-gray-700 hover:bg-gray-100' : !editMode, 
+                            :class="{'shadow border rounded py-1 text-gray-700 hover:bg-gray-100 focus:outline-none' : !editMode, 
                                     'shadow border rounded py-1 text-gray-700 outline-none ring border-blue-50': editMode}">
                         </div>
                         <div class="m-2">
                           <input v-model="member.createdDate" type="date" :readonly=!editMode
-                            :class="{'shadow border rounded py-1 text-gray-700 hover:bg-gray-100' : !editMode, 
+                            :class="{'shadow border rounded py-1 text-gray-700 hover:bg-gray-100 focus:outline-none' : !editMode, 
                                     'shadow border rounded py-1 text-gray-700 outline-none ring border-blue-50': editMode}"/>
                         </div>
                         <div class="m-2">
                           <input v-model="member.retireDate" type="date" :readonly=!editMode
-                            :class="{'shadow border rounded py-1 text-gray-700 hover:bg-gray-100' : !editMode, 
+                            :class="{'shadow border rounded py-1 text-gray-700 hover:bg-gray-100 focus:outline-none' : !editMode, 
                                     'shadow border rounded py-1 text-gray-700 outline-none ring border-blue-50': editMode}"/>
                         </div>
                         <div class="m-2">
@@ -118,21 +118,20 @@
                       </div>
                       <div class="text-sm" name="detailInfo">
                         <div class="m-2">
-                          <input v-model="member.annualCount" type="text" :readonly=!editMode 
-                            :class="{'shadow border rounded py-1 text-gray-700 hover:bg-gray-100' : !editMode, 
-                                    'shadow border rounded py-1 text-gray-700 outline-none ring border-blue-50': editMode}">
+                          <input v-model="member.annualCount" type="text" :readonly=true 
+                            class="shadow border rounded py-1 text-gray-700 hover:bg-gray-100 focus:outline-none">
                         </div>
                         <div class="m-2">
                           <input v-model="member.createdBy" type="text" :readonly=true 
-                            class="shadow border rounded py-1 text-gray-700 hover:bg-gray-100">
+                            class="shadow border rounded py-1 text-gray-700 hover:bg-gray-100 focus:outline-none">
                         </div>
                         <div class="m-2">
                           <input v-model="member.modifiedBy" type="text" :readonly=true
-                            class="shadow border rounded py-1 text-gray-700 hover:bg-gray-100">  
+                            class="shadow border rounded py-1 text-gray-700 hover:bg-gray-100 focus:outline-none">  
                         </div>
                         <div class="m-2">
                           <input v-model="member.modifiedDate" type="text" :readonly=true
-                            class="shadow border rounded py-1 text-gray-700 hover:bg-gray-100">
+                            class="shadow border rounded py-1 text-gray-700 hover:bg-gray-100 focus:outline-none">
                         </div>
                         <div class="m-2">
                           <select v-model="member.memberAuth" :disabled=!editMode 
@@ -247,6 +246,8 @@
 
 const handleSubmit = (event) => {
   event.preventDefault();
+
+  if(confirm("사원 정보를 수정하시겠습니까?")) { // 확인
     const memberUpdateDto = {
       memberId: member.value.memberId,
       memberName: member.value.memberName,
@@ -254,7 +255,7 @@ const handleSubmit = (event) => {
       memberEmail: member.value.memberEmail,
       departmentName: member.value.departmentName,
       annualCount: member.value.annualCount,
-      modifiedBy: "admin", // 로그인한 관리자의 아이디
+      modifiedBy: "admin", // 로그인한 관리자의 아이디로 수정
       createdDate: member.value.createdDate,
       retireDate: member.value.retireDate,
       memberAuth: member.value.memberAuth,
@@ -273,5 +274,9 @@ const handleSubmit = (event) => {
       editMode.value = true;
       buttonType.value = 'button';
     });
-  };
+  } else { // 취소
+    getMemberInfo();
+  }
+    
+};
   </script>

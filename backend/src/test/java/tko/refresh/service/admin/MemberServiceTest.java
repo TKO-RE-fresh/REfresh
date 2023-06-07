@@ -13,12 +13,15 @@ import tko.refresh.domain.entity.Department;
 import tko.refresh.domain.entity.Member;
 import tko.refresh.domain.enu.MemberStatus;
 import tko.refresh.domain.enu.RoleType;
+import tko.refresh.dto.GlobalResponseDto;
 import tko.refresh.dto.admin.MemberDetailDto;
 import tko.refresh.dto.admin.MemberDto;
 import tko.refresh.dto.admin.MemberSearchDto;
 import tko.refresh.dto.admin.MemberUpdateDto;
+import tko.refresh.dto.member.MemberJoinDto;
 import tko.refresh.repository.calendar.DepartmentRepository;
 import tko.refresh.repository.member.MemberRepository;
+import tko.refresh.service.login.LoginService;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -37,7 +40,8 @@ class MemberServiceTest {
     @Autowired
     private MemberService memberService;
 
-    private List<MemberDto> list;
+    @Autowired
+    private LoginService loginService;
 
     @BeforeEach
     public void setup() {
@@ -169,6 +173,28 @@ class MemberServiceTest {
         MemberDetailDto memberDetailDto = memberService.getMemberDetail(memberId);
 
         System.out.println(memberDetailDto);
+    }
+
+    @Test
+    public void 관리자_사원생성() {
+        MemberJoinDto dto = MemberJoinDto.builder()
+                .memberId("testId")
+                .password("12345678")
+                .memberAuth(RoleType.MEMBER)
+                .memberName("김생유")
+                .memberCellphone("010-1123-4533")
+                .memberEmail("test@daum.net")
+                .memberStatus(MemberStatus.IN_USE)
+                .annualCount(15)
+                .departmentName("개발팀")
+                .createdDate("2023-06-06")
+                .modifiedBy("admin")
+                .createdBy("admin")
+                .build();
+
+        GlobalResponseDto responseDto = loginService.signup(dto);
+
+        System.out.println(responseDto);
     }
     
 }
