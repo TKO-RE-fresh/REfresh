@@ -9,7 +9,9 @@ module.exports = {
         asideR: "1300px",
         asideW: "200px",
         tableTd: "100px",
-        
+        calModalH: '36rem',
+        subModalH: '18%',
+        subModalX: '36%',
         subModalBtn: "calc(24% + 4rem)",
       }
     },

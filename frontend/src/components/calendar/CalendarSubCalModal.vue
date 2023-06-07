@@ -1,18 +1,24 @@
 <template>
   <Teleport to="body">
-    <div :style="{ left: x, top: y }" class="fixed w-36 h-36 border-2">
-      <div class="relative h-full w-full">
-        <a class="cursor-pointer" @click="closeModal">X</a>
-        <div class="absolute flex flex-row h-full w-full bg-slate-300">
+    <div class="fixed top-subModalH left-subModalX w-64 h-48">
+      <div class="h-full w-full">
+        <div class="flex border-2">
+          <div class="whitespace-nowrap p-2">직접 선택</div>
+          <div class="w-full text-right p-2">
+            <i class="fa-solid fa-xmark cursor-pointer" @click="closeModal"></i>
+          </div>
+        </div>
+
+        <div class="flex flex-row h-full w-full bg-slate-100">
           <div
             ref="scrollYearContainer"
-            class="flex flex-col overflow-y-auto w-full"
+            class="flex flex-col overflow-y-auto bg-slate-100 w-full"
           >
             <a
               v-for="val in yearList"
               :id="val"
               :key="val"
-              class="cursor-pointer pl-2 py-1"
+              class="cursor-pointer pl-2 py-1 hover:bg-amber-100"
               :class="[reputeYear(val), { 'sticky-class': isSticky(val) }]"
               @click="handleYear"
             >
@@ -28,7 +34,7 @@
               v-for="val in monthList"
               :id="val"
               :key="val"
-              class="cursor-pointer pl-2 py-1"
+              class="cursor-pointer pl-2 py-1 hover:bg-amber-100"
               :class="[reputeMonth(val), { 'sticky-class': isSticky(val) }]"
               @click="handleMonth"
             >
@@ -59,9 +65,6 @@ const selected = reactive({
   month: props.curMonth,
 });
 
-const x = `${props.curX}px`;
-const y = `${props.curY}px`;
-
 onMounted(() => {
   const dom = document.querySelectorAll(".sticky-class");
   dom.forEach((el) => el.scrollIntoView());
@@ -76,7 +79,7 @@ function isSticky(val) {
 const reputeYear = computed(() => {
   return (val) => {
     return {
-      "bg-amber-500": selected.year == val,
+      "bg-amber-200": selected.year == val,
     };
   };
 });
@@ -84,7 +87,7 @@ const reputeYear = computed(() => {
 const reputeMonth = computed(() => {
   return (val) => {
     return {
-      "bg-amber-500": selected.month == val,
+      "bg-amber-200": selected.month == val,
     };
   };
 });
@@ -131,14 +134,6 @@ const props = defineProps({
     required: true,
   },
   curYear: {
-    type: Number,
-    required: true,
-  },
-  curX: {
-    type: Number,
-    required: true,
-  },
-  curY: {
     type: Number,
     required: true,
   },

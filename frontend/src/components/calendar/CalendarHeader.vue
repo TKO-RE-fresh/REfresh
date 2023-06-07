@@ -59,7 +59,7 @@
         </div>
       </div>
     </div>
-    <div>
+    <div v-if="auth === 'admin'">
       <select
         class="block appearance-none py-2 px-40 relative border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
         @change="handleDept"
@@ -71,7 +71,10 @@
         </option>
       </select>
     </div>
-    <div v-if="auth">
+    <div v-else>
+      <div class="text-4xl">{{ Store.state.deptName }}</div>
+    </div>
+    <div v-if="auth === 'admin'">
       <button
         class="w-24 h-6 bg-blue-500 hover:bg-blue-700 text-white px-1 rounded"
         @click="ocSearchModal"
@@ -97,6 +100,7 @@ let nextEventTimeOut;
 const year = new Date().getFullYear();
 const month = new Date().getMonth() + 1;
 const auth = ref(Store.state.auth);
+console.log(Store.state.auth);
 const searchModal = ref(false);
 
 const debouncePrevEvent = () => debounce(prevEvent, prevEventTimeOut);
