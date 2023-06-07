@@ -2,8 +2,8 @@ package tko.refresh.dto.admin;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
+
 import org.springframework.lang.Nullable;
 import tko.refresh.domain.enu.AnnualStatus;
 import tko.refresh.util.converter.AnnualTypeConverter;
@@ -30,7 +30,4 @@ public class AnnualSearchDto {
         this.departmentName = departmentName;
         this.status = status;
     }
-
-
-
 }

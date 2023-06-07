@@ -1,7 +1,8 @@
 import { createStore } from "vuex";
+import axios from "axios";
 import mixins from "@/utils/mixins";
 
-export default createStore({
+const store =  createStore({
   state: {
     token: null,
     annualList: [],
@@ -11,6 +12,7 @@ export default createStore({
     deptName: null,
     memberId: null,
     memberName: null,
+    auth: null,
     deptList: [],
     manageSearch: {
       memberName: "",
@@ -39,6 +41,15 @@ export default createStore({
     getDepartmentList: (state) => {
       return state.deptList;
     },
+    getMemberId: (state) => {
+      return state.memberId;
+    },
+    getMemberName: (state) => {
+      return state.memberName;
+    },
+    getAuth: (state) => {
+      return state.auth;
+    },
     getAnnualList: (state) => {
       return state.annualList;
     },
@@ -53,6 +64,15 @@ export default createStore({
     }
   },
   mutations: {
+    setDeptName: (state, deptName) => {
+      state.deptName = deptName;
+    },
+    setMemberId: (state, memberId) => {
+      state.memberId = memberId;
+    },
+    setMemberName: (state, memberName) => {
+      state.memberName = memberName;
+    },
     setAccessToken: (state, token) => {
       state.token = token;
     },
@@ -89,8 +109,40 @@ export default createStore({
     setHistorySearch: (state,searchInput) =>{
       state.historySearch = searchInput;
     },
+    setAuth: (state, auth) => {
+      state.auth = auth;
+    },
   },
-  actions: {},
+  actions: {
+    updateToken({ commit }, token) {
+      commit("setAccessToken", token);
+      axios.defaults.headers.common.access_token = `Bearer ${token}`;
+    },
+    async checkCookie({commit}) {
+      try {
+        const res = await axios.post('token/cookie', {});
+        commit('setAccessToken', res.data.access_token);
+        commit('setMemberId', res.data.memberId);
+        commit('setMemberName', res.data.memberName);
+        commit('setAuth', res.data.auth);
+        commit('setDept', res.data.deptName);
+        return res;
+      } catch (e) {
+        console.log('Failed to Auth', e);
+      }
+    },
+    
+  },
   modules: {},
   plugins: [],
 });
+
+store.subscribe((mutation, state) => {
+  if (mutation.type === 'setAccessToken') {
+    axios.defaults.headers.common.access_token = `Bearer ${state.token}`;
+  }
+});
+
+
+
+export default store;

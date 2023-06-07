@@ -78,7 +78,6 @@ public class AnnualManageService {
         return check;
     }
 
-
     public int WorkingDaysCounter(Period period){
         int workingDays=0;
         LocalDateTime date = period.getStartDate();

@@ -84,7 +84,7 @@ import {ref } from "vue";
 import AnnualStatusModal from "./AnnualStatusModal.vue";
 import Store from "@/store/index.js";
 
-const header = ['신청일','사원명','부서명','연차 종류','기간','상태',]
+const header = ['신청일','사원명','부서명','연차 종류','기간','상태']
 const isOpen = ref(false);
 const uid = ref('');
 

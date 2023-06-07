@@ -21,7 +21,6 @@ import tko.refresh.repository.calendar.AnnualRepository;
 
 @RestController
 @RequestMapping("/calendar/annual")
-@CrossOrigin("*")
 @RequiredArgsConstructor
 public class AnnualController {
 

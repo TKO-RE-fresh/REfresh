@@ -13,6 +13,7 @@ import tko.refresh.domain.entity.Department;
 import tko.refresh.domain.entity.Member;
 import tko.refresh.domain.enu.MemberStatus;
 import tko.refresh.domain.enu.RoleType;
+import tko.refresh.dto.admin.MemberDetailDto;
 import tko.refresh.dto.admin.MemberDto;
 import tko.refresh.dto.admin.MemberSearchDto;
 import tko.refresh.dto.admin.MemberUpdateDto;
@@ -21,7 +22,6 @@ import tko.refresh.repository.member.MemberRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @SpringBootTest
 @TestPropertySource("classpath:application-TEST.properties")
@@ -143,18 +143,21 @@ class MemberServiceTest {
     public void 관리자_사원정보변경() {
         MemberUpdateDto memberUpdateDto = MemberUpdateDto
                 .builder()
+                .memberId("id")
                 .memberName("홍길동")
                 .memberCellphone("010-7777-6666")
                 .memberEmail("sfdf@daum.net")
+                .departmentName("인사팀")
                 .annualCount(16)
                 .modifiedBy("madmin")
-                .modifiedDate(LocalDateTime.now())
-                .retireDate(LocalDateTime.now())
+                .createdDate("2023-05-05")
+                .modifiedDate(null)
+                .retireDate("2023-12-12")
                 .memberAuth(RoleType.MEMBER)
                 .memberStatus(MemberStatus.IN_USE)
                 .build();
 
-        memberService.modifyMember("id", memberUpdateDto);
+        memberService.editMember("id", memberUpdateDto);
 
         Page<MemberDto> list = memberService.getAllMemberList(1);
         list.stream().forEach(System.out::println);
@@ -162,20 +165,10 @@ class MemberServiceTest {
 
     @Test
     public void 관리자_사원상세정보조회() {
-        Optional<Member> member = memberRepository.findByMemberId("id");
+        String memberId = "id";
+        MemberDetailDto memberDetailDto = memberService.getMemberDetail(memberId);
 
-        MemberDto memberDto = MemberDto.builder()
-                .memberId(member.get().getMemberId())
-                .memberName(member.get().getMemberInfo().getName())
-                .departmentName(member.get().getDepartment().getName())
-                .memberCellphone(member.get().getMemberInfo().getCellphone())
-                .memberEmail(member.get().getMemberInfo().getEmail())
-                .createdDate(member.get().getCreatedDate())
-                .retireDate(member.get().getRetireDate())
-                .memberStatus(member.get().getMemberStatus())
-                .build();
-
-        System.out.println(memberDto);
+        System.out.println(memberDetailDto);
     }
     
 }

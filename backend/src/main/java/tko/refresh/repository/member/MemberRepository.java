@@ -18,8 +18,6 @@ public interface MemberRepository extends JpaRepository<Member, UUID>, MemberRep
     @Query("SELECT m FROM Member m WHERE m.memberInfo.email = :email")
     Optional<Member> findByLoginEmail(@Param("email") String email);
 
-    @Query("SELECT m FROM Member m WHERE m.memberId = :memberId")
-    Optional<Member> findLoginMemberId(@Param("memberId") String memberId);
 
     @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query("UPDATE Member m set m.annualCount = m.annualCount-:count where m.memberId = :memberId")

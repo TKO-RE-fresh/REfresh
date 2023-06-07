@@ -10,7 +10,6 @@ import tko.refresh.domain.emb.Period;
 
 class ValidPeriodValidatorTest {
 
-
     @Test
     void 유효한_날짜_범위() {
         ValidPeriodValidator validPeriodValidator = new ValidPeriodValidator();

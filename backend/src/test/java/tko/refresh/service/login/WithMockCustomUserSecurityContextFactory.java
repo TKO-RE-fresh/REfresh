@@ -39,6 +39,6 @@ public class WithMockCustomUserSecurityContextFactory implements
     }
 
     private String generateJwtToken(MemberDetailsImpl member) {
-        return jwtUtil.createToken(member.getMember().getMemberId(), JwtUtil.ACCESS_TOKEN);
+        return jwtUtil.createToken(member.getMember().getMemberId(), member.getMember().getMemberInfo().getEmail() , JwtUtil.ACCESS_TOKEN);
     }
 }

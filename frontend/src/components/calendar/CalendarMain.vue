@@ -2,39 +2,73 @@
   <tr v-for="(it, idx) in calendar" :key="idx">
     <td
       v-for="(day, dayIdx) in it"
-      id="calendar"
+      :id="dayIdx"
       :key="dayIdx"
-      class="border-2 px-8 py-12 w-1/7"
+      class="border-2 w-48 h-28 relative"
+      :class="{
+        'cursor-pointer': isDayModal(day),
+        'hover:bg-gray-100': isDayModal(day),
+        'bg-slate-200': isToday(day),
+      }"
+      @click="showDayModal($event, day.hoName, day.sumCount)"
     >
-      <a
+      <div
         :id="dayIdx"
-        :class="{ 'cursor-pointer': day.hoName !== '' && day.sumCount !== 0 }"
-        @click="showDayModal(day.hoName, day.sumCount, $event)"
+        :class="{ 'text-red-500': isHoliday(day) }"
+        class="absolute max-w-full top-2 left-3"
       >
         {{ day.day }}
-      </a>
+      </div>
+      <div
+        :id="dayIdx"
+        class="absolute text-xs md:text-sm lg:text-lg top-2 left-10"
+      >
+        {{ isSpecialHoliday(day) ? parseHoliday(day) : "" }}
+      </div>
+      <div :id="dayIdx" class="absolute max-w-full right-2 bottom-2">
+        <template v-if="day.sumCount !== 0">
+          <div :id="dayIdx" v-html="personIcon"></div>
+          {{ day.sumCount }}명
+        </template>
+      </div>
     </td>
   </tr>
-  <calendar-small-modal
+  <calendar-main-modal
     v-if="showModal"
-    :curX="curX"
-    :curY="curY"
     :day="dayRef"
     @closeEvent="closeModal"
-  ></calendar-small-modal>
+  ></calendar-main-modal>
 </template>
 
 <script setup>
 import { defineProps, ref } from "vue";
-import CalendarSmallModal from "./CalendarSmallModal.vue";
+import CalendarMainModal from "@/components/calendar/CalendarMainModal.vue";
+
 const dayRef = ref(0);
 const showModal = ref(false);
 
-const curX = ref("");
-const curY = ref("");
-
+const personIcon = '<i class="cursor-default fa fa-user text-blue-400"></i>';
 function closeModal() {
   showModal.value = false;
+}
+
+function isDayModal(day) {
+  return day.hoName !== "" && day.sumCount !== 0;
+}
+function isToday(day) {
+  return day.today && day.hoName !== "";
+}
+function isSpecialHoliday(day) {
+  return (
+    day.hoName !== "평일" && day.hoName !== "토요일" && day.hoName !== "일요일"
+  );
+}
+function isHoliday(day) {
+  return day.hoName !== "평일" && day.hoName !== "";
+}
+
+function parseHoliday(day) {
+  return day.hoName.substring(1, day.hoName.length - 1);
 }
 
 defineProps({
@@ -43,12 +77,13 @@ defineProps({
     required: true,
   },
 });
-function showDayModal(holidayName, sumCount, e) {
+function showDayModal(e, holidayName, sumCount) {
+  if (e.target.classList.contains("cursor-default")) {
+    return;
+  }
   if (holidayName === "" || sumCount === 0) {
     return;
   }
-  curX.value = e.clientX;
-  curY.value = e.clientY;
   dayRef.value = e.target.id;
   !showModal.value ? (showModal.value = true) : (showModal.value = true);
 }

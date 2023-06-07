@@ -6,9 +6,10 @@ import java.util.Optional;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 
 import tko.refresh.domain.entity.Member;
-
+@Component
 public class JwtAuthMember {
     public Optional<Member> getJwtAuthMember() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

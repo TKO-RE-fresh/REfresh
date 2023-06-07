@@ -24,7 +24,7 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
     @Override
     public Page<MemberDto> allMemberPage(Pageable pageable) {
         List<MemberDto> content = queryFactory
-                .select(Projections.fields(MemberDto.class,
+                .select(Projections.constructor(MemberDto.class,
                         member.memberId,
                         member.memberInfo.name.as("memberName"),
                         member.department.name.as("departmentName"),
@@ -47,7 +47,7 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
     @Override
     public Page<MemberDto> searchMemberPage(MemberSearchDto searchDto, Pageable pageable) {
         List<MemberDto> content = queryFactory
-                .select(Projections.fields(MemberDto.class,
+                .select(Projections.constructor(MemberDto.class,
                         member.memberId,
                         member.memberInfo.name.as("memberName"),
                         member.department.name.as("departmentName"),

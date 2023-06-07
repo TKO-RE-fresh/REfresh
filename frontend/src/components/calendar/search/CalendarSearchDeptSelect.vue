@@ -11,6 +11,7 @@ import { defineProps, defineEmits } from "vue";
 
 const emit = defineEmits(["selectedDept", "clearContent"]);
 function handleSelect(e) {
+  console.log(e.target.value);
   if (e.target.value === "") {
     emit("clearContent");
     return;

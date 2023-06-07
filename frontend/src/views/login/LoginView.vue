@@ -28,6 +28,7 @@
                 aria-required="true"
               />
             </div>
+            <span>{{ alertIdMsg }}</span>
           </div>
           <div class="mb-4">
             <label class="block text-gray-700 font-bold mb-2" for="password"
@@ -42,8 +43,8 @@
               aria-required="true"
               placeholder="비밀번호 입력"
             />
+            <span>{{ alertPwMsg }}</span>
           </div>
-
           <div class="flex justify-between">
             <label class="block text-gray-500 font-bold my-4"
               ><input type="checkbox" class="leading-loose text-pink-600" />
@@ -71,26 +72,58 @@
   </main>
 </template>
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import mixins from "@/utils/mixins";
-import Token from "@/utils/token.js";
-import Store from "@/store/index.js";
 import Router from "@/router/index.js";
+
 const memberId = ref("");
 const password = ref("");
+const alertIdMsg = ref("");
+const alertPwMsg = ref("");
+
+watch(memberId, () => {
+  idCheck();
+});
+
+watch(password, () => {
+  passwordCheck();
+});
+
+function idCheck() {
+  if (alertIdMsg.value !== "") {
+    alertIdMsg.value = "";
+  }
+}
+
+function passwordCheck() {
+  if (alertPwMsg.value !== "") {
+    alertPwMsg.value = "";
+  }
+}
 
 async function onSubmit() {
-
   const body = {
-    memberId: memberId.value, password: password.value
+    memberId: memberId.value,
+    password: password.value,
+  };
+  try {
+    const res = await mixins.methods.$api("login", "post", { data: body });
+    if (res && res.status === 200) {
+      Router.push({ path: "/calendar" });
+    }
+  } catch (err) {
+    if (err.response.status === 403) {
+      if (err.response.data.message === "id") {
+        alertIdMsg.value = "아이디를 확인해주세요.";
+      } else {
+        alertPwMsg.value = "비밀번호를 확인해주세요.";
+      }
+    } else {
+      alertIdMsg.value = "아이디를 확인해주세요.";
+      alertPwMsg.value = "비밀번호를 확인해주세요.";
+    }
+    console.log(err);
   }
-  const res = await mixins.methods.$api('login', 'post', { body });
-  const date = new Date();
-  const year = date.getFullYear();
-  const month = date.getMonth() + 1;
-  Token.setToken(res.headers.refresh_token);
-  Store.commit("setAccessToken", res.headers.access_token);
-  Router.push({ name: "CalendarView", params: { year, month } });
 }
 </script>
 
