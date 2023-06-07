@@ -26,6 +26,7 @@ public class LeaveRequestController {
     /* 연차 신청폼에 들어온 정보를 토대로 연차 신청  */
     @PostMapping
     public ResponseEntity requestForLeave(@RequestBody LeaveRequestDto leaveRequestDto) {
+
         GlobalResponseDto leaveRequest = leaveRequestService.createLeaveRequest(leaveRequestDto);
         return ResponseEntity.ok().body(leaveRequest);
     }

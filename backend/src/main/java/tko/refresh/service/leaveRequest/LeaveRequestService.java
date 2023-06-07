@@ -72,8 +72,7 @@ public class LeaveRequestService {
 
         /* 연차 신청하려는 날짜가 이미 신청된 날짜인지 확인 */
         int count = annualRepository.countAnnualByMemberUidAndPeriod(existMember.getMemberId(),
-                                                                 dto.getPeriod().getStartDate(),
-                                                                 dto.getPeriod().getEndDate());
+                                                                 dto.getPeriod().getStartDate(), dto.getPeriod().getEndDate());
 
         if(count > 0) {
             return GlobalResponseDto.builder()
@@ -81,6 +80,7 @@ public class LeaveRequestService {
                     .message("이미 신청된 날짜 범위에 해당합니다.")
                     .build();
         }
+
 
         Annual save = leaveRequestRepository.save(makeAnnualByMember(existMember, dto));
         existMember.addAnnual(save);
@@ -93,6 +93,7 @@ public class LeaveRequestService {
     }
 
     private Annual makeAnnualByMember(Member member, LeaveRequestDto dto) {
+
         return Annual
                 .builder()
                 .member(member)
@@ -102,9 +103,7 @@ public class LeaveRequestService {
                 .modifiedDate(LocalDateTime.now())
                 .annualStatus(AnnualStatus.WAITING)
                 .annualType(AnnualType.getEnumByCode(dto.getAnnualType()))
-                .period(Period.builder().startDate(dto.getPeriod().getStartDate())
-                              .endDate(dto.getPeriod().getEndDate())
-                                .build()).build();
+                .period(dto.getPeriod()).build();
     }
 
     private double WorkdayCalReq(double count, LeaveRequestDto dto) {

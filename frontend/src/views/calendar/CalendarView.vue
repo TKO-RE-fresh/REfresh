@@ -77,6 +77,7 @@ onMounted(async () => {
   const calData = await mixins.methods.$api(`calendar`, "get", {
     params,
   });
+  console.log(calData);
   calendar.value = makeCalendarDom(calData);
   if (Store.state.auth !== "admin") {
     departments.value = [Store.state.deptName];
