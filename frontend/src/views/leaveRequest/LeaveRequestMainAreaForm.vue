@@ -238,6 +238,8 @@ export default {
         const response = await axios.get("http://localhost:8090/leaveRequest");
         restLeave.value = response.data.restLeaveCount;
         usedLeave.value = response.data.usedLeaveCount;
+        store.commit("setRestLeave", response.data.restLeaveCount);
+        store.commit("setUsedLeave", response.data.usedLeaveCount);
       } catch (error) {
         console.error(error);
       }

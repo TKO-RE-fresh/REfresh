@@ -16,17 +16,19 @@
           />
         </div>
         <div>
-          <label class="flex justify-center mt-6">하드로 박은 멤버이름</label>
-          <label class="flex justify-center mt-2">하드로 박은 부서명</label>
-          <div class="mt-4">
-            <label class="ml-6">잔여 연차</label>
-            <label class="ml-6 text-blue-500">잔여연차(하드)</label>
-          </div>
-          <div class="mt-2">
-            <label class="ml-6">예정 일정</label>
-            <a href="/mypage/history" class="ml-6 text-blue-500"
-              >예정휴가(하드)</a
-            >
+          <label class="flex justify-center mt-6">{{ memberName }}</label>
+          <label class="flex justify-center mt-2">{{ deptName }}</label>
+          <div class="ml-6">
+            <div class="mt-4">
+              <label class="ml-6">남은 휴가</label>
+              <label class="ml-6 text-blue-500">{{ restLeave }}</label
+              >일
+            </div>
+            <div class="mt-2">
+              <label class="ml-6">사용 휴가</label>
+              <label class="ml-6 text-red-500">{{ usedLeave }}</label
+              >일
+            </div>
           </div>
         </div>
       </div>
@@ -55,7 +57,7 @@
         </li>
         <li>
           <router-link
-            to="/leaveRequest"
+            to="/leaverequest"
             class="flex items-center p-2 text-gray-500 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
           >
             <svg
@@ -118,7 +120,19 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import Store from "@/store/index.js";
 const auth = ref(Store.state.auth);
+const memberName = Store.state.memberName;
+const deptName = Store.state.deptName;
+
+const restLeave = computed(() => {
+  return Store.state.restLeave;
+});
+console.log("사이드바 남은연차: " + restLeave.value);
+
+const usedLeave = computed(() => {
+  return Store.state.usedLeave;
+});
+console.log("사이드바 사용한 연차: " + usedLeave.value);
 </script>
