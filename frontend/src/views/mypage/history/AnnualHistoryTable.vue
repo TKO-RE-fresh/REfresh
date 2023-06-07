@@ -2,7 +2,7 @@
   <div class="px-14">
     <div class="border border-slate-200 rounded-xl overflow-hidden">
       <table class="w-full text-sm text-left text-gray-500">
-        <thead class="text-md text-gray-800 uppercase bg-gray-50">
+        <thead class="text-md text-gray-800 uppercase bg-rose-200 ">
           <tr>
             <th scope="col" class="p-3">
               <div class="flex items-center">
@@ -145,6 +145,9 @@ const cancelHandeler = (uid) => {
         })
         .catch(()=>{
           Swal.fire("실패", "연차 취소를 실패 하였습니다. 다시 시도해 주세요.",'error')
+        })
+        .finally(() =>{
+          Store.commit("setHistoryList", 1);
         })
     }
   });
