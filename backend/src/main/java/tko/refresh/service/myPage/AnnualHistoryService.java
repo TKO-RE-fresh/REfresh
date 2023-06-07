@@ -49,6 +49,7 @@ public class AnnualHistoryService {
         int subResult = 0, annualCountResult = 0, statusResult = 0;
 
         double periodCount = annual.getAnnualType().equals(AnnualType.ANNUAL_LEAVE) ? annualManageService.WorkingDaysCounter(period) : 0.5;
+        if(periodCount < 1) return false;
 
         statusResult = annualHistoryRepository.cancelAnnualStatus(uid, AnnualStatus.CANCEL, "juhee");
 

@@ -26,7 +26,7 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class AnnualManageService {
-    private final int PAGE_SIZE = 1;
+    private final int PAGE_SIZE = 5;
 
     private final AnnualManageRepository annualManageRepo;
     private final MemberRepository memberRepository;
