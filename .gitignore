@@ -7,6 +7,8 @@ build/
 !**/src/test/**/build/
 application-API-KEY.properties
 application-NCP-DB.properties
+application-JWT.properties
+application-REDIS.properties
 jacoco
 
 

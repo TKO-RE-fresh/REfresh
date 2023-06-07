@@ -71,7 +71,7 @@
         </li>
         <li>
           <router-link
-            to="#"
+            to="/mypage/history"
             class="flex items-center p-2 text-gray-500 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
           >
             <svg
@@ -93,7 +93,7 @@
         <li>
           <!--        <li v-if="isAdmin">-->
           <router-link
-            to="/admin/members?page=1"
+            to="/admin"
             class="flex items-center p-2 text-gray-500 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
           >
             <svg

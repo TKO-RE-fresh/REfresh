@@ -1,5 +1,6 @@
 package tko.refresh.dto.admin;
 
+import com.querydsl.core.annotations.QueryProjection;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
@@ -11,10 +12,11 @@ import tko.refresh.util.page.GlobalPage;
 import javax.validation.constraints.NotEmpty;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Getter
 @ToString
-public class AnnualManageDto implements GlobalPage {
+public class AnnualManageDto {
 
     @NotEmpty
     private String annualUid;
@@ -37,12 +39,15 @@ public class AnnualManageDto implements GlobalPage {
     @NotEmpty
     private String createdDate;
 
+    private String rejectReason;
+
 
     @Builder
-    public AnnualManageDto(String annualUid, String memberName, String email, String departmentName, AnnualType annualType,
-                           AnnualStatus annualStatus, Period period, LocalDateTime createdDate) {
+    @QueryProjection
+    public AnnualManageDto(UUID annualUid, String memberName, String email, String departmentName, AnnualType annualType,
+                           AnnualStatus annualStatus, Period period, LocalDateTime createdDate, String rejectReason) {
         String format = "YYYY년 MM월 dd일";
-        this.annualUid = annualUid;
+        this.annualUid = annualUid.toString();
         this.memberName = memberName;
         this.departmentName = departmentName;
         this.email = email;
@@ -51,5 +56,6 @@ public class AnnualManageDto implements GlobalPage {
         this.startDate = DateConverter.format(period.getStartDate(),format);
         this.endDate = DateConverter.format(period.getEndDate(),format);
         this.createdDate = DateConverter.format(createdDate,format);
+        this.rejectReason = rejectReason;
     }
 }

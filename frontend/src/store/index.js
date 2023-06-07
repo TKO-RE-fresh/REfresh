@@ -5,18 +5,23 @@ export default createStore({
   state: {
     token: null,
     annualList: [],
+    historyList : [],
     calendarYear: new Date().getFullYear(),
     calendarMonth: new Date().getMonth() + 1,
     deptName: null,
     memberId: null,
     memberName: null,
     deptList: [],
-    searchInput: {
+    manageSearch: {
       memberName: "",
       departmentName: "",
       status: "",
     },
-    page: 1,
+    historySearch : {
+      status: '',
+      type: '',
+      year: 0
+    }
   },
   getters: {
     getAccessToken: (state) => {
@@ -37,24 +42,35 @@ export default createStore({
     getAnnualList: (state) => {
       return state.annualList;
     },
-    getSearchInput: (state) => {
-      return state.searchInput;
+    getManageSearch: (state) => {
+      return state.manageSearch;
     },
-    getPage: (state) => {
-      return state.page;
+    getHistoryList: (state) => {
+      return state.historyList;
     },
+    getHistorySearch: (state) => {
+      return state.historySearch;
+    }
   },
   mutations: {
     setAccessToken: (state, token) => {
       state.token = token;
     },
-    setAnnualList: async (state) => {
+    setAnnualList: async (state,page) => {
       const res = await mixins.methods.$api(
-        `admin/annual/${state.page}`,
+        `admin/annual/${page}`,
         "get",
-        { params: state.searchInput }
+        { params: state.manageSearch }
       );
       state.annualList = res.data;
+    },
+    setHistoryList: async (state, page) => {
+      const res = await mixins.methods.$api(
+        `myPage/history/${page}`,
+        'get',
+        {params: state.historySearch}
+      )
+      state.historyList = res.data;
     },
     setCalendarDate: (state, date) => {
       const { year, month } = date;
@@ -67,11 +83,11 @@ export default createStore({
     setDeptList: (state, deptList) => {
       state.deptList = deptList;
     },
-    setSearchInput: (state, searchInput) => {
-      state.searchInput = searchInput;
+    setManageSearch: (state, manageSearch) => {
+      state.manageSearch = manageSearch;
     },
-    setPage: (state, page) => {
-      state.page = page;
+    setHistorySearch: (state,searchInput) =>{
+      state.historySearch = searchInput;
     },
   },
   actions: {},

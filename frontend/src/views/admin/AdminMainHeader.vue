@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="navbar px-6">
+    <div class="navbar px-10">
       <div class="flex-1">
         <h3 class="normal-case text-3xl font-bold">관리자 페이지</h3>
         <!-- <a class="btn btn-ghost normal-case text-xl">연차 신청</a> -->
