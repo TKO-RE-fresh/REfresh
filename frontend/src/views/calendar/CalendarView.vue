@@ -36,8 +36,6 @@
         :monthList="subCalData.monthList"
         :curYear="yearMonth.year"
         :curMonth="yearMonth.month"
-        :curX="curX"
-        :curY="curY"
         @closeModal="closeSubModal"
         @yearMonthEvent="fetchCalendarByRefsData"
       ></calendar-sub-cal-modal>
