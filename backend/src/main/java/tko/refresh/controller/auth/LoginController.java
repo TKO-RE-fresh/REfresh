@@ -29,10 +29,10 @@ public class LoginController {
         return ResponseEntity.ok().body(memberService.login(dto, response));
     }
 
-    @PostMapping("/join")
-    public String join() {
-        memberService.signup(MemberJoinDto.builder().deptName("서비스팀").memberId("seunghee").password("qwer1234").email("seunghee@daum.net").build());
-        return "success";
-    }
+//    @PostMapping("/join")
+//    public String join() {
+//        memberService.signup(MemberJoinDto.builder().deptName("서비스팀").memberId("seunghee").password("qwer1234").email("seunghee@daum.net").build());
+//        return "success";
+//    }
 
 }

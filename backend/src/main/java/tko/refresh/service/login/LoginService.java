@@ -5,7 +5,9 @@ import static tko.refresh.domain.enu.RedisData.MEMBER_AUTH;
 import static tko.refresh.domain.enu.RedisData.MEMBER_NAME;
 import static tko.refresh.util.jwt.JwtUtil.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -51,10 +53,11 @@ public class LoginService {
             return GlobalResponseDto.builder().message("중복된 아이디입니다.").statusCode(BAD_REQUEST.value()).build();
         }
         // email 중복검사
-        if(memberRepository.findByLoginEmail(dto.getEmail()).isPresent()){
+        if(memberRepository.findByLoginEmail(dto.getMemberEmail()).isPresent()){
             return GlobalResponseDto.builder().message("중복된 이메일입니다.").statusCode(BAD_REQUEST.value()).build();
         }
-        Department dept = departmentRepository.findByName(dto.getDeptName());
+
+        Department dept = departmentRepository.findByName(dto.getDepartmentName());
 
         // 패스워드 암호화
         dto.setEncodePwd(passwordEncoder.encode(dto.getPassword()));
@@ -62,15 +65,21 @@ public class LoginService {
                 .memberId(dto.getMemberId())
                 .password(dto.getPassword())
                 .memberAuth(RoleType.ADMIN)
-                              .memberInfo(MemberInfo.builder().name("홍승희").email(dto.getEmail()).cellphone("010-7877-7123").build())
-                              .memberStatus(MemberStatus.IN_USE)
-                              .annualCount(15.0)
-                              .modifiedDate(LocalDateTime.now())
-                .department(dept)
-                .createdDate(LocalDateTime.now())
-                .modifiedBy("admin")
+                .memberInfo(MemberInfo.builder()
+                            .name(dto.getMemberName())
+                            .email(dto.getMemberEmail())
+                            .cellphone(dto.getMemberCellphone())
+                            .build())
+                .memberStatus(dto.getMemberStatus())
+                .annualCount(dto.getAnnualCount())
                 .modifiedDate(LocalDateTime.now())
-                .createdBy("admin").build();
+                .department(dept)
+                .createdDate(dateFormat(dto.getCreatedDate()))
+                .modifiedBy(dto.getModifiedBy())
+                .modifiedDate(LocalDateTime.now())
+                .createdBy(dto.getCreatedBy())
+                .build();
+
         dept.addMember(member);
         // 회원가입 성공
         memberRepository.save(member);
@@ -127,6 +136,13 @@ public class LoginService {
 
     private void setHeaderToken(HttpServletResponse response, TokenDto tokenDto) {
         response.setHeader(ACCESS_TOKEN, tokenDto.getAccessToken());
+    }
+
+    public LocalDateTime dateFormat(String date) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate localDate = LocalDate.parse(date, formatter);
+        LocalDateTime localDateTime = localDate.atStartOfDay();
+        return localDateTime;
     }
 
 

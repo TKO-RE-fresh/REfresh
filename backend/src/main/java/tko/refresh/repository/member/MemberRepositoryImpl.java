@@ -94,7 +94,7 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
     }
 
     private BooleanExpression memberNameEq(String memberName) {
-        return isEmpty(memberName) ? null : member.memberInfo.name.eq(memberName);
+        return isEmpty(memberName) ? null : member.memberInfo.name.contains(memberName);
     }
 
     private BooleanExpression departmentNameEq(String departmentName) {

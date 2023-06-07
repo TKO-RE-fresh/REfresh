@@ -28,7 +28,7 @@ public class MemberDetailDto {
 
     private String memberEmail;
 
-    private final double annualCount;
+    private Double annualCount;
 
     protected String createdBy;
 

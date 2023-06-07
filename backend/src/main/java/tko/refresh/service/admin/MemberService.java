@@ -8,10 +8,8 @@ import tko.refresh.domain.entity.Department;
 import tko.refresh.domain.entity.Member;
 import tko.refresh.domain.enu.MemberStatus;
 import tko.refresh.domain.enu.RoleType;
-import tko.refresh.dto.admin.MemberDetailDto;
-import tko.refresh.dto.admin.MemberDto;
-import tko.refresh.dto.admin.MemberSearchDto;
-import tko.refresh.dto.admin.MemberUpdateDto;
+import tko.refresh.dto.admin.*;
+import tko.refresh.repository.calendar.DepartmentRepository;
 import tko.refresh.repository.department.MemberDepartmentRepository;
 import tko.refresh.repository.member.MemberRepository;
 import tko.refresh.util.page.Pagination;
@@ -24,11 +22,13 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class MemberService {
-    private final int PAGE_SIZE = 1;
+    private final int PAGE_SIZE = 2;
 
     private final MemberRepository memberRepository;
 
     private final MemberDepartmentRepository memberDepartmentRepository;
+
+    private final MemberDepartmentRepository departmentRepository;
 
     public Page<MemberDto> getAllMemberList(int page) {
         Pageable pageable = Pagination.setPageable(page,PAGE_SIZE);
@@ -86,5 +86,30 @@ public class MemberService {
 
         member.updateMember(memberUpdateDto, department);
     }
+
+    public SearchFormDto getSearchForm() {
+
+        List<String> departmentNameList = departmentRepository.getDepartmentNameList();
+
+        List<MemberStatus> memberStatuses = new ArrayList<>();
+        for(MemberStatus status : MemberStatus.values()) {
+            memberStatuses.add(status);
+        }
+
+        List<RoleType> memberAuth = new ArrayList<>();
+        for(RoleType role : RoleType.values()) {
+            memberAuth.add(role);
+        }
+
+        SearchFormDto searchFormDto = SearchFormDto.builder()
+                .departmentNameList(departmentNameList)
+                .memberStatusList(memberStatuses)
+                .memberAuthList(memberAuth)
+                .build();
+
+        return searchFormDto;
+    }
+
+
 }
 

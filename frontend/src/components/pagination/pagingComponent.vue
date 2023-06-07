@@ -1,5 +1,5 @@
 <template>
-  <div class="pagination">
+  <div v-if="totalPages > 0" class="pagination">
     <ul class="flex justify-center space-x-2 mt-10">
       <li>
         <a
