@@ -1,7 +1,7 @@
 <template>
   <form @submit="onFormSubmit($event)">
     <div
-      class="flex bg-base-80 border border-slate-300 rounded-lg shadow-md shadow-slate-300/40 my-10 mx-16"
+      class="flex bg-base-80 border border-slate-300 rounded-lg shadow-md shadow-slate-300/40 my-10 mx-14"
     >
       <div class="py-2 flex items-center justify-between space-x-16 w-full mx-10">
         <div class="flex space-x-6">

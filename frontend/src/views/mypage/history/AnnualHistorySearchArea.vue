@@ -1,6 +1,6 @@
 <template>
   <div class="navbar px-10">
-    <div class="flex-1 ml-5">
+    <div class="flex-1 ml-3">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
@@ -12,26 +12,30 @@
         <path
           stroke-linecap="round"
           stroke-linejoin="round"
-          d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184"
+          d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
         />
       </svg>
-
-      <h3 class="normal-case text-3xl font-mice-bold text-gray-600 ">내 연차 조회</h3>
+      <h3 class="normal-case text-3xl ml-3 font-mice-bold text-gray-600">
+        내 연차 조회
+      </h3>
     </div>
   </div>
 
   <form @submit="onFormSubmit($event)">
     <div
-      class="flex bg-base-80 border border-slate-300 rounded-lg shadow-md shadow-slate-300/40 my-10 mx-16"
+      class="flex bg-base-80 border border-slate-300 rounded-lg shadow-md shadow-slate-300/40 my-10 mx-14"
     >
       <div
-        class="py-2 flex items-center justify-between space-x-16 w-full mx-10"
+        class="py-2 flex items-center justify-between space-x-16 w-full mx-6"
       >
         <div class="flex space-x-6">
           <!-- 종류 검색 -->
-          <div class="flex items-center space-x-3 font-nanum">
+          <div class="flex items-center space-x-3 font-mice-bold">
             <label>연차 종류</label>
-            <select class="select select-bordered" @change="setType($event)">
+            <select
+              class="select select-bordered font-mice"
+              @change="setType($event)"
+            >
               <option
                 v-for="(item, idx) in typeOptions"
                 :key="idx"
@@ -42,30 +46,33 @@
             </select>
           </div>
           <!-- 연차 상태 -->
-          <div class="flex items-center space-x-3 font-mice">
+          <div class="flex items-center space-x-3 font-mice-bold">
             <label>연차 상태</label>
             <select class="select select-bordered" @change="setStatus($event)">
               <option
                 v-for="(item, idx) in statusOptions"
                 :key="idx"
                 :value="item.value"
+                class="font-mice"
               >
                 {{ item.option }}
               </option>
             </select>
           </div>
           <!--연도 검색 -->
-          <div class="flex items-center space-x-3 font-Gmarket">
+          <div class="flex items-center space-x-3 font-mice-bold">
             <label>연도</label>
             <select class="select select-bordered" @change="setYear($event)">
-              <option :value="0">연도 선택</option>
-              <option v-for="n in year" :key="n" :value="n">{{ n }}년</option>
+              <option :value="0" class="font-mice">연도 선택</option>
+              <option v-for="n in year" :key="n" :value="n" class="font-mice">
+                {{ n }}년
+              </option>
             </select>
           </div>
         </div>
         <button
           type="submit"
-          class="bg-rose-400 px-5 py-2 rounded-xl text-white hover:bg-blue-700"
+          class="bg-blue-500 px-5 py-2 font-mice rounded-xl text-white hover:bg-blue-700"
         >
           조회
         </button>
@@ -78,7 +85,6 @@
 import { onMounted, ref, reactive } from "vue";
 import Store from "@/store/index.js";
 import mixins from "@/utils/mixins";
-
 
 const statusOptions = [
   { option: "상태 선택", value: "" },
@@ -115,11 +121,10 @@ function setYear(e) {
   searchInput.year = e.target.value;
 }
 
-
 async function onFormSubmit(e) {
   e.preventDefault();
   Store.commit("setHistorySearch", searchInput);
-  await Store.dispatch('fetchHistoryList', 1)
+  await Store.dispatch("fetchHistoryList", 1);
 }
 
 onMounted(async () => {
@@ -128,31 +133,8 @@ onMounted(async () => {
   for (let i = current; i >= res.data; i--) {
     year.value.push(i);
   }
-  await Store.dispatch('fetchHistoryList', 1);
-
+  await Store.dispatch("fetchHistoryList", 1);
 });
 </script>
 
-<style>
-@font-face {
-    font-family: 'MICEGothic Bold';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2206-01@1.0/MICEGothic Bold.woff2') format('woff2');
-    font-weight: 700;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'MICEGothic';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2206-01@1.0/MICEGothic.woff2') format('woff2');
-    font-weight: 400;
-    font-style: normal;
-}
-
-.font-mice-bold {
-  font-family: 'MICEGothic Bold';
-}
-
-.font-mice {
-  font-family: 'MICEGothic';
-}
-</style>
+<style></style>

@@ -10,6 +10,11 @@ import 'sweetalert2/dist/sweetalert2.min.css';
 
 
 
-createApp(App).use(store).use(VueSweetalert2).mixin(mixins).use(router).mount("#app");
+createApp(App)
+.use(store)
+.use(VueSweetalert2)
+.use(router)
+.mixin(mixins)
+.mount("#app");
 
 
