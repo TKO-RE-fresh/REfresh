@@ -7,29 +7,29 @@ import tko.refresh.util.converter.MemberStatusConverter;
 import tko.refresh.util.converter.RoleTypeConverter;
 
 import javax.persistence.Convert;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
+import javax.validation.constraints.*;
 
 @Getter
 @ToString
 @RequiredArgsConstructor
 public class MemberUpdateDto {
 
-    @NotNull
+    @NotBlank(message = "아이디를 입력하세요.")
+    @Size(min = 3, max = 10, message = "아이디를 3자 이상 10자 이하로 입력하세요")
     private String memberId;
 
-    @NotNull
+    @NotBlank(message = "이름을 입력하세요")
     private String memberName;
 
-    @Pattern(regexp = "\\d{3}-\\d{4}-\\d{4}", message = "Invalid phone number format. Valid format: XXX-XXXX-XXXX")
-    @NotNull
+    @Pattern(regexp = "\\d{3}-\\d{4}-\\d{4}", message = "전화번호 형식을 확인하세요 : XXX-XXXX-XXXX")
+    @NotBlank(message = "전화번호를 입력하세요")
     private String memberCellphone;
 
-    @Email
-    @NotNull
+    @Email(message = "이메일 형식을 확인하세요.")
+    @NotBlank(message = "이메일을 입력하세요")
     private String memberEmail;
 
+    @NotNull(message = "부서를 선택하세요")
     private String departmentName;
 
     private double annualCount;
