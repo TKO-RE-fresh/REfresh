@@ -119,20 +119,47 @@
   </aside>
 </template>
 
-<script setup>
-import { ref, computed } from "vue";
+<script>
+import { ref, onMounted } from "vue";
+import { useStore } from "vuex";
 import Store from "@/store/index.js";
-const auth = ref(Store.state.auth);
-const memberName = Store.state.memberName;
-const deptName = Store.state.deptName;
 
-const restLeave = computed(() => {
-  return Store.state.restLeave;
-});
-console.log("사이드바 남은연차: " + restLeave.value);
+export default {
+  computed: {
+    getRestLeave() {
+      return this.$store.getters.getRestLeave;
+    },
+    getUsedLeave() {
+      console.log("사용한 연차: " + this.$store.getters.getUsedLeave);
+      return this.$store.getters.getUsedLeave;
+    },
+    restLeave() {
+      return this.getRestLeave;
+    },
+    usedLeave() {
+      return this.getUsedLeave;
+    },
+  },
+  setup() {
+    const store = useStore();
 
-const usedLeave = computed(() => {
-  return Store.state.usedLeave;
-});
-console.log("사이드바 사용한 연차: " + usedLeave.value);
+    const auth = ref(Store.state.auth);
+    const memberName = ref(Store.state.memberName);
+    const deptName = ref(Store.state.deptName);
+
+    const fetchLeaveInfo = () => {
+      store.dispatch("fetchLeaveInfo");
+    };
+
+    onMounted(() => {
+      fetchLeaveInfo();
+    });
+
+    return {
+      auth,
+      memberName,
+      deptName,
+    };
+  },
+};
 </script>
