@@ -75,9 +75,8 @@
                       </div>
                       <div class="text-sm" name="detailInfo">
                         <div class="m-2">
-                          <input v-model="member.memberId" type="text" :readonly=!editMode
-                            :class="{'shadow border rounded py-1 text-gray-700 hover:bg-gray-100 focus:outline-none' : !editMode, 
-                                    'shadow border rounded py-1 text-gray-700 outline-none ring border-blue-50': editMode}">
+                          <input v-model="member.memberId" type="text" :readonly=true
+                            class="shadow border rounded py-1 text-gray-700 hover:bg-gray-100 focus:outline-none">
                         </div>
                         <div class="m-2">
                           <input v-model="member.createdDate" type="date" :readonly=!editMode
@@ -163,7 +162,7 @@
             </div>
           </div>
           <div
-            class="fixed inset-0 bg-black opacity-70 z-0"
+            class="fixed inset-0 opacity-70 z-0"
             @click="onToggle"
           ></div>
         </div>
@@ -220,7 +219,7 @@
     try {
       // console.log("주소창 id : ");
       // console.log(selectedMemberId.value);
-      const res = await axios.get('http://localhost:8090/admin/member/' + selectedMemberId.value);
+      const res = await axios.get(`http://localhost:8090/admin/member/${selectedMemberId.value}`);
 
       member.value = res.data;
 

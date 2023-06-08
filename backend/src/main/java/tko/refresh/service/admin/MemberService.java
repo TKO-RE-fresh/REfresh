@@ -22,7 +22,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class MemberService {
-    private final int PAGE_SIZE = 2;
+    private final int PAGE_SIZE = 5;
 
     private final MemberRepository memberRepository;
 
