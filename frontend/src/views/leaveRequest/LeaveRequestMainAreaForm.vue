@@ -86,6 +86,7 @@
                 id="startDate"
                 name="startDate"
                 v-model="startDate"
+                v-bind:min="today"
                 placeholder="시작일"
                 @change="validityCheck"
                 class="rounded-lg pl-4 pr-2 py-2 shadow focus:outline-none focus:ring focus:ring-blue-500">
@@ -130,7 +131,7 @@
     </div>
 </template>
 <script>
-import { ref, reactive, onMounted, watch } from "vue";
+import { ref, computed, reactive, onMounted, watch } from "vue";
 import axios from "axios";
 import { useStore } from "vuex";
 
@@ -151,10 +152,31 @@ export default {
     state.applicantName = memberName;
 
     const memberId = ref(store.state.memberId);
-    console.log("멤버 아이디: " + memberId.value);
+    // console.log("멤버 아이디: " + memberId.value);
 
     const selectedLeaveType = ref("");
     const annualType = ref("");
+
+    const today = computed(() => {
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, "0");
+      const day = String(now.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    });
+
+    console.log("오늘날짜 today.value: " + today.value);
+
+    const tomorrow = computed(() => {
+      const today = new Date();
+      const now = new Date(today.setDate(today.getDate() + 1));
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, "0");
+      const day = String(now.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    });
+
+    console.log("내일: " + tomorrow.value);
 
     const handleLeaveType = (e) => {
       const selectedValue = e.target.value; // let 쓰면 에러
@@ -171,12 +193,12 @@ export default {
     };
 
     /* 시작 & 종료일 유효성 검사 */
-    watch([selectedLeaveType, startDate, endDate], () => {
+    watch([selectedLeaveType, startDate, endDate, today], () => {
       errorMessage.value = "";
 
       const start = startDate.value;
       const end = endDate.value;
-      const today = new Date().toJSON().slice(0, 10);
+      // const today = new Date().toJSON().slice(0, 10);
 
       /* 유효성 검사 */
       /* 시작일을 선택 */
@@ -191,7 +213,7 @@ export default {
           }
 
           /* 오늘보다 이전날짜를 선택한 경우 */
-          if (start <= today) {
+          if (start <= today.value) {
             // console.log("휴가 시작일이 오늘 이전임 ㅡㅡ ");
             errorMessage.value = "휴가 시작일은 오늘 날짜 이후여야 합니다!";
             // console.log(errorMessage);
@@ -203,7 +225,7 @@ export default {
           // console.log("연차선택!!!!!!");
 
           /* 오늘보다 이전날짜를 선택한 경우 */
-          if (start <= today) {
+          if (start <= today.value) {
             // console.log("휴가 시작일이 오늘 이전임 ㅡㅡ ");
             errorMessage.value = "휴가 시작일은 오늘 날짜 이후여야 합니다!";
             // console.log(errorMessage);
@@ -238,8 +260,6 @@ export default {
         const response = await axios.get("http://localhost:8090/leaveRequest");
         restLeave.value = response.data.restLeaveCount;
         usedLeave.value = response.data.usedLeaveCount;
-        store.commit("setRestLeave", response.data.restLeaveCount);
-        store.commit("setUsedLeave", response.data.usedLeaveCount);
       } catch (error) {
         console.error(error);
       }
@@ -262,32 +282,30 @@ export default {
       let data = {
         memberId: memberId.value,
         annualType: annualType.value,
-        startDate: period.startDate,
-        endDate: period.endDate,
+        period,
       };
 
       if (selectedLeaveType.value.includes("반차")) {
-        console.log("신청시 반차 선택!!!ㅋㅋㅋㅋㅋㅋㅋ");
+        // console.log("신청시 반차 선택!!!ㅋㅋㅋㅋㅋㅋㅋ");
         // console.log("피리어드의 스타트일: " + period.startDate);
 
         period.endDate = period.startDate;
 
         // console.log("피리어드의 종료일: " + period.endDate);
 
-        console.log(
-          "기간: " +
-            period +
-            " 기간 쪼개서 확인: " +
-            period.startDate +
-            " " +
-            period.endDate
-        );
+        // console.log(
+        //   "기간: " +
+        //     period +
+        //     " 기간 쪼개서 확인: " +
+        //     period.startDate +
+        //     " " +
+        //     period.endDate
+        // );
 
         data = {
           memberId: memberId.value,
           annualType: annualType.value,
-          startDate: period.startDate,
-          endDate: period.endDate,
+          period,
         };
       }
 
@@ -317,6 +335,7 @@ export default {
       errorMessage,
       submitForm,
       selectedLeaveType,
+      today,
     };
   },
 };
