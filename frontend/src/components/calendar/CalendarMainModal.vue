@@ -26,35 +26,35 @@
                       <p
                         class="text-xs font-medium text-gray-900 truncate dark:text-white"
                       >
-                        {{ item.memberInfo.name }}
+                        {{ val.memberInfo.name }}
                       </p>
                       <p
                         class="text-xs text-gray-500 truncate dark:text-gray-400"
                       >
-                        {{ item.memberInfo.email }}
+                        {{ val.memberInfo.email }}
                       </p>
                     </div>
                     <div>
                       <span
                         :class="{
                           'bg-yellow-100':
-                            item.annualType === '오전 반차' ||
-                            item.annualType === '오후 반차',
-                          'bg-green-100': item.annualType === '연차',
-                          'text-green-800': item.annualType === '연차',
+                            val.annualType === '오전 반차' ||
+                            val.annualType === '오후 반차',
+                          'bg-green-100': val.annualType === '연차',
+                          'text-green-800': val.annualType === '연차',
                           'text-yellow-800':
-                            item.annualType === '오전 반차' ||
-                            item.annualType === '오후 반차',
+                            val.annualType === '오전 반차' ||
+                            val.annualType === '오후 반차',
                         }"
                         class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
                       >
-                        {{ item.annualType }}
+                        {{ val.annualType }}
                       </span>
                     </div>
                     <div
                       class="inline-flex items-center text-xs font-semibold text-gray-900 dark:text-white"
                     >
-                      {{ item.startDate }} ~ {{ item.endDate }}
+                      {{ val.startDate }} ~ {{ val.endDate }}
                     </div>
                   </div>
                 </li>
@@ -66,6 +66,7 @@
                 <paging-component
                   :currentPage="curPage"
                   :totalPages="totalPage"
+                  @selectPage="fetchDataForModal"
                 ></paging-component>
               </div>
               <div
@@ -93,31 +94,36 @@ import Store from "@/store/index.js";
 import mixins from "@/utils/mixins";
 
 const emit = defineEmits(["closeEvent"]);
-
 function closeEvent() {
   emit("closeEvent");
 }
 const year = ref(Store.state.calendarYear);
 const month = ref(Store.state.calendarMonth);
 const annualList = reactive([]);
-const curPage = ref(0);
+const curPage = ref(1);
 const totalPage = ref(0);
 
 watch(props, async (oldValue, newValue) => {
   if (oldValue.day !== newValue.day) {
+    curPage.value = 1;
     await fetchDataForModal();
   }
 });
 onMounted(async () => {
-  await fetchDataForModal();
+  const pages = await fetchDataForModal();
+  console.log(annualList);
+  totalPage.value = pages;
 });
 
-async function fetchDataForModal() {
+async function fetchDataForModal(num) {
+  if (num) {
+    curPage.value = num;
+  }
   const params = makeParams();
   const res = await mixins.methods.$api("calendar/annual", "get", { params });
   annualList.splice(0, annualList.length, ...res.data.content);
-  curPage.value = res.data.curPage;
-  totalPage.value = res.data.totalPage;
+
+  return res.data.totalPage;
 }
 
 function makeParams() {
@@ -130,7 +136,7 @@ function makeParams() {
     day: Number(props.day),
     year,
     month,
-    page: 1,
+    page: curPage.value,
     size: 5,
   };
 }

@@ -2,7 +2,7 @@
   <tr v-for="(it, idx) in calendar" :key="idx">
     <td
       v-for="(day, dayIdx) in it"
-      :id="dayIdx"
+      :id="day.day"
       :key="dayIdx"
       class="border-2 w-48 h-28 relative"
       :class="{
@@ -13,21 +13,21 @@
       @click="showDayModal($event, day.hoName, day.sumCount)"
     >
       <div
-        :id="dayIdx"
+        :id="day.day"
         :class="{ 'text-red-500': isHoliday(day) }"
         class="absolute max-w-full top-2 left-3"
       >
         {{ day.day }}
       </div>
       <div
-        :id="dayIdx"
+        :id="day.day"
         class="absolute text-xs md:text-sm lg:text-lg top-2 left-10"
       >
         {{ isSpecialHoliday(day) ? parseHoliday(day) : "" }}
       </div>
-      <div :id="dayIdx" class="absolute max-w-full right-2 bottom-2">
+      <div :id="day.day" class="absolute max-w-full right-2 bottom-2">
         <template v-if="day.sumCount !== 0">
-          <div :id="dayIdx" v-html="personIcon"></div>
+          <div :id="day.day" v-html="personIcon"></div>
           {{ day.sumCount }}명
         </template>
       </div>

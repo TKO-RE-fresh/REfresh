@@ -27,7 +27,7 @@ public abstract class BaseEntity {
     @NotNull
     protected LocalDateTime modifiedDate;
 
-    protected BaseEntity(String createdBy, String modifiedBy, LocalDateTime modifiedDate,
+    public BaseEntity(String createdBy, String modifiedBy, LocalDateTime modifiedDate,
                          LocalDateTime createdDate) {
         this.createdBy = createdBy;
         this.modifiedBy = modifiedBy;
@@ -35,8 +35,8 @@ public abstract class BaseEntity {
         this.createdDate = createdDate;
     }
 
-    public BaseEntity(String modifiedBy, LocalDateTime modifiedDate) {
-        this.modifiedBy = modifiedBy;
-        this.modifiedDate = modifiedDate;
-    }
+//    public BaseEntity(String modifiedBy, LocalDateTime modifiedDate) {
+//        this.modifiedBy = modifiedBy;
+//        this.modifiedDate = modifiedDate;
+//    }
 }

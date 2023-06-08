@@ -5,14 +5,14 @@
     >
       <article class="m-auto md:w-8/12 lg:w-6/12 xl:w-5/12">
         <form
-          class="bg-white p-8 rounded-lg shadow-lg"
+          class="bg-white p-8 rounded-lg shadow-lg h-full"
           @submit.prevent="onSubmit"
         >
           <h2 class="text-4xl font-bold mb-4 flex justify-center">
             <span class="text-sky-500">RE</span>fresh
           </h2>
 
-          <div class="mb-4">
+          <div class="mb-12 h-16">
             <label class="block text-gray-700 font-bold mb-2" for="id"
               >아이디</label
             >
@@ -27,10 +27,10 @@
                 autocomplete="off"
                 aria-required="true"
               />
+              <div class="pt-2 text-rose-600">{{ alertIdMsg }}</div>
             </div>
-            <span>{{ alertIdMsg }}</span>
           </div>
-          <div class="mb-4">
+          <div class="mb-12 h-16">
             <label class="block text-gray-700 font-bold mb-2" for="password"
               >비밀번호</label
             >
@@ -43,13 +43,13 @@
               aria-required="true"
               placeholder="비밀번호 입력"
             />
-            <span>{{ alertPwMsg }}</span>
+            <div class="pt-2 text-rose-600">{{ alertPwMsg }}</div>
           </div>
           <div class="flex justify-between">
             <label class="block text-gray-500 font-bold my-4"
               ><input type="checkbox" class="leading-loose text-pink-600" />
               <span class="py-2 text-sm text-gray-600 leading-snug">
-                로그인 기억
+                로그인 정보 기억하기
               </span></label
             >
             <label class="block text-gray-500 font-bold my-4"

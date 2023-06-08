@@ -89,6 +89,7 @@ public class WebSecurityConfig {
         http.authorizeRequests().antMatchers("/login/**", "/swagger-ui.html", "/swagger/**","/token/**",
                                              "/swagger-resources/**","/webjars/**","/v2/api-docs").permitAll()
                 .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/**").access("hasAnyRole('MEMBER', 'ADMIN')")
             .anyRequest().authenticated().and()
             .headers().frameOptions().sameOrigin().and()
             .addFilterBefore(new JwtAuthFilter(jwtUtil, logoutHandler), UsernamePasswordAuthenticationFilter.class);

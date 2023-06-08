@@ -238,6 +238,8 @@ export default {
         const response = await axios.get("http://localhost:8090/leaveRequest");
         restLeave.value = response.data.restLeaveCount;
         usedLeave.value = response.data.usedLeaveCount;
+        store.commit("setRestLeave", response.data.restLeaveCount);
+        store.commit("setUsedLeave", response.data.usedLeaveCount);
       } catch (error) {
         console.error(error);
       }
@@ -260,7 +262,8 @@ export default {
       let data = {
         memberId: memberId.value,
         annualType: annualType.value,
-        period,
+        startDate: period.startDate,
+        endDate: period.endDate,
       };
 
       if (selectedLeaveType.value.includes("반차")) {
@@ -283,7 +286,8 @@ export default {
         data = {
           memberId: memberId.value,
           annualType: annualType.value,
-          period,
+          startDate: period.startDate,
+          endDate: period.endDate,
         };
       }
 
