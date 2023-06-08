@@ -61,6 +61,7 @@ public class AnnualManageService {
         annualCountResult = memberRepository.setSubAnnualCount(member.getMemberId(), periodCount);
         //연차 집계 증가
         sumResult = annualCountRepository.setAnnualSumCount(period.getStartDate(), period.getEndDate(), member.getDepartment().getUid());
+
         //승인 상태 변경
         statusResult = annualManageRepo.acceptAnnualStatus(uid,AnnualStatus.AGREE,authMember.getMemberId());
 
@@ -94,7 +95,7 @@ public class AnnualManageService {
             date=date.plusDays(1);
         }
         // 공휴일 빼고 계산
-        workingDays -= holidayRepository.countByDateBetween(period.getStartDate().toLocalDate(),period.getEndDate().toLocalDate());
+        workingDays -= holidayRepository.countByDateBetween(period.getStartDate().toLocalDate() ,period.getEndDate().toLocalDate());
         return workingDays;
     }
 }

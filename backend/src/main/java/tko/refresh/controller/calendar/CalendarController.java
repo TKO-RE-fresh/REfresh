@@ -33,7 +33,6 @@ public class CalendarController {
 
     @GetMapping
     public ResponseEntity getCalendar(@ModelAttribute @Valid CalendarReqDto dto) {
-        System.out.println("userDetails: " + jwtAuthMember.getJwtAuthMember());
         return ResponseEntity.ok().body(calendarService.updateCalendar(dto));
     }
 }

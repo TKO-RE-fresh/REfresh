@@ -44,13 +44,13 @@ public class AnnualEmRepository {
         q.setParameter("department", dto.getName());
         q.setFirstResult(pageable.getPageNumber() * pageable.getPageSize());
         q.setMaxResults(pageable.getPageSize());
-
+        int l = totalElements % pageable.getPageSize() == 0 ? (int) (totalElements / pageable.getPageSize()) : (int) (totalElements / pageable.getPageSize()) + 1;
         List<AnnualResponse> collect = q.getResultList().stream().map(annual -> GetAnnualByNameResDto.builder()
                 .memberInfo(annual.getMember().getMemberInfo())
                 .period(annual.getPeriod()).annualType(annual.getAnnualType().getCode()).build()).collect(
                 Collectors.toList());
 
-        return AnnualResponseDto.builder().totalPage(totalElements).curPage(pageNumber).content(collect).build();
+        return AnnualResponseDto.builder().totalPage(l).curPage(pageNumber).totalElements((int)totalElements).content(collect).build();
 
     }
     public AnnualResponseDto<AnnualResponse> findAnnualByMember(GetAnnualByMemberNameReqDto dto) {
@@ -62,6 +62,8 @@ public class AnnualEmRepository {
         long totalElements = query.getSingleResult();
         int pageNumber = pageable.getPageNumber() + 1;
         TypedQuery<Annual> q = entityManager.createQuery(jpql, Annual.class);
+        int l = totalElements % pageable.getPageSize() == 0 ? (int) (totalElements / pageable.getPageSize()) : (int) (totalElements / pageable.getPageSize()) + 1;
+
         q.setParameter("name", dto.getName());
         q.setFirstResult(pageable.getPageNumber() * pageable.getPageSize());
         q.setMaxResults(pageable.getPageSize());
@@ -70,7 +72,7 @@ public class AnnualEmRepository {
                                         .collect(Collectors.toList());
 
 
-        return AnnualResponseDto.builder().content(collect).totalPage(totalElements).curPage(pageNumber).build();
+        return AnnualResponseDto.builder().content(collect).totalPage(l).curPage(pageNumber).build();
 
     }
 
@@ -94,14 +96,14 @@ public class AnnualEmRepository {
         q.setParameter("department", dto.getDeptName());
         q.setParameter("today", dto.getToday().toLocalDate());
 
-        int l = (int) (totalElements / pageNumber);
+        int l = totalElements % pageable.getPageSize() == 0 ? (int) (totalElements / pageable.getPageSize()) : (int) (totalElements / pageable.getPageSize()) + 1;
 
         q.setFirstResult(pageable.getPageNumber() * pageable.getPageSize());
         q.setMaxResults(pageable.getPageSize());
 
 
         List<AnnualResponse> collect = q.getResultList().stream().map(annual -> GetAnnualByDateAndDeptResDto.
-                builder().deptName(dto.getDeptName()).memberName(annual.getMember().getMemberInfo().getName())
+                builder().memberInfo(annual.getMember().getMemberInfo())
                 .period(annual.getPeriod()).annualType(annual.getAnnualType().getCode()).build()).collect(Collectors.toList());
 
         return AnnualResponseDto.builder().content(collect).totalPage(l).totalElements((int) totalElements).curPage(pageNumber).build();

@@ -35,6 +35,7 @@
                 <paging-component
                   :currentPage="curPage"
                   :totalPages="totalPage"
+                  @selectPage="handleChangePage"
                 ></paging-component>
               </div>
               <div
@@ -72,22 +73,38 @@ function closeEvent() {
 
 const selectList = ["부서로 찾기", "이름으로 찾기"];
 const dept = ref("");
-
+const totalPage = ref(0);
+const curPage = ref(1);
 const select = ref(0);
 const deptList = ref([]);
 const annualList = ref([]);
+const member = ref("");
+
+function handleChangePage(number) {
+  if (number) {
+    curPage.value = number;
+  }
+  if (select.value === 0) {
+    handleDept(dept.value);
+  } else {
+    handleMember(dept.value);
+  }
+}
 
 watch(select, () => {
   annualList.value = [];
+  curPage.value = 1;
 });
 
 function handleClear() {
   dept.value = "";
   annualList.value = [];
+  curPage.value = 1;
 }
 
 Store.watch((newState) => {
   deptList.value = newState.deptList;
+  curPage.value = 1;
 });
 
 function handleData(data) {
@@ -101,33 +118,39 @@ function handleData(data) {
 function makeParams(name) {
   return {
     name,
-    page: 1,
+    page: curPage.value,
     size: 5,
   };
 }
 
 async function handleDept(deptName) {
-  if (deptName === dept.value) {
-    return;
+  if (deptName !== dept.value) {
+    dept.value = deptName;
   }
-  dept.value = deptName;
   const params = makeParams(deptName);
   const res = await mixins.methods.$api(`calendar/annual/department`, "get", {
     params,
   });
-  console.log(res.data);
   annualList.value = res.data;
+  totalPage.value = res.data.totalPage;
+  curPage.value = res.data.curPage;
 }
 
 async function handleMember(memberName) {
-  if (memberName === "") {
+  if (member.value === "" && memberName === "") {
     annualList.value = [];
     return;
+  } else if (memberName !== "" && memberName !== member.value) {
+    curPage.value = 1;
+    member.value = memberName;
   }
-  const params = makeParams(memberName);
+  console.log("memberName", memberName);
+  const params = makeParams(member.value);
   const res = await mixins.methods.$api(`calendar/annual/member`, "get", {
     params,
   });
   annualList.value = res.data;
+  totalPage.value = res.data.totalPage;
+  curPage.value = res.data.curPage;
 }
 </script>

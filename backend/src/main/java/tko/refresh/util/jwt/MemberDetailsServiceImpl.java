@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import tko.refresh.domain.entity.Member;
+import tko.refresh.domain.enu.MemberStatus;
 import tko.refresh.domain.enu.RoleType;
 import tko.refresh.repository.member.MemberRepository;
 
@@ -33,6 +34,8 @@ public class MemberDetailsServiceImpl implements UserDetailsService {
         List<GrantedAuthority> authorityList = new ArrayList<>();
         if(member.getMemberAuth() == RoleType.ADMIN) {
             authorityList.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        } else if(member.getMemberStatus() == MemberStatus.NOT_IN_USE) {
+            authorityList.add(new SimpleGrantedAuthority("ROLE_LEAVE"));
         } else {
             authorityList.add(new SimpleGrantedAuthority("ROLE_MEMBER"));
         }
