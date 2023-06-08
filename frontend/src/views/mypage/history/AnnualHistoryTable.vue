@@ -30,7 +30,7 @@
           <tr
             v-for="(row, idx) in Store.state.historyList.content"
             :key="idx"
-            class="bg-white border-b hover:bg-blue-50 font-mice"
+            class="bg-white font-mice border-b hover:bg-blue-50 "
           >
             <td class="w-4 p-3">
               <div class="flex items-center">
@@ -49,13 +49,13 @@
             <td class="px-3 py-3">{{ row.annualType }}</td>
             <th
               scope="row"
-              class="flex items-center px-3 py-2 text-gray-900 whitespace-nowrap dark:text-white"
+              class="flex items-center px-3 py-2 text-gray-800 whitespace-nowrap"
             >
               <div>
-                <div class="text-base font-semibold">
+                <div class="text-base text-gray-700">
                   {{ row.acceptorName }}
                 </div>
-                <div class="font-normal text-gray-500">
+                <div class="text-gray-400 font-thin">
                   {{ row.acceptorEmail }}
                 </div>
               </div>
@@ -84,7 +84,7 @@
               <div v-if="(row.annualStatus != '반려')">
                 <button
                   :disabled="isDisabled(row)"
-                  class="btn btn-active btn-link text-blue-300 disabled:text-gray-400 disabled:bg-inherit"  
+                  class="bg-[#003566] hover:bg-[#f6aa1c] disabled:bg-gray-300 text-white font-mice font- py-1 px-2 ml-6 rounded"
                   @click="cancelHandeler(row.annualUid , row.startDate)"
                 >
                   취소

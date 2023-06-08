@@ -4,12 +4,12 @@
       class="flex bg-base-80 border border-slate-300 rounded-lg shadow-md shadow-slate-300/40 my-10 mx-14"
     >
       <div class="py-2 flex items-center justify-between space-x-16 w-full mx-10">
-        <div class="flex space-x-6">
+        <div class="flex space-x-6 font-mice text-gray-600">
           <!-- 부서 검색 -->
           <div class="flex items-center space-x-3">
             <label>부서명</label>
 
-            <select class="select select-bordered" 
+            <select class="select select-bordered font-semibold" 
                     @change="setDepartment($event)">
               <option v-for="(item,idx) in deptOptions" 
                       :key="idx"
@@ -30,7 +30,7 @@
           <!-- 연차 상태 -->
           <div class="flex items-center space-x-3">
             <label>연차 상태</label>
-            <select class="select select-bordered"
+            <select class="select select-bordered font-semibold"
                     @change="setStatus($event)">
               <option v-for="(item,idx) in statusOptions" 
                       :key="idx"
@@ -42,7 +42,7 @@
         </div>
         <button
           type="submit"
-          class="bg-blue-500 px-5 py-3 rounded-xl text-white hover:bg-blue-700"
+          class="bg-[#003566] hover:bg-[#f6aa1c] px-3 py-1.5 rounded-md text-white font-medium font-mice"
         >
           조회
         </button>

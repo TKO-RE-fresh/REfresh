@@ -1,8 +1,8 @@
 <template>
   <div class="px-14">
     <div class="border border-slate-200 rounded-xl overflow-hidden">
-      <table class="w-full text-sm text-left text-gray-500">
-        <thead class="text-md text-gray-800 uppercase bg-gray-50">
+      <table class="w-full text-sm text-left text-gray-500 font-mice">
+        <thead class="text-md text-gray-800 bg-gray-50">
           <tr>
             <th scope="col" class="p-3">
               <div class="flex items-center">

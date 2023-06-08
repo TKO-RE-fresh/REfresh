@@ -28,12 +28,12 @@
       <div
         class="py-2 flex items-center justify-between space-x-16 w-full mx-6"
       >
-        <div class="flex space-x-6">
+        <div class="flex space-x-6 font-mice text-gray-600">
           <!-- 종류 검색 -->
-          <div class="flex items-center space-x-3 font-mice-bold">
+          <div class="flex items-center space-x-3">
             <label>연차 종류</label>
             <select
-              class="select select-bordered font-mice"
+              class="select select-bordered font-semibold pr-16"
               @change="setType($event)"
             >
               <option
@@ -46,9 +46,10 @@
             </select>
           </div>
           <!-- 연차 상태 -->
-          <div class="flex items-center space-x-3 font-mice-bold">
+          <div class="flex items-center space-x-3">
             <label>연차 상태</label>
-            <select class="select select-bordered" @change="setStatus($event)">
+            <select class="select select-bordered font-semibold pr-14" 
+                    @change="setStatus($event)">
               <option
                 v-for="(item, idx) in statusOptions"
                 :key="idx"
@@ -60,9 +61,9 @@
             </select>
           </div>
           <!--연도 검색 -->
-          <div class="flex items-center space-x-3 font-mice-bold">
+          <div class="flex items-center space-x-3 ">
             <label>연도</label>
-            <select class="select select-bordered" @change="setYear($event)">
+            <select class="select select-bordered font-semibold pr-14" @change="setYear($event)">
               <option :value="0" class="font-mice">연도 선택</option>
               <option v-for="n in year" :key="n" :value="n" class="font-mice">
                 {{ n }}년
@@ -72,7 +73,7 @@
         </div>
         <button
           type="submit"
-          class="bg-blue-500 px-5 py-2 font-mice rounded-xl text-white hover:bg-blue-700"
+          class="bg-[#003566] hover:bg-[#f6aa1c] px-5 py-2 font-mice rounded-md text-white"
         >
           조회
         </button>
