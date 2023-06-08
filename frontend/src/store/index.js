@@ -76,21 +76,11 @@ const store =  createStore({
     setAccessToken: (state, token) => {
       state.token = token;
     },
-    setAnnualList: async (state,page) => {
-      const res = await mixins.methods.$api(
-        `admin/annual/${page}`,
-        "get",
-        { params: state.manageSearch }
-      );
-      state.annualList = res.data;
+    setAnnualList: (state,list) => {
+      state.annualList = list;
     },
-    setHistoryList: async (state, page) => {
-      const res = await mixins.methods.$api(
-        `myPage/history/${page}`,
-        'get',
-        {params: state.historySearch}
-      )
-      state.historyList = res.data;
+    setHistoryList: (state, list) => {
+      state.historyList = list;
     },
     setCalendarDate: (state, date) => {
       const { year, month } = date;
@@ -131,12 +121,29 @@ const store =  createStore({
         console.log('Failed to Auth', e);
       }
     },
+
+    async fetchAnnualList( {commit, state} , page ) {
+      const res = await mixins.methods.$api(
+        `admin/annual/${page}`,
+        "get",
+        { params: state.manageSearch }
+      );
+      commit('setAnnualList', res.data);
+    },
+
+    async fetchHistoryList({commit,state} ,page) {
+      const res = await mixins.methods.$api(
+        `myPage/history/${page}`,
+        'get',
+        {params: state.historySearch}
+      )
+      commit('setHistoryList',res.data);
+    }
     
   },
   modules: {},
   plugins: [],
 });
-
 store.subscribe((mutation, state) => {
   if (mutation.type === 'setAccessToken') {
     axios.defaults.headers.common.access_token = `Bearer ${state.token}`;

@@ -79,6 +79,7 @@ import { onMounted, ref, reactive } from "vue";
 import Store from "@/store/index.js";
 import mixins from "@/utils/mixins";
 
+
 const statusOptions = [
   { option: "상태 선택", value: "" },
   { option: "대기", value: "WAITING" },
@@ -114,13 +115,11 @@ function setYear(e) {
   searchInput.year = e.target.value;
 }
 
-const currentPage = ref(1);
-const totalPages = ref(0);
 
-function onFormSubmit(e) {
+async function onFormSubmit(e) {
   e.preventDefault();
   Store.commit("setHistorySearch", searchInput);
-  Store.commit("setHistoryList", 1);
+  await Store.dispatch('fetchHistoryList', 1)
 }
 
 onMounted(async () => {
@@ -129,8 +128,8 @@ onMounted(async () => {
   for (let i = current; i >= res.data; i--) {
     year.value.push(i);
   }
-  Store.commit("setHistoryList", currentPage.value);
-  totalPages.value = Store.state.historyList.totalPages;
+  await Store.dispatch('fetchHistoryList', 1);
+
 });
 </script>
 

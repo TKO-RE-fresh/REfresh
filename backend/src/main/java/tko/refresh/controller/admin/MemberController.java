@@ -40,7 +40,7 @@ public class MemberController {
 
     @GetMapping("/{memberId}")
     public ResponseEntity<MemberDetailDto> detailMember(@PathVariable String memberId) {
-
+        System.out.println(memberId);
         MemberDetailDto memberDetailDto = memberService.getMemberDetail(memberId);
 
         return ResponseEntity.ok().body(memberDetailDto);

@@ -55,14 +55,14 @@
   </div>
 </template>
 <script setup>
-import { ref,reactive,onMounted } from 'vue';
+import { ref,reactive,onMounted ,provide } from 'vue';
 import PagingView from '../../components/pagination/pagingComponent.vue';
 import AdminAnnualTable from './AdminAnnualTable';
 import Store from "@/store/index.js";
 
 
 //import mixins from '@/utils/mixins';
-
+// s
 
 const deptOptions = [
   {option : "부서 선택", value : ""},
@@ -96,21 +96,26 @@ function setStatus(e){
 const currentPage = ref(1);
 const totalPages = ref(0);
 
-function onFormSubmit(e) {
+provide('currentPage',currentPage);
+
+async function onFormSubmit(e) { 
   e.preventDefault();
   Store.commit("setManageSearch", searchInput);
-  Store.commit("setAnnualList", 1);
+  await Store.dispatch('fetchAnnualList', 1);
+  totalPages.value = Store.state.annualList.totalPages;
 }
 
-onMounted(() => {
-  Store.commit("setAnnualList", currentPage.value);
+onMounted(async () => {
+  await Store.dispatch('fetchAnnualList', 1);
   totalPages.value=Store.state.annualList.totalPages;
 });
 
-function selectPage(idx) {
+async function selectPage(idx) {
   currentPage.value=idx;
-  Store.commit("setAnnualList", currentPage.value);
+  await Store.dispatch('fetchAnnualList', currentPage.value);
   totalPages.value = Store.state.annualList.totalPages;
 }
+
+
 
 </script>

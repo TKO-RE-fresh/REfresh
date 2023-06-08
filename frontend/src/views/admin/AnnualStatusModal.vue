@@ -80,12 +80,11 @@
 
 <script setup>
 import Swal from "sweetalert2/dist/sweetalert2.js";
-import { defineProps, ref  } from "vue";
-import { useStore } from 'vuex';
+import { defineProps, ref ,inject  } from "vue";
+import axios from "axios";
+import Store from "@/store/index.js";
 
 // import mixins from '@/utils/mixins';
-import axios from "axios";
-const store = useStore();
 
 const props = defineProps({
   isOpen: {
@@ -103,6 +102,7 @@ const props = defineProps({
 });
 const acceptYn = ref('y');
 const rejectReason = ref('');
+const currentPage = inject('currentPage');
 
 function makeBody() {
   return {
@@ -114,21 +114,29 @@ function makeBody() {
 
 const accetpHandler= async () => {
     const body = makeBody();
-    console.log(body);
-    // const res = await mixins.methods.$api(`admin/annual`,'put', body);
     await axios.put('http://localhost:8090/admin/annual', body)
       .then(()=>{
-        Swal.Swal.fire({
+        Swal.fire({
           toast: true,
           icon: 'success',
-          title: '연차 신청 처리를 성공',
-          timer: 2000,
-          timerProgressBar: true
+          title: '연차 신청 처리 성공',
+          timer: 1500,
+          timerProgressBar: true,
+          showConfirmButton: false,
         })
 
+    }).catch(()=>{
+      Swal.fire({
+          toast: true,
+          icon: 'error',
+          title: '연차 신청 처리 실패',
+          timer: 1500,
+          timerProgressBar: true,
+          showConfirmButton: false,
+        })
     });
+    await Store.dispatch('fetchAnnualList', currentPage.value);
     props.onToggle();
-    store.commit("setAnnualList", 1);
 }
 </script>
 
