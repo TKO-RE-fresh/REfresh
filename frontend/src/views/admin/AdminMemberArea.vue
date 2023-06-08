@@ -8,10 +8,11 @@
           <!-- 부서 검색 -->
           <div class="flex items-center space-x-3">
             <label>부서명</label>
-            <select v-model="selectedDepartmentName" class="select select-bordered">
+            <select class="select select-bordered"
+                    @change="setDepartment($event)">
               <option value="" selected>전체</option>
-              <option v-for="(department, idx) in searchFormData.departmentNameList" 
-                      :key="idx">{{ department }}</option>
+              <option v-for="(department, idx) in searchFormData.departmentNameList"
+                      :key="idx" :value="department">{{ department }}</option>
             </select>
           </div>
           <!-- 사원 검색 -->
@@ -28,10 +29,11 @@
           <!-- 사용자 상태 -->
           <div class="flex items-center space-x-3">
             <label>사용자 상태</label>
-            <select v-model="selectedStatus" class="select select-bordered">
+            <select class="select select-bordered"
+                    @change="setStatus($event)">
               <option value="" selected>전체</option>
               <option v-for="(status, idx) in searchFormData.memberStatusList" 
-                      :key="idx">{{ status }}</option>
+                      :key="idx" :value="status">{{ status }}</option>
             </select>
           </div>
         </div>
@@ -78,4 +80,14 @@ const handleSubmit = (event) => {
     departmentName.value = selectedDepartmentName.value;
     status.value = selectedStatus.value;
 }; 
+
+
+function setDepartment(e) {
+  selectedDepartmentName.value = e.target.value;
+}
+
+function setStatus(e) {
+  selectedStatus.value = e.target.value;
+}
+
 </script>

@@ -34,8 +34,6 @@ public class MemberUpdateDto {
 
     private double annualCount;
 
-    private String modifiedBy;
-
     private String createdDate;
 
     private String modifiedDate;
@@ -51,14 +49,13 @@ public class MemberUpdateDto {
     private MemberStatus memberStatus;
 
     @Builder
-    public MemberUpdateDto(String memberId, String memberName, String memberCellphone, String memberEmail, String departmentName, double annualCount, String modifiedBy, String createdDate, String modifiedDate, String retireDate, RoleType memberAuth, MemberStatus memberStatus) {
+    public MemberUpdateDto(String memberId, String memberName, String memberCellphone, String memberEmail, String departmentName, double annualCount, String createdDate, String modifiedDate, String retireDate, RoleType memberAuth, MemberStatus memberStatus) {
         this.memberId = memberId;
         this.memberName = memberName;
         this.memberCellphone = memberCellphone;
         this.memberEmail = memberEmail;
         this.departmentName = departmentName;
         this.annualCount = annualCount;
-        this.modifiedBy = modifiedBy;
         this.createdDate = createdDate;
         this.modifiedDate = modifiedDate;
         this.retireDate = retireDate;

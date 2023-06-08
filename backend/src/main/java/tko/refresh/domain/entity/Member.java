@@ -99,7 +99,7 @@ public class Member extends BaseEntity {
         annuals.add(annual);
         annual.setMember(this);
     }
-    public void updateMember(MemberUpdateDto memberUpdateDto, Department department) {
+    public void updateMember(MemberUpdateDto memberUpdateDto, Department department, String authMemberId) {
         this.memberInfo=MemberInfo.builder()
                 .name(memberUpdateDto.getMemberName())
                 .cellphone(memberUpdateDto.getMemberCellphone())
@@ -108,7 +108,7 @@ public class Member extends BaseEntity {
         this.memberId = memberUpdateDto.getMemberId();
         this.department = department;
         this.annualCount = memberUpdateDto.getAnnualCount();
-        this.modifiedBy = memberUpdateDto.getModifiedBy();
+        this.modifiedBy = authMemberId;
         if(memberUpdateDto.getCreatedDate() == null || memberUpdateDto.getCreatedDate() == "") {
             this.createdDate = null;
         } else {
@@ -127,7 +127,6 @@ public class Member extends BaseEntity {
     public void updateAnnualCount(double annualCount) {
         this.annualCount = annualCount;
     }
-
 
     public LocalDateTime dateFormat(String date) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
