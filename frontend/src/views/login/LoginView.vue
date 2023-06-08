@@ -5,11 +5,11 @@
     >
       <article class="m-auto md:w-8/12 lg:w-6/12 xl:w-5/12">
         <form
-          class="bg-white p-8 rounded-lg shadow-lg h-full"
+          class="bg-white p-8 rounded-lg shadow-lg h-full font-mice"
           @submit.prevent="onSubmit"
         >
-          <h2 class="text-4xl font-bold mb-4 flex justify-center">
-            <span class="text-sky-500">RE</span>fresh
+          <h2 class="text-4xl font-mice font-bold mb-4 flex justify-center text-[#f6aa1c]">
+            <span class="text-[#003566] font-mice-bold ">RE</span>fresh
           </h2>
 
           <div class="mb-12 h-16">
@@ -55,13 +55,13 @@
             <label class="block text-gray-500 font-bold my-4"
               ><a
                 href="#"
-                class="cursor-pointer tracking-tighter inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
+                class="cursor-pointer tracking-tighter inline-block align-baseline font-bold text-sm text-[#003566] hover:text-blue-800"
                 ><span>비밀번호 찾기</span></a
               ></label
             >
           </div>
           <button
-            class="bg-blue-500 hover:bg-sky-400 text-white mt-3 text-lg font-semibold w-full rounded-lg px-6 py-3 block shadow-xl focus:outline-none focus:shadow-outline"
+            class="bg-[#003566] hover:bg-[#f6aa1c] text-white mt-3 text-lg font-semibold w-full rounded-lg px-4 py-3 block shadow-xl focus:outline-none focus:shadow-outline"
             type="submit"
           >
             로그인

@@ -5,9 +5,9 @@
     aria-label="Sidebar"
   >
     <div
-      class="h-full px-3 pt-4 pb-4 overflow-y-auto bg-white dark:bg-gray-800"
+      class="h-full px-3 pt-4 pb-4 overflow-y-auto bg-white"
     >
-      <div class="h-72 bg-white rounded-lg">
+      <div class="h-72 bg-white rounded-lg font-mice">
         <div class="flex justify-center mb-4">
           <img
             class="h-24 w-24 rounded-full object-cover"
@@ -33,15 +33,15 @@
         </div>
       </div>
 
-      <ul class="h-80 space-y-6 font-medium">
+      <ul class="h-80 space-y-6 font-medium font-mice">
         <li>
           <router-link
             to="/"
-            class="flex items-center p-2 text-gray-500 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+            class="flex items-center p-2 text-[#003566]  rounded-lg hover:bg-gray-100"
           >
             <svg
               aria-hidden="true"
-              class="flex-shrink-0 w-6 h-6 text-gray-400 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+              class="flex-shrink-0 w-6 h-6 text-[#003566] transition duration-75 dark:text-gray-400 group-hover:text-gray-900"
               fill="currentColor"
               viewBox="0 0 20 20"
               xmlns="http://www.w3.org/2000/svg"
@@ -58,11 +58,11 @@
         <li>
           <router-link
             to="/leaverequest"
-            class="flex items-center p-2 text-gray-500 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+            class="flex items-center p-2 text-[#003566] rounded-lg  hover:bg-gray-100 "
           >
             <svg
               aria-hidden="true"
-              class="w-6 h-6 text-gray-400 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+              class="w-6 h-6 text-[#003566] transition duration-75  group-hover:text-gray-900"
               fill="currentColor"
               viewBox="0 0 20 20"
               xmlns="http://www.w3.org/2000/svg"
@@ -76,11 +76,11 @@
         <li>
           <router-link
             to="/mypage/history"
-            class="flex items-center p-2 text-gray-500 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+            class="flex items-center text-[#003566] p-2 rounded-lg  hover:bg-gray-100"
           >
             <svg
               aria-hidden="true"
-              class="flex-shrink-0 w-6 h-6 text-gray-400 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+              class="flex-shrink-0 w-6 h-6 text-[#003566] transition duration-75  group-hover:text-gray-900"
               fill="currentColor"
               viewBox="0 0 20 20"
               xmlns="http://www.w3.org/2000/svg"
@@ -98,18 +98,19 @@
           <!--        <li v-if="isAdmin">-->
           <router-link
             to="/admin"
-            class="flex items-center p-2 text-gray-500 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+            class="flex items-center p-2 text-[#003566] rounded-lg hover:bg-gray-100"
           >
             <svg
-              aria-hidden="true"
-              class="flex-shrink-0 w-6 h-6 text-gray-400 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
-              fill="currentColor"
-              viewBox="0 0 20 20"
               xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              class="flex-shrink-0 w-6 h-6 text-[#003566] transition duration-75"
             >
               <path
-                d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
-              ></path>
+                fill-rule="evenodd"
+                d="M1.5 7.125c0-1.036.84-1.875 1.875-1.875h6c1.036 0 1.875.84 1.875 1.875v3.75c0 1.036-.84 1.875-1.875 1.875h-6A1.875 1.875 0 011.5 10.875v-3.75zm12 1.5c0-1.036.84-1.875 1.875-1.875h5.25c1.035 0 1.875.84 1.875 1.875v8.25c0 1.035-.84 1.875-1.875 1.875h-5.25a1.875 1.875 0 01-1.875-1.875v-8.25zM3 16.125c0-1.036.84-1.875 1.875-1.875h5.25c1.036 0 1.875.84 1.875 1.875v2.25c0 1.035-.84 1.875-1.875 1.875h-5.25A1.875 1.875 0 013 18.375v-2.25z"
+                clip-rule="evenodd"
+              />
             </svg>
             <span class="flex-1 ml-3 whitespace-nowrap">관리자 페이지</span>
           </router-link>

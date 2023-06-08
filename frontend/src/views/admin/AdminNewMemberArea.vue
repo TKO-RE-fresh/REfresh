@@ -32,8 +32,7 @@
                   placeholder="아이디를 입력하세요."
                   required
                 />
-              </div>
-              
+              </div>         
             </div>
             <div class="my-5">
               <div class="my-3">
