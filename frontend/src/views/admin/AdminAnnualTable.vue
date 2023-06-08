@@ -27,14 +27,12 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-if="!Store.state.annualList.content">
-            <th>검색 결과가 없습니다.</th>
-          </tr>
           <tr
             v-for="(row, idx) in Store.state.annualList.content"
             :key="idx"
             class="bg-white border-b hover:bg-blue-50"
           >
+
             <td class="w-4 p-3">
               <div class="flex items-center">
                 <input

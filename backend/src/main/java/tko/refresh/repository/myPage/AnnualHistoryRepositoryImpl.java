@@ -26,7 +26,6 @@ public class AnnualHistoryRepositoryImpl implements AnnualHistoryRepositoryCusto
     public Page<AnnualHistoryDto> getAnnualHistoryPage(HistorySearchDto searchDto, Pageable pageable) {
         List<AnnualHistoryDto> content = getAnnualHistoryList(searchDto,pageable);
         Long count = getCount(searchDto);
-        content.forEach(System.out::println);
         return new PageImpl<>(content,pageable,count);
     }
 
