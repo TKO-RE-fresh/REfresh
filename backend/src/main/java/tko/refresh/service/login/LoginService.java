@@ -24,12 +24,14 @@ import tko.refresh.domain.emb.MemberInfo;
 import tko.refresh.domain.entity.Department;
 import tko.refresh.domain.entity.Member;
 import tko.refresh.dto.GlobalResponseDto;
+import tko.refresh.dto.member.AuthMemberDto;
 import tko.refresh.dto.member.MemberJoinDto;
 import tko.refresh.dto.member.request.MemberLoginReqDto;
 import tko.refresh.dto.member.TokenDto;
 import tko.refresh.dto.member.response.MemberLoginResDto;
 import tko.refresh.repository.calendar.DepartmentRepository;
 import tko.refresh.repository.member.MemberRepository;
+import tko.refresh.util.jwt.JwtAuthMember;
 import tko.refresh.util.jwt.redis.RedisTokenRepository;
 import tko.refresh.util.jwt.JwtUtil;
 
@@ -45,6 +47,8 @@ public class LoginService {
 
     private final RedisTokenRepository redisRepository;
 
+    private final JwtAuthMember jwtAuthMember;
+
     @Transactional
     public GlobalResponseDto signup(MemberJoinDto dto) {
         // id 중복검사
@@ -57,6 +61,8 @@ public class LoginService {
         }
 
         Department dept = departmentRepository.findByName(dto.getDepartmentName());
+
+        AuthMemberDto authMemberDto = jwtAuthMember.getJwtAuthMember();
 
         // 패스워드 암호화
         dto.setEncodePwd(passwordEncoder.encode(dto.getPassword()));
@@ -73,9 +79,9 @@ public class LoginService {
                 .annualCount(dto.getAnnualCount())
                 .department(dept)
                 .createdDate(dateFormat(dto.getCreatedDate()))
-                .modifiedBy(dto.getModifiedBy())
+                .modifiedBy(authMemberDto.getMemberId())
                 .modifiedDate(LocalDateTime.now())
-                .createdBy(dto.getCreatedBy())
+                .createdBy(authMemberDto.getMemberId())
                 .build();
 
         dept.addMember(member);

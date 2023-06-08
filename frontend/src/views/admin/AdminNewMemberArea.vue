@@ -53,12 +53,13 @@
               </div>
               <div>
                 <select
-                  v-model="joinInput.departmentName"
                   class="w-2/3 shadow border rounded py-2 px-3 text-gray-700 hover:border-blue-300 focus:outline-none focus:ring focus:border-blue-50"
+                  @change="setDepartment($event)"
                   >
                   <option
                     v-for="(deptName, idx) in joinFormData.departmentList"
                     :key="idx"
+                    :value="deptName"
                     :selected="idx == 0"
                   >
                     {{ deptName }}
@@ -128,12 +129,13 @@
             </div>
             <div>
               <select
-                v-model="joinInput.memberAuth"
                 class="w-2/3 shadow border rounded py-2 px-3 text-gray-700 hover:border-blue-300 focus:outline-none focus:ring focus:border-blue-50"
+                @change="setMemberAuth($event)"
               >
                 <option
                   v-for="(auth, idx) in joinFormData.memberAuthList"
                   :key="idx"
+                  :value="auth"
                   :selected="idx == 0"
                 >
                   {{ auth }}
@@ -147,12 +149,13 @@
             </div>
             <div>
               <select
-                v-model="joinInput.memberStatus"
                 class="w-2/3 shadow border rounded py-2 px-3 text-gray-700 hover:border-blue-300 focus:outline-none focus:ring focus:border-blue-50"
+                @change="setMemberStatus($event)"
               >
                 <option
                   v-for="(status, idx) in joinFormData.memberStatusList"
                   :key="idx"
+                  :value="status"
                   :selected="idx == 0"
                 >
                   {{ status }}
@@ -186,6 +189,7 @@
 <script setup>
 import { onMounted, reactive, toRaw, ref } from "vue";
 import axios from "axios";
+import Swal from "sweetalert2/dist/sweetalert2.js";
 import mixins from "@/utils/mixins";
 
 const joinFormData = reactive({
@@ -204,9 +208,7 @@ const joinInput = reactive({
   memberStatus: "",
   annualCount: "",
   departmentName: "",
-  createdDate: "",
-  modifiedBy: "jaeseok", // 로그인한 관리자 아이디
-  createdBy: "jaeseok", // 로그인한 관리자 아이디
+  createdDate: ""
 });
 
 const joinForm = ref(null);
@@ -218,24 +220,48 @@ onMounted(async () => {
   joinFormData.memberStatusList = res.data.memberStatusList;
   joinFormData.memberAuthList = res.data.memberAuthList;
 
+  joinInput.departmentName = res.data.departmentNameList[0];
+  joinInput.memberStatus = res.data.memberStatusList[0];
+  joinInput.memberAuth = res.data.memberAuthList[0];
+
 });
 
 const join = (event) => {
   event.preventDefault();
 
-  // console.log(joinInput);
-
-  axios
-    .post("http://localhost:8090/admin/member", toRaw(joinInput))
-    .then((response) => {
-      alert("사원이 생성되었습니다.");
-      console.log(response + " : 사원 추가 성공");
-      joinForm.value.reset();
-    })
-    .catch((error) => {
-      alert("사원 생성에 실패하였습니다.");
-      console.log(error + " : 사원 추가 실패");
-      joinForm.value.reset();
-    });
+  Swal.fire({
+    title: "사원 등록",
+    text: "사원을 등록하시겠습니까?",
+    icon: "info",
+    showCancelButton: true,
+    cancelButtonText : '취소',
+    confirmButtonColor: '#3b82f6',
+    confirmButtonText: "확인",
+  }).then(async (result) => {
+    if (result.isConfirmed) {
+      await axios
+        .post('http://localhost:8090/admin/member', toRaw(joinInput))
+        .then(() => {
+          Swal.fire("등록 완료", "사원이 등록되었습니다.", "success");
+        })
+        .catch(()=>{
+          Swal.fire("등록 실패", "사원 등록에 실패했습니다. 다시 시도해 주세요.",'error'); 
+        })
+    } 
+    joinForm.value.reset();
+    
+  });
 };
+
+function setDepartment(e) {
+  joinInput.departmentName = e.target.value;
+}
+
+function setMemberAuth(e) {
+  joinInput.memberAuth = e.target.value;
+}
+
+function setMemberStatus(e) {
+  joinInput.memberStatus = e.target.value;
+}
 </script>

@@ -297,7 +297,6 @@ const handleSubmit = (event) => {
       memberEmail: member.value.memberEmail,
       departmentName: member.value.departmentName,
       annualCount: member.value.annualCount,
-      modifiedBy: "admin", // 로그인한 관리자의 아이디로 수정
       createdDate: member.value.createdDate,
       retireDate: member.value.retireDate,
       memberAuth: member.value.memberAuth,
@@ -331,8 +330,6 @@ const handleSubmit = (event) => {
         })
     } 
     getMemberInfo();
-    
-    
     
   });
 };

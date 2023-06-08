@@ -9,9 +9,10 @@ import tko.refresh.domain.entity.Member;
 import tko.refresh.domain.enu.MemberStatus;
 import tko.refresh.domain.enu.RoleType;
 import tko.refresh.dto.admin.*;
-import tko.refresh.repository.calendar.DepartmentRepository;
+import tko.refresh.dto.member.AuthMemberDto;
 import tko.refresh.repository.department.MemberDepartmentRepository;
 import tko.refresh.repository.member.MemberRepository;
+import tko.refresh.util.jwt.JwtAuthMember;
 import tko.refresh.util.page.Pagination;
 
 import javax.transaction.Transactional;
@@ -29,6 +30,8 @@ public class MemberService {
     private final MemberDepartmentRepository memberDepartmentRepository;
 
     private final MemberDepartmentRepository departmentRepository;
+
+    private final JwtAuthMember jwtAuthMember;
 
     public Page<MemberDto> getAllMemberList(int page) {
         Pageable pageable = Pagination.setPageable(page,PAGE_SIZE);
@@ -83,8 +86,9 @@ public class MemberService {
     public void editMember(String memberId, MemberUpdateDto memberUpdateDto) {
         Member member = memberRepository.findByMemberId(memberId).orElseThrow();
         Department department = memberDepartmentRepository.getDepartmentByName(memberUpdateDto.getDepartmentName());
+        AuthMemberDto authMemberDto = jwtAuthMember.getJwtAuthMember();
 
-        member.updateMember(memberUpdateDto, department);
+        member.updateMember(memberUpdateDto, department, authMemberDto.getMemberId());
     }
 
     public SearchFormDto getSearchForm() {

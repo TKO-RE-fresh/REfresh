@@ -153,7 +153,6 @@ class MemberServiceTest {
                 .memberEmail("sfdf@daum.net")
                 .departmentName("인사팀")
                 .annualCount(16)
-                .modifiedBy("madmin")
                 .createdDate("2023-05-05")
                 .modifiedDate(null)
                 .retireDate("2023-12-12")
@@ -188,8 +187,6 @@ class MemberServiceTest {
                 .annualCount(15)
                 .departmentName("개발팀")
                 .createdDate("2023-06-06")
-                .modifiedBy("admin")
-                .createdBy("admin")
                 .build();
 
         GlobalResponseDto responseDto = loginService.signup(dto);

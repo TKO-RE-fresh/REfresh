@@ -48,68 +48,13 @@
       </table>
     </div>
   </div>
-
-
-
-
-
-
-
-
-
-    <!-- <div>
-       <div class="overflow-x-auto w-full">
-            <table class="table w-full">
-                <thead class="text-center">
-                <tr>
-                    <th class="text-lg">사원명</th>
-                    <th class="text-lg">아이디</th> 
-                    <th class="text-lg">부서명</th>
-                    <th class="text-lg">전화번호</th>
-                    <th class="text-lg">이메일</th>
-                    <th class="text-lg">입사일자</th>
-                    <th class="text-lg">퇴사일자</th>
-                    <th class="text-lg">사용상태</th>
-                    <th class="text-lg">상세정보</th>
-                </tr>
-                </thead>
-                <tbody class="text-center">
-                <tr v-for="(member, idx) in members" id="member" :key="idx">
-                    <td>
-                    <div class="flex items-center space-x-3">
-                        <div class="avatar">
-                        <div class="mask mask-squircle w-12 h-12">
-                            <img src="@/assets/images/user.svg"
-                                alt="프로필 사진" />
-                        </div>
-                        </div>
-                        <div>
-                        <div class="font-bold">{{ member.memberName }}</div>
-                        </div>
-                    </div>
-                    </td>
-                    <td>
-                    {{ member.memberId }}
-                    <br/>
-                    </td>
-                    <td>{{ member.departmentName }}</td>
-                    <td>{{ member.memberCellphone }}</td>
-                    <td>{{ member.memberEmail }}</td>
-                    <td>{{ member.createdDate }}</td>
-                    <td>{{ member.retireDate }}</td>
-                    <td>{{ member.memberStatus }}</td>
-                    <td>
-                    <button class="btn btn-outline" @click="handleModal(member.memberId)">details</button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </div> -->
-    <div>
-        <PagingView :currentPage="currentPage" :totalPages="totalPages" @selectPage="selectPage"/>
-    </div>
-    <AdminDetailMemberModal :isOpen="isOpen" :onToggle="onToggle" :memberId="memberId"></AdminDetailMemberModal>
+  <div class="text-right mr-20">
+    계정 수 : {{ totalElements }}
+  </div>
+<div>
+    <PagingView :currentPage="currentPage" :totalPages="totalPages" @selectPage="selectPage"/>
+</div>
+<AdminDetailMemberModal :isOpen="isOpen" :onToggle="onToggle" :memberId="memberId"></AdminDetailMemberModal>
 </template>
 
 <script setup>
@@ -121,6 +66,7 @@ import mixins from '@/utils/mixins';
 const members = ref([]);
 const totalPages = ref(0);
 const currentPage = ref(1);
+const totalElements = ref(0);
 
 const props = defineProps({
     memberName: String,
@@ -144,6 +90,8 @@ function selectPage(idx) {
 
     watchEffect(async () => {
         const res = await mixins.methods.$api(`/admin/member`, `get`, { params });    
+
+        console.log(res);
         
         for (let i=0; i<res.data.content.length; i++) {
             (res.data.content[i].createdDate != null) ? res.data.content[i].createdDate = formatDate(res.data.content[i].createdDate) : res.data.content[i].createdDate =null;
@@ -154,6 +102,7 @@ function selectPage(idx) {
         members.value = arr;
         totalPages.value = res.data.totalPages;
         currentPage.value = idx;
+        totalElements.value = res.data.totalElements;
     });
 }
 
