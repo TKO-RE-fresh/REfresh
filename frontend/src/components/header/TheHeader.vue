@@ -39,7 +39,7 @@
             <div>
               <button
                 type="button"
-                class="bg-blue-500 hover:bg-blue-700 text-white text-sm py-2 px-4 rounded-xl font-semibold shadow-sm"
+                class="bg-[#003566] hover:bg-[#000814] text-white text-sm font-medium py-2 px-3 rounded-md font-mice shadow-sm"
                 @click="logout"
               >
                 로그아웃
@@ -73,7 +73,7 @@
                 <li>
                   <a
                     href="#"
-                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     role="menuitem"
                   >
                     Settings
@@ -82,7 +82,7 @@
                 <li>
                   <a
                     href="#"
-                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     role="menuitem"
                   >
                     Earnings
@@ -91,7 +91,7 @@
                 <li>
                   <a
                     href="/"
-                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     role="menuitem"
                   >
                     로그아웃

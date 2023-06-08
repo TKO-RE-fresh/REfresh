@@ -2,10 +2,10 @@
   <div class="px-14">
     <div class="border border-slate-200 rounded-xl overflow-hidden">
       <table class="w-full text-sm text-left text-gray-500">
-        <thead class="text-md bg-gray-50 text-center text-gray-700">
+        <thead class="text-md bg-gray-50 text-center text-gray-700 font-mice-bold">
           <tr class="h-11">
             <th>사원명</th>
-            <th>아이디</th> 
+            <th>아이디</th>
             <th>부서명</th>
             <th>전화번호</th>
             <th>이메일</th>
@@ -15,46 +15,61 @@
             <th>상세정보</th>
           </tr>
         </thead>
-        <tbody class="text-center">
-            <tr v-for="(member, idx) in members" id="member" :key="idx" class="bg-white border-b hover:bg-blue-50">
-                    <td>
-                        <div class="flex items-center">
-                            <div class="avatar">
-                            <div class="mask mask-squircle w-8 h-8 m-2">
-                                <img src="@/assets/images/user.svg"
-                                    alt="프로필 사진" />
-                            </div>
-                            </div>
-                            <div>
-                            <div class="font-bold">{{ member.memberName }}</div>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                    {{ member.memberId }}
-                    <br/>
-                    </td>
-                    <td>{{ member.departmentName }}</td>
-                    <td>{{ member.memberCellphone }}</td>
-                    <td>{{ member.memberEmail }}</td>
-                    <td>{{ member.createdDate }}</td>
-                    <td>{{ member.retireDate }}</td>
-                    <td>{{ member.memberStatus }}</td>
-                    <td>
-                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" @click="handleModal(member.memberId)">조회</button>
-                    </td>
-                </tr>
+        <tbody class="text-center font-mice">
+          <tr
+            v-for="(member, idx) in members"
+            id="member"
+            :key="idx"
+            class="bg-white border-b hover:bg-blue-50"
+          >
+            <td>
+              <div class="flex items-center">
+                <div class="avatar">
+                  <div class="mask mask-squircle w-8 h-8 m-2">
+                    <img src="@/assets/images/user.svg" alt="프로필 사진" />
+                  </div>
+                </div>
+                <div>
+                  <div class="font-bold">{{ member.memberName }}</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              {{ member.memberId }}
+              <br />
+            </td>
+            <td>{{ member.departmentName }}</td>
+            <td>{{ member.memberCellphone }}</td>
+            <td>{{ member.memberEmail }}</td>
+            <td>{{ member.createdDate }}</td>
+            <td>{{ member.retireDate }}</td>
+            <td>{{ member.memberStatus }}</td>
+            <td>
+              <button
+                class="bg-[#003566] hover:bg-[#f6aa1c] text-white font-mice py-1 px-2 rounded"
+                @click="handleModal(member.memberId)"
+              >
+                조회
+              </button>
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>
   </div>
-  <div class="text-right mr-20">
-    계정 수 : {{ totalElements }}
+  <div class="text-right mr-20 text-gray-600 font-mice">total : {{ totalElements }}</div>
+  <div>
+    <PagingView
+      :currentPage="currentPage"
+      :totalPages="totalPages"
+      @selectPage="selectPage"
+    />
   </div>
-<div>
-    <PagingView :currentPage="currentPage" :totalPages="totalPages" @selectPage="selectPage"/>
-</div>
-<AdminDetailMemberModal :isOpen="isOpen" :onToggle="onToggle" :memberId="memberId"></AdminDetailMemberModal>
+  <AdminDetailMemberModal
+    :isOpen="isOpen"
+    :onToggle="onToggle"
+    :memberId="memberId"
+  ></AdminDetailMemberModal>
 </template>
 
 <script setup>
@@ -89,20 +104,28 @@ function selectPage(idx) {
   const arr = [];
 
   watchEffect(async () => {
-      const res = await mixins.methods.$api(`/admin/member`, `get`, { params });    
+    const res = await mixins.methods.$api(`/admin/member`, `get`, { params });
 
-      console.log(res);
-      
-      for (let i=0; i<res.data.content.length; i++) {
-          (res.data.content[i].createdDate != null) ? res.data.content[i].createdDate = formatDate(res.data.content[i].createdDate) : res.data.content[i].createdDate =null;
-          (res.data.content[i].retireDate != null) ? res.data.content[i].retireDate = formatDate(res.data.content[i].retireDate) : res.data.content[i].retireDate =null;
-          arr.push(res.data.content[i]);
-      }
+    console.log(res);
 
-      members.value = arr;
-      totalPages.value = res.data.totalPages;
-      currentPage.value = idx;
-      totalElements.value = res.data.totalElements;
+    for (let i = 0; i < res.data.content.length; i++) {
+      res.data.content[i].createdDate != null
+        ? (res.data.content[i].createdDate = formatDate(
+            res.data.content[i].createdDate
+          ))
+        : (res.data.content[i].createdDate = null);
+      res.data.content[i].retireDate != null
+        ? (res.data.content[i].retireDate = formatDate(
+            res.data.content[i].retireDate
+          ))
+        : (res.data.content[i].retireDate = null);
+      arr.push(res.data.content[i]);
+    }
+
+    members.value = arr;
+    totalPages.value = res.data.totalPages;
+    currentPage.value = idx;
+    totalElements.value = res.data.totalElements;
   });
 }
 
@@ -150,12 +173,13 @@ watch(
   (newValue) => {
     console.log(newValue);
     selectPage(1);
-});
+  }
+);
 
 // date 포맷(yyy-mm-dd) 변경 메서드
 const formatDate = (value) => {
-const dateParts = value.substr(0, 10).split('-');
-const formatted = `${dateParts[0]}-${dateParts[1]}-${dateParts[2]}`;
-return formatted;
+  const dateParts = value.substr(0, 10).split("-");
+  const formatted = `${dateParts[0]}-${dateParts[1]}-${dateParts[2]}`;
+  return formatted;
 };
 </script>
