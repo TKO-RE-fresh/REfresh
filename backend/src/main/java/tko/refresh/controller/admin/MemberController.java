@@ -11,6 +11,7 @@ import tko.refresh.repository.department.MemberDepartmentRepository;
 import tko.refresh.service.admin.MemberService;
 import tko.refresh.service.login.LoginService;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,7 +48,7 @@ public class MemberController {
     }
 
     @PatchMapping("/{memberId}")
-    public ResponseEntity<String> editMember(@PathVariable String memberId, @RequestBody MemberUpdateDto memberUpdateDto) {
+    public ResponseEntity<String> editMember(@PathVariable String memberId, @RequestBody @Valid MemberUpdateDto memberUpdateDto) {
 
         memberService.editMember(memberId, memberUpdateDto);
 
@@ -71,7 +72,7 @@ public class MemberController {
     }
 
     @PostMapping
-    public ResponseEntity createMember(@RequestBody MemberJoinDto memberJoinDto) {
+    public ResponseEntity createMember(@RequestBody @Valid MemberJoinDto memberJoinDto) {
 
         loginService.signup(memberJoinDto);
 
