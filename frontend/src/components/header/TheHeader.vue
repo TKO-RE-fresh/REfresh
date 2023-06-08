@@ -27,7 +27,7 @@
               ></path>
             </svg>
           </button>
-          <a href="/cal" class="flex ml-2 md:mr-24">
+          <a href="/" class="flex ml-2 md:mr-24">
             <!-- th:href를 href로 변경 -->
             <span class="text-sky-500 text-3xl font-bold ml-4"
               >RE<span class="text-black">fresh</span></span
@@ -90,11 +90,11 @@
                 </li>
                 <li>
                   <a
-                    href="#"
+                    href="/"
                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
                     role="menuitem"
                   >
-                    Sign out
+                    로그아웃
                   </a>
                 </li>
               </ul>
