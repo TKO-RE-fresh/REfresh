@@ -4,7 +4,7 @@
       <li>
         <a
           v-if="currentPagePos != 1"
-          class="px-3 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-blue-200"
+          class="px-3 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-blue-200 cursor-pointer"
           @click="first"
           >&lt;&lt;</a
         >
@@ -12,7 +12,7 @@
       <li>
         <a
           v-show="!prevButtonDisabled"
-          class="px-3 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-blue-200"
+          class="px-3 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-blue-200 cursor-pointer"
           @click="prev"
           >&lt;</a
         >
@@ -20,13 +20,13 @@
       <li v-for="number in pageList" :key="number">
         <a
           v-if="number == currentPage"
-          class="px-3 py-2 bg-blue-300 text-gray-700 rounded-md"
+          class="px-3 py-2 bg-blue-300 text-gray-700 rounded-md cursor-not-allowed cursor-default"
           @click="selectPage(number)"
           >{{ number }}</a
         >
         <a
           v-if="number != currentPage"
-          class="px-3 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-blue-300"
+          class="px-3 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-blue-300 cursor-pointer"
           @click="selectPage(number)"
           >{{ number }}</a
         >
@@ -34,7 +34,7 @@
       <li>
         <a
           v-show="!nextButtonDisabled"
-          class="px-3 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-blue-200"
+          class="px-3 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-blue-200 cursor-pointer"
           @click="next"
           >&gt;</a
         >
@@ -45,7 +45,7 @@
             currentPagePos !=
             Math.ceil(props.totalPages / props.displayPageCount)
           "
-          class="px-3 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-blue-200"
+          class="px-3 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-blue-200 cursor-pointer"
           @click="last"
           >&gt;&gt;</a
         >

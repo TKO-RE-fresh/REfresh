@@ -144,7 +144,7 @@ async function handleMember(memberName) {
     curPage.value = 1;
     member.value = memberName;
   }
-
+  console.log("memberName", memberName);
   const params = makeParams(member.value);
   const res = await mixins.methods.$api(`calendar/annual/member`, "get", {
     params,
