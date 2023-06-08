@@ -21,7 +21,7 @@
                 v-for="(value, idx) in dayOfWeek"
                 id="day-of-week"
                 :key="idx"
-                class="w-1/7"
+                class="w-1/7 border-2"
               >
                 {{ value }}
               </th>
@@ -77,14 +77,20 @@ onMounted(async () => {
   const calData = await mixins.methods.$api(`calendar`, "get", {
     params,
   });
-  console.log(calData);
   calendar.value = makeCalendarDom(calData);
   if (Store.state.auth !== "admin") {
     departments.value = [Store.state.deptName];
     return;
   }
   const deptData = await mixins.methods.$api(`calendar/department`, "get", {});
-  departments.value = deptData.data;
+  departments.value = deptData.data.sort((a, b) => {
+    if (a.name === Store.state.deptName) {
+      return -1;
+    } else if (b) {
+      return 0;
+    }
+  });
+
   Store.commit("setDeptList", deptData.data);
 });
 
@@ -116,6 +122,7 @@ function toggleSubCalendar(e) {
 
 // param 생성
 function makeParams(dept) {
+  console.log(Store.state.deptName);
   return {
     year: yearMonth.year,
     month: yearMonth.month,

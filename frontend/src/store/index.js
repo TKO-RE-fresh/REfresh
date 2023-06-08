@@ -2,11 +2,11 @@ import { createStore } from "vuex";
 import axios from "axios";
 import mixins from "@/utils/mixins";
 
-const store = createStore({
+const store =  createStore({
   state: {
     token: null,
     annualList: [],
-    historyList: [],
+    historyList : [],
     calendarYear: new Date().getFullYear(),
     calendarMonth: new Date().getMonth() + 1,
     deptName: null,
@@ -19,13 +19,11 @@ const store = createStore({
       departmentName: "",
       status: "",
     },
-    historySearch: {
-      status: "",
-      type: "",
-      year: 0,
-    },
-    restLeave: 0,
-    usedLeave: 0,
+    historySearch : {
+      status: '',
+      type: '',
+      year: 0
+    }
   },
   getters: {
     getAccessToken: (state) => {
@@ -63,13 +61,7 @@ const store = createStore({
     },
     getHistorySearch: (state) => {
       return state.historySearch;
-    },
-    getRestLeave: (state) => {
-      return state.restLeave;
-    },
-    getUsedLeave: (state) => {
-      return state.usedLeave;
-    },
+    }
   },
   mutations: {
     setDeptName: (state, deptName) => {
@@ -84,17 +76,11 @@ const store = createStore({
     setAccessToken: (state, token) => {
       state.token = token;
     },
-    setAnnualList: async (state, page) => {
-      const res = await mixins.methods.$api(`admin/annual/${page}`, "get", {
-        params: state.manageSearch,
-      });
-      state.annualList = res.data;
+    setAnnualList: (state,list) => {
+      state.annualList = list;
     },
-    setHistoryList: async (state, page) => {
-      const res = await mixins.methods.$api(`myPage/history/${page}`, "get", {
-        params: state.historySearch,
-      });
-      state.historyList = res.data;
+    setHistoryList: (state, list) => {
+      state.historyList = list;
     },
     setCalendarDate: (state, date) => {
       const { year, month } = date;
@@ -110,17 +96,11 @@ const store = createStore({
     setManageSearch: (state, manageSearch) => {
       state.manageSearch = manageSearch;
     },
-    setHistorySearch: (state, searchInput) => {
+    setHistorySearch: (state,searchInput) =>{
       state.historySearch = searchInput;
     },
     setAuth: (state, auth) => {
       state.auth = auth;
-    },
-    setRestLeave(state, value) {
-      state.restLeave = value;
-    },
-    setUsedLeave(state, value) {
-      state.usedLeave = value;
     },
   },
   actions: {
@@ -128,28 +108,48 @@ const store = createStore({
       commit("setAccessToken", token);
       axios.defaults.headers.common.access_token = `Bearer ${token}`;
     },
-    async checkCookie({ commit }) {
+    async checkCookie({commit}) {
       try {
-        const res = await axios.post("token/cookie", {});
-        commit("setAccessToken", res.data.access_token);
-        commit("setMemberId", res.data.memberId);
-        commit("setMemberName", res.data.memberName);
-        commit("setAuth", res.data.auth);
-        commit("setDept", res.data.deptName);
+        const res = await axios.post('token/cookie', {});
+        commit('setAccessToken', res.data.access_token);
+        commit('setMemberId', res.data.memberId);
+        commit('setMemberName', res.data.memberName);
+        commit('setAuth', res.data.auth);
+        commit('setDept', res.data.deptName);
         return res;
       } catch (e) {
-        console.log("Failed to Auth", e);
+        console.log('Failed to Auth', e);
       }
     },
+
+    async fetchAnnualList( {commit, state} , page ) {
+      const res = await mixins.methods.$api(
+        `admin/annual/${page}`,
+        "get",
+        { params: state.manageSearch }
+      );
+      commit('setAnnualList', res.data);
+    },
+
+    async fetchHistoryList({commit,state} ,page) {
+      const res = await mixins.methods.$api(
+        `myPage/history/${page}`,
+        'get',
+        {params: state.historySearch}
+      )
+      commit('setHistoryList',res.data);
+    }
+    
   },
   modules: {},
   plugins: [],
 });
-
 store.subscribe((mutation, state) => {
-  if (mutation.type === "setAccessToken") {
+  if (mutation.type === 'setAccessToken') {
     axios.defaults.headers.common.access_token = `Bearer ${state.token}`;
   }
 });
+
+
 
 export default store;

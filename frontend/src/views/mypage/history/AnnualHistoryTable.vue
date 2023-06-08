@@ -2,7 +2,7 @@
   <div class="px-14">
     <div class="border border-slate-200 rounded-xl overflow-hidden">
       <table class="w-full text-sm text-left text-gray-500">
-        <thead class="text-md text-gray-800 uppercase bg-rose-200 ">
+        <thead class="text-md text-gray-800 uppercase bg-gray-50 ">
           <tr>
             <th scope="col" class="p-3">
               <div class="flex items-center">
@@ -110,7 +110,7 @@
 
 <script setup>
 import Swal from "sweetalert2/dist/sweetalert2.js";
-import {ref } from "vue";
+import {ref,inject } from "vue";
 import axios from "axios";
 import RejectDetail from "./RejectDetailModal.vue"
 import Store from "@/store/index.js";
@@ -126,6 +126,9 @@ const isDisabled = (data)=> {
   const startDate = new Date(year, month, day);
   return Date.now() >= startDate || data.annualStatus == '취소';
 }
+
+const currentPage = inject('currentPage');
+console.log(currentPage);
 
 const cancelHandeler = (uid) => {
   Swal.fire({
@@ -144,10 +147,10 @@ const cancelHandeler = (uid) => {
           Swal.fire("취소!", "연차 신청을 취소 하였습니다.", "success");
         })
         .catch(()=>{
-          Swal.fire("실패", "연차 취소를 실패 하였습니다. 다시 시도해 주세요.",'error')
+          Swal.fire("실패", "연차 취소를 실패 하였습니다. 다시 시도해 주세요.",'error');
         })
-        .finally(() =>{
-          Store.commit("setHistoryList", 1);
+        .finally( () =>{
+          Store.dispatch('fetchHistoryList', currentPage.value);
         })
     }
   });

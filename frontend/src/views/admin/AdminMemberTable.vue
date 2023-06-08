@@ -58,10 +58,10 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watchEffect, watch, defineProps } from 'vue';
-import PagingView from '../../components/pagination/pagingComponent.vue';
-import AdminDetailMemberModal from './AdminDetailMemberModal.vue';
-import mixins from '@/utils/mixins';
+import { ref, onMounted, watchEffect, watch, defineProps } from "vue";
+import PagingView from "../../components/pagination/pagingComponent.vue";
+import AdminDetailMemberModal from "./AdminDetailMemberModal.vue";
+import mixins from "@/utils/mixins";
 
 const members = ref([]);
 const totalPages = ref(0);
@@ -69,74 +69,85 @@ const currentPage = ref(1);
 const totalElements = ref(0);
 
 const props = defineProps({
-    memberName: String,
-    departmentName: String,
-    status: String
-  });
+  memberName: String,
+  departmentName: String,
+  status: String,
+});
 
 onMounted(() => {
-    selectPage(currentPage.value);
-})
+  selectPage(currentPage.value);
+});
 
 function selectPage(idx) {
-    const params = {
-        page: idx,
-        memberName: props.memberName,
-        departmentName: props.departmentName,
-        status: props.status
-    }
+  const params = {
+    page: idx,
+    memberName: props.memberName,
+    departmentName: props.departmentName,
+    status: props.status,
+  };
 
-    const arr = [];
+  const arr = [];
 
-    watchEffect(async () => {
-        const res = await mixins.methods.$api(`/admin/member`, `get`, { params });    
+  watchEffect(async () => {
+      const res = await mixins.methods.$api(`/admin/member`, `get`, { params });    
 
-        console.log(res);
-        
-        for (let i=0; i<res.data.content.length; i++) {
-            (res.data.content[i].createdDate != null) ? res.data.content[i].createdDate = formatDate(res.data.content[i].createdDate) : res.data.content[i].createdDate =null;
-            (res.data.content[i].retireDate != null) ? res.data.content[i].retireDate = formatDate(res.data.content[i].retireDate) : res.data.content[i].retireDate =null;
-            arr.push(res.data.content[i]);
-        }
+      console.log(res);
+      
+      for (let i=0; i<res.data.content.length; i++) {
+          (res.data.content[i].createdDate != null) ? res.data.content[i].createdDate = formatDate(res.data.content[i].createdDate) : res.data.content[i].createdDate =null;
+          (res.data.content[i].retireDate != null) ? res.data.content[i].retireDate = formatDate(res.data.content[i].retireDate) : res.data.content[i].retireDate =null;
+          arr.push(res.data.content[i]);
+      }
 
-        members.value = arr;
-        totalPages.value = res.data.totalPages;
-        currentPage.value = idx;
-        totalElements.value = res.data.totalElements;
-    });
+      members.value = arr;
+      totalPages.value = res.data.totalPages;
+      currentPage.value = idx;
+      totalElements.value = res.data.totalElements;
+  });
 }
 
 const isOpen = ref(false);
-const memberId = ref('');
+const memberId = ref("");
 
 const onToggle = () => {
   isOpen.value = !isOpen.value;
 };
 
-const handleModal=(id) =>{
-    memberId.value = id;
-    console.log("넘길 아이디 : " + memberId.value);
-    onToggle();
-}
+const handleModal = (id) => {
+  memberId.value = id;
+  console.log("넘길 아이디 : " + memberId.value);
+  onToggle();
+};
 
-watch(() => isOpen.value, (newValue) => {
+watch(
+  () => isOpen.value,
+  (newValue) => {
     console.log("창을 닫으면 현재 페이지 새로 고침");
-    if(!newValue) {
-        selectPage(currentPage.value);
+    if (!newValue) {
+      selectPage(currentPage.value);
     }
-  });
+  }
+);
 
-watch(() => props.departmentName, (newValue) => {
+watch(
+  () => props.departmentName,
+  (newValue) => {
     console.log(newValue);
     selectPage(1);
-});
+  }
+);
 
-watch(() => props.memberName, (newValue) => {
+watch(
+  () => props.memberName,
+  (newValue) => {
     console.log(newValue);
     selectPage(1);
-});
+  }
+);
 
-watch(() => props.status, (newValue) => {
+watch(
+  () => props.status,
+  (newValue) => {
     console.log(newValue);
     selectPage(1);
 });

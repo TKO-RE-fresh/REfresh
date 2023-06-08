@@ -1,5 +1,5 @@
 <template>
-    <transition name="fade">
+  <transition name="fade">
     <div v-if="isOpen">
       <form @submit="handleSubmit">
         <div>
@@ -11,67 +11,108 @@
                 <div class="text-center p-3 flex-auto justify-center leading-6">
                   <h2 class="text-2xl font-bold py-4">사원 상세 정보</h2>
                   <div class="flex" name="firstContetns">
-                      <div class="w-1/2 flex justify-center items-center">
-                          <img class="h-24 w-24 rounded-full object-cover"
-                          src="@/assets/images/user.svg"
-                          alt="프로필 사진"/>
-                      </div>
-                      <div class="flex w-1/2 text-left">
-                          <div class="w-1/3 text-sm" name="detailLabel">
-                            <div class="m-4">
-                              <label>이름</label>  
-                            </div>
-                            <div class="m-4">
-                              <label>부서</label>  
-                            </div>
-                            <div class="m-4">
-                              <label>전화번호</label>  
-                            </div>
-                            <div class="m-4">
-                              <label>이메일</label>  
-                            </div>  
+                    <div class="w-1/2 flex justify-center items-center">
+                      <img
+                        class="h-24 w-24 rounded-full object-cover"
+                        src="@/assets/images/user.svg"
+                        alt="프로필 사진"
+                      />
+                    </div>
+                    <div class="flex w-1/2 text-left">
+                      <div class="w-1/3 text-sm" name="detailLabel">
+                        <div class="m-4">
+                          <label>이름</label>
                         </div>
-                        <div class="w-2/3 text-sm" name="detailInfo">
-                            <div class="m-2">
-                              <input v-model="member.memberName" type="text" :readonly=!editMode 
-                                :class="{'shadow border rounded py-1 text-gray-700 hover:bg-gray-100 focus:outline-none' : !editMode, 
-                                    'shadow border rounded py-1 text-gray-700 outline-none ring border-blue-50': editMode}">
-                            </div>
-                            <div class="m-2">
-                              <select v-model="member.departmentName" :disabled=!editMode 
-                                :class="{'disabled:opacity-100 shadow border rounded py-1 text-gray-700 hover:bg-gray-100' : !editMode, 
-                                    'disabled:opacity-100 shadow border rounded py-1 text-gray-700 outline-none ring border-blue-50': editMode}">
-                                <option v-for="(department, idx) in member.departmentNameList" :key="idx" :selected="department == member.departmentName">{{ department }}</option>
-                              </select>
-                            </div>
-                            <div class="m-2">
-                              <input v-model="member.memberCellphone" type="text" :readonly=!editMode 
-                                :class="{'shadow border rounded py-1 text-gray-700 hover:bg-gray-100 focus:outline-none' : !editMode, 
-                                    'shadow border rounded py-1 text-gray-700 outline-none ring border-blue-50': editMode}">
-                            </div>
-                            <div class="m-2">
-                              <input v-model="member.memberEmail" type="text" :readonly=!editMode
-                                :class="{'shadow border rounded py-1 text-gray-700 hover:bg-gray-100 focus:outline-none' : !editMode, 
-                                    'shadow border rounded py-1 text-gray-700 outline-none ring border-blue-50': editMode}">
-                            </div>
+                        <div class="m-4">
+                          <label>부서</label>
+                        </div>
+                        <div class="m-4">
+                          <label>전화번호</label>
+                        </div>
+                        <div class="m-4">
+                          <label>이메일</label>
                         </div>
                       </div>
+                      <div class="w-2/3 text-sm" name="detailInfo">
+                        <div class="m-2">
+                          <input
+                            v-model="member.memberName"
+                            type="text"
+                            :readonly="!editMode"
+                            :class="{
+                              'shadow border rounded py-1 text-gray-700 hover:bg-gray-100 focus:outline-none':
+                                !editMode,
+                              'shadow border rounded py-1 text-gray-700 outline-none ring border-blue-50':
+                                editMode,
+                            }"
+                          />
+                        </div>
+                        <div class="m-2">
+                          <select
+                            v-model="member.departmentName"
+                            :disabled="!editMode"
+                            :class="{
+                              'disabled:opacity-100 shadow border rounded py-1 text-gray-700 hover:bg-gray-100':
+                                !editMode,
+                              'disabled:opacity-100 shadow border rounded py-1 text-gray-700 outline-none ring border-blue-50':
+                                editMode,
+                            }"
+                          >
+                            <option
+                              v-for="(
+                                department, idx
+                              ) in member.departmentNameList"
+                              :key="idx"
+                              :selected="department == member.departmentName"
+                            >
+                              {{ department }}
+                            </option>
+                          </select>
+                        </div>
+                        <div class="m-2">
+                          <input
+                            v-model="member.memberCellphone"
+                            type="text"
+                            :readonly="!editMode"
+                            :class="{
+                              'shadow border rounded py-1 text-gray-700 hover:bg-gray-100 focus:outline-none':
+                                !editMode,
+                              'shadow border rounded py-1 text-gray-700 outline-none ring border-blue-50':
+                                editMode,
+                            }"
+                          />
+                        </div>
+                        <div class="m-2">
+                          <input
+                            v-model="member.memberEmail"
+                            type="text"
+                            :readonly="!editMode"
+                            :class="{
+                              'shadow border rounded py-1 text-gray-700 hover:bg-gray-100 focus:outline-none':
+                                !editMode,
+                              'shadow border rounded py-1 text-gray-700 outline-none ring border-blue-50':
+                                editMode,
+                            }"
+                          />
+                        </div>
+                      </div>
+                    </div>
                   </div>
                   <div class="flex" name="secondContetns">
                     <div class="flex w-1/2 text-left">
                       <div class="w-23 text-sm" name="detailLabel">
                         <div class="m-4">
-                          <label>아이디</label>  
+                          <label>아이디</label>
                         </div>
                         <div class="m-4">
-                          <label>입사일자</label>  
+                          <label>입사일자</label>
                         </div>
                         <div class="m-4">
-                          <label>퇴사일자</label>  
+                          <label>퇴사일자</label>
                         </div>
                         <div class="m-4">
-                          <label>계정 상태</label>  
-                        </div>  
+                          <label>계정 상태</label>
+                        </div>
                       </div>
                       <div class="text-sm" name="detailInfo">
                         <div class="m-2">
@@ -79,20 +120,49 @@
                             class="shadow border rounded py-1 text-gray-700 hover:bg-gray-100 focus:outline-none">
                         </div>
                         <div class="m-2">
-                          <input v-model="member.createdDate" type="date" :readonly=!editMode
-                            :class="{'shadow border rounded py-1 text-gray-700 hover:bg-gray-100 focus:outline-none' : !editMode, 
-                                    'shadow border rounded py-1 text-gray-700 outline-none ring border-blue-50': editMode}"/>
+                          <input
+                            v-model="member.createdDate"
+                            type="date"
+                            :readonly="!editMode"
+                            :class="{
+                              'shadow border rounded py-1 text-gray-700 hover:bg-gray-100 focus:outline-none':
+                                !editMode,
+                              'shadow border rounded py-1 text-gray-700 outline-none ring border-blue-50':
+                                editMode,
+                            }"
+                          />
                         </div>
                         <div class="m-2">
-                          <input v-model="member.retireDate" type="date" :readonly=!editMode
-                            :class="{'shadow border rounded py-1 text-gray-700 hover:bg-gray-100 focus:outline-none' : !editMode, 
-                                    'shadow border rounded py-1 text-gray-700 outline-none ring border-blue-50': editMode}"/>
+                          <input
+                            v-model="member.retireDate"
+                            type="date"
+                            :readonly="!editMode"
+                            :class="{
+                              'shadow border rounded py-1 text-gray-700 hover:bg-gray-100 focus:outline-none':
+                                !editMode,
+                              'shadow border rounded py-1 text-gray-700 outline-none ring border-blue-50':
+                                editMode,
+                            }"
+                          />
                         </div>
                         <div class="m-2">
-                          <select v-model="member.memberStatus" :disabled=!editMode 
-                            :class="{'disabled:opacity-100 shadow border rounded py-1 text-gray-700 hover:bg-gray-100' : !editMode, 
-                                    'disabled:opacity-100 shadow border rounded py-1 text-gray-700 outline-none ring border-blue-50': editMode}">
-                            <option v-for="(status, idx) in member.memberStatusList" :key="idx" :selected="status == member.memberStatus">{{ status }}</option>
+                          <select
+                            v-model="member.memberStatus"
+                            :disabled="!editMode"
+                            :class="{
+                              'disabled:opacity-100 shadow border rounded py-1 text-gray-700 hover:bg-gray-100':
+                                !editMode,
+                              'disabled:opacity-100 shadow border rounded py-1 text-gray-700 outline-none ring border-blue-50':
+                                editMode,
+                            }"
+                          >
+                            <option
+                              v-for="(status, idx) in member.memberStatusList"
+                              :key="idx"
+                              :selected="status == member.memberStatus"
+                            >
+                              {{ status }}
+                            </option>
                           </select>
                         </div>
                       </div>
@@ -100,58 +170,90 @@
                     <div class="flex w-1/2 text-left">
                       <div class="w-23 text-sm" name="detailLabel">
                         <div class="m-4">
-                          <label>잔여연차</label>  
+                          <label>잔여연차</label>
                         </div>
                         <div class="m-4">
-                          <label>생성자</label>  
+                          <label>생성자</label>
                         </div>
                         <div class="m-4">
-                          <label>수정자</label>  
+                          <label>수정자</label>
                         </div>
                         <div class="m-4">
-                          <label>수정 날짜</label>  
-                        </div>  
+                          <label>수정 날짜</label>
+                        </div>
                         <div class="m-4">
-                          <label>사용자 권한</label>  
-                        </div> 
+                          <label>사용자 권한</label>
+                        </div>
                       </div>
                       <div class="text-sm" name="detailInfo">
                         <div class="m-2">
-                          <input v-model="member.annualCount" type="text" :readonly=true 
-                            class="shadow border rounded py-1 text-gray-700 hover:bg-gray-100 focus:outline-none">
+                          <input
+                            v-model="member.annualCount"
+                            type="text"
+                            :readonly="true"
+                            class="shadow border rounded py-1 text-gray-700 hover:bg-gray-100 focus:outline-none"
+                          />
                         </div>
                         <div class="m-2">
-                          <input v-model="member.createdBy" type="text" :readonly=true 
-                            class="shadow border rounded py-1 text-gray-700 hover:bg-gray-100 focus:outline-none">
+                          <input
+                            v-model="member.createdBy"
+                            type="text"
+                            :readonly="true"
+                            class="shadow border rounded py-1 text-gray-700 hover:bg-gray-100 focus:outline-none"
+                          />
                         </div>
                         <div class="m-2">
-                          <input v-model="member.modifiedBy" type="text" :readonly=true
-                            class="shadow border rounded py-1 text-gray-700 hover:bg-gray-100 focus:outline-none">  
+                          <input
+                            v-model="member.modifiedBy"
+                            type="text"
+                            :readonly="true"
+                            class="shadow border rounded py-1 text-gray-700 hover:bg-gray-100 focus:outline-none"
+                          />
                         </div>
                         <div class="m-2">
-                          <input v-model="member.modifiedDate" type="text" :readonly=true
-                            class="shadow border rounded py-1 text-gray-700 hover:bg-gray-100 focus:outline-none">
+                          <input
+                            v-model="member.modifiedDate"
+                            type="text"
+                            :readonly="true"
+                            class="shadow border rounded py-1 text-gray-700 hover:bg-gray-100 focus:outline-none"
+                          />
                         </div>
                         <div class="m-2">
-                          <select v-model="member.memberAuth" :disabled=!editMode 
-                            :class="{'disabled:opacity-100 shadow border rounded py-1 text-gray-700 hover:bg-gray-100' : !editMode, 
-                                    'disabled:opacity-100 shadow border rounded py-1 text-gray-700 outline-none ring border-blue-50': editMode}">
-                            <option v-for="(role, idx) in member.roleTypeList" :key="idx" :selected="role == member.memberAuth">{{ role }}</option>
+                          <select
+                            v-model="member.memberAuth"
+                            :disabled="!editMode"
+                            :class="{
+                              'disabled:opacity-100 shadow border rounded py-1 text-gray-700 hover:bg-gray-100':
+                                !editMode,
+                              'disabled:opacity-100 shadow border rounded py-1 text-gray-700 outline-none ring border-blue-50':
+                                editMode,
+                            }"
+                          >
+                            <option
+                              v-for="(role, idx) in member.roleTypeList"
+                              :key="idx"
+                              :selected="role == member.memberAuth"
+                            >
+                              {{ role }}
+                            </option>
                           </select>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-    
+
                 <div class="p-3 mt-2 text-center space-x-4 md:block">
-                  <button v-show="!editFormDisabled" :type="buttonType"
+                  <button
+                    v-show="!editFormDisabled"
+                    :type="buttonType"
                     class="mb-2 md:mb-0 bg-white px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-gray-600 rounded-md hover:shadow-lg hover:bg-gray-100"
                     @click="editMember"
                   >
                     {{ btn }}
                   </button>
-                  <button type="button"
+                  <button
+                    type="button"
                     class="mb-2 md:mb-0 bg-blue-500 border border-blue-500 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-md hover:shadow-lg hover:bg-blue-600"
                     @click="onToggle"
                   >
@@ -208,9 +310,9 @@
     if(btn.value == '저장') {
       editMember();
     }
-    
+
     // console.log(oldValue);
-    if(newValue) {
+    if (newValue) {
       getMemberInfo();
     }
   });
@@ -232,25 +334,27 @@
     }
   }
 
-  // 수정 버튼 클릭
-  const editMember = () => {
-    if(btn.value == '수정') { // 수정모드
-      btn.value = '저장';
-      editMode.value = true;
-      buttonType.value = 'button';
-    } else { // 읽기모드
-      btn.value = '수정';
-      editMode.value = false;
-      buttonType.value = 'submit';
-    }
+// 수정 버튼 클릭
+const editMember = () => {
+  if (btn.value == "수정") {
+    // 수정모드
+    btn.value = "저장";
+    editMode.value = true;
+    buttonType.value = "button";
+  } else {
+    // 읽기모드
+    btn.value = "수정";
+    editMode.value = false;
+    buttonType.value = "submit";
   }
+};
 
-  // date 포맷(yyy-mm-dd) 변경 메서드
-  const formatDate = (value) => {
-    const dateParts = value.substr(0, 10).split('-');
-    const formatted = `${dateParts[0]}-${dateParts[1]}-${dateParts[2]}`;
-    return formatted;
-  };
+// date 포맷(yyy-mm-dd) 변경 메서드
+const formatDate = (value) => {
+  const dateParts = value.substr(0, 10).split("-");
+  const formatted = `${dateParts[0]}-${dateParts[1]}-${dateParts[2]}`;
+  return formatted;
+};
 
 // const handleSubmit = (event) => {
 //   event.preventDefault();
@@ -300,7 +404,7 @@ const handleSubmit = (event) => {
       createdDate: member.value.createdDate,
       retireDate: member.value.retireDate,
       memberAuth: member.value.memberAuth,
-      memberStatus: member.value.memberStatus
+      memberStatus: member.value.memberStatus,
     };
   Swal.fire({
     title: "사원 정보 수정",

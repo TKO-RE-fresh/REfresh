@@ -43,14 +43,17 @@ public class AnnualHistoryService {
     @Transactional
     public boolean CancelAnnualRequest(UUID uid) {
         Annual annual = annualManageRepo.findByOne(uid).orElse(null);
+        System.out.println(annual);
         if (annual == null) return false;
 
         Period period = annual.getPeriod();
         Member member = annual.getMember();
+
         int subResult = 0, annualCountResult = 0, statusResult = 0;
 
         double periodCount = annual.getAnnualType().equals(AnnualType.ANNUAL_LEAVE) ? annualManageService.WorkingDaysCounter(period) : 0.5;
-        if(periodCount < 1) return false;
+
+        if(periodCount < 0.5) return false;
 
         statusResult = annualHistoryRepository.cancelAnnualStatus(uid, AnnualStatus.CANCEL, member.getMemberId());
 

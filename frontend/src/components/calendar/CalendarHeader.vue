@@ -100,7 +100,6 @@ let nextEventTimeOut;
 const year = new Date().getFullYear();
 const month = new Date().getMonth() + 1;
 const auth = ref(Store.state.auth);
-console.log(Store.state.auth);
 const searchModal = ref(false);
 
 const debouncePrevEvent = () => debounce(prevEvent, prevEventTimeOut);

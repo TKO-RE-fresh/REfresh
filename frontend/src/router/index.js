@@ -4,6 +4,9 @@ import CalendarView from "../views/calendar/CalendarView";
 import LeaveRequestView from "../views/leaveRequest/LeaveRequestView";
 import AdminView from "../views/admin/AdminView";
 import HistoryView from "../views/mypage/history/HistoryView";
+import ForbiddenError from "../views/errorpage/ForbiddenError.vue";
+import InternalServerError from "../views/errorpage/InternalServerError.vue";
+
 import Store from "@/store/index";
 import mixins from "@/utils/mixins";
 const routes = [
@@ -31,6 +34,16 @@ const routes = [
     path: "/mypage/history",
     name: "HistoryView",
     component: HistoryView,
+  },
+  {
+    path: "/forbiddenerror",
+    name: "forbiddenerror",
+    component: ForbiddenError,
+  },
+  {
+    path: "/internalservererror",
+    name: "internalservererror",
+    component: InternalServerError,
   },
 ];
 
