@@ -48,10 +48,6 @@ public class MemberJoinDto {
 
     private String createdDate;
 
-    private String modifiedBy;
-
-    private String createdBy;
-
     public void setEncodePwd(String encode) {
         this.password = encode;
     }

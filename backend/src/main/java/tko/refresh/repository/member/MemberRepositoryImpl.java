@@ -35,6 +35,7 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
                         member.memberStatus
                 ))
                 .from(member)
+                .orderBy(member.createdDate.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -61,6 +62,7 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
                 .where(memberNameEq(searchDto.getMemberName()),
                         departmentNameEq(searchDto.getDepartmentName()),
                         memberStatusEq(searchDto.getStatus()))
+                .orderBy(member.createdDate.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();

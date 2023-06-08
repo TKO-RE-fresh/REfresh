@@ -22,6 +22,7 @@ public class MemberSearchDto {
     @Nullable
     @Convert(converter = MemberStatusConverter.class)
     private MemberStatus status;
+
     @Builder
     public MemberSearchDto(@Nullable String memberName, @Nullable String departmentName, @Nullable MemberStatus status) {
         this.memberName = memberName;
