@@ -6,7 +6,7 @@
         method="post"
         action="/leaveRequest/confirmResult"
       >
-        <div class="p-6 flex flex-col  bg-slate-200 my-4 rounded-lg shadow-sm
+        <div class="p-6 flex flex-col  bg-slate-50 my-4 rounded-lg shadow-sm
         ">
           <div class="flex flex-col ml-6">
             <label class="text-gray-700 font-bold mb-2 text-xl">신청인</label>
@@ -27,7 +27,7 @@
             <!-- 연차 종류 -->
             <div class="flex flex-col m-6">
               <label class="text-gray-700 font-bold mb-2 text-xl" > 연차 종류 </label>
-              <div class="grid w-[24rem] grid-cols-3 space-x-2 rounded-xl bg-gray-100 p-2">
+              <div class="grid w-[24rem] grid-cols-3 space-x-2 rounded-xl bg-gray-200 p-2">
                 <div>
                   <input
                     id="am-half-day"
@@ -86,7 +86,7 @@
                 id="startDate"
                 name="startDate"
                 v-model="startDate"
-                v-bind:min="today"
+                v-bind:min="tomorrow"
                 placeholder="시작일"
                 @change="validityCheck"
                 class="rounded-lg pl-4 pr-2 py-2 shadow focus:outline-none focus:ring focus:ring-blue-500">
@@ -97,6 +97,7 @@
                 type="date"
                   id="endDate"
                   name="endDate"
+                  v-bind:min="startDate"
                   v-model="endDate"
                   placeholder="종료일"
                   @change="validityCheck"
@@ -112,8 +113,9 @@
             <div class="space-x-4">
               <button
                 id="request-btn"
-                class="text-white bg-blue-500 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-[#1da1f2]/50 font-semibold rounded-lg text-base px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#1da1f2]/55"
+                class="text-white bg-blue-500 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-[#1da1f2]/50 font-semibold rounded-lg text-base px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#1da1f2]/55 "
                 type="submit"
+                @click="confirmAlert(applicantName, selectedLeaveType, startDate, endDate)"
               >
                 신청
               </button>
@@ -125,6 +127,7 @@
               </button>
             </div>
           </div>
+
         </div>
       </form>
     
@@ -134,6 +137,7 @@
 import { ref, computed, reactive, onMounted, watch } from "vue";
 import axios from "axios";
 import { useStore } from "vuex";
+import Swal from "sweetalert2/dist/sweetalert2";
 
 export default {
   setup() {
@@ -142,6 +146,8 @@ export default {
     const startDate = ref(null);
     const endDate = ref(null);
     const errorMessage = ref("");
+    let buttonAble = ref(false);
+    const visible = ref(false);
 
     const state = reactive({
       applicantName: "",
@@ -193,7 +199,7 @@ export default {
     };
 
     /* 시작 & 종료일 유효성 검사 */
-    watch([selectedLeaveType, startDate, endDate, today], () => {
+    watch([selectedLeaveType, startDate, endDate, today, buttonAble], () => {
       errorMessage.value = "";
 
       const start = startDate.value;
@@ -215,6 +221,7 @@ export default {
           /* 오늘보다 이전날짜를 선택한 경우 */
           if (start <= today.value) {
             // console.log("휴가 시작일이 오늘 이전임 ㅡㅡ ");
+            buttonAble = true;
             errorMessage.value = "휴가 시작일은 오늘 날짜 이후여야 합니다!";
             // console.log(errorMessage);
           } else {
@@ -247,7 +254,7 @@ export default {
             // console.log("날짜차이일: " + daysDiff);
             if (daysDiff > restLeave.value) {
               errorMessage.value = "휴가 일수가 잔여 연차보다 많습니다!";
-              // console.log(errorMessage);
+              console.log("보유휴가수 > 잔여휴가수 에러: ", errorMessage);
             }
           }
         }
@@ -267,16 +274,10 @@ export default {
 
     /* 휴가 신청 폼 제출 */
     const submitForm = async () => {
-      // if (!validityCheck()) {
-      //   return;
-      // }
-
       const period = {
         startDate: new Date(startDate.value).toISOString(),
         endDate: new Date(endDate.value).toISOString(),
       };
-
-      // new Date(period.startDate).toISOString()
 
       /* 휴가 신청 로직  */
       let data = {
@@ -285,13 +286,9 @@ export default {
         period,
       };
 
+      // 반차인 경우
       if (selectedLeaveType.value.includes("반차")) {
-        // console.log("신청시 반차 선택!!!ㅋㅋㅋㅋㅋㅋㅋ");
-        // console.log("피리어드의 스타트일: " + period.startDate);
-
         period.endDate = period.startDate;
-
-        // console.log("피리어드의 종료일: " + period.endDate);
 
         console.log(
           "반차기간: " +
@@ -309,18 +306,49 @@ export default {
         };
       }
 
-      console.log("시작일: " + new Date(period.startDate).toISOString());
-      console.log("종료일: " + period.endDate);
-
       try {
         const response = await axios.post(
           "http://localhost:8090/leaveRequest",
           data
         );
+
         console.log("휴가 신청 post: " + response.data);
       } catch (error) {
         console.log("휴가 신청시 에러메시지: ", error);
       }
+    };
+
+    /* 연차신청내역 확인  */
+    const confirmAlert = (
+      applicantName,
+      selectedLeaveType,
+      startDate,
+      endDate
+    ) => {
+      Swal.fire({
+        showCloseButton: true,
+        title: "연차신청 내역 확인",
+        text: "신청한 연차 내역을 확인하세요",
+        icon: "success",
+        confirmButtonColor: "#3b82f6",
+        confirmButtonText: "확인",
+        html:
+          "<div>이름: " +
+          applicantName +
+          "</div>" +
+          "<div>" +
+          "연차 종류: " +
+          selectedLeaveType +
+          "</div>" +
+          "<div>" +
+          "시작일: " +
+          startDate +
+          "</div>" +
+          "<div>" +
+          "종료일: " +
+          endDate +
+          "</div>",
+      });
     };
 
     onMounted(fetchLeaveDates);
@@ -336,6 +364,9 @@ export default {
       submitForm,
       selectedLeaveType,
       today,
+      tomorrow,
+      visible,
+      confirmAlert,
     };
   },
 };
