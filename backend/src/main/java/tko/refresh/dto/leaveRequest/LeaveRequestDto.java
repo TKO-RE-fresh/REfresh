@@ -21,15 +21,9 @@ public class LeaveRequestDto {
     @NotBlank
     private String annualType;
 
-//    @NotBlank
-//    private LocalDateTime startDate;
-//
-//    @NotBlank
-//    private LocalDateTime endDate;
     @Valid
     @ValidPeriod
     private Period period;
-
 
     public LeaveRequestDto(String memberId, String annualType, LocalDateTime startDate, LocalDateTime endDate) {
         this.memberId = memberId;
