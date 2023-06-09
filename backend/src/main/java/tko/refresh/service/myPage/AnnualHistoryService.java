@@ -16,7 +16,6 @@ import tko.refresh.repository.calendar.AnnualCountRepository;
 import tko.refresh.repository.member.MemberRepository;
 import tko.refresh.repository.myPage.AnnualHistoryRepository;
 import tko.refresh.service.admin.AnnualManageService;
-import tko.refresh.util.jwt.JwtAuthMember;
 import tko.refresh.util.page.Pagination;
 
 import javax.transaction.Transactional;
