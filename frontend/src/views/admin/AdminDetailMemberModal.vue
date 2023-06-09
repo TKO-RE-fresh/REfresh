@@ -247,14 +247,14 @@
                   <button
                     v-show="!editFormDisabled"
                     :type="buttonType"
-                    class="mb-2 md:mb-0 bg-white px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-gray-600 rounded-md hover:shadow-lg hover:bg-gray-100"
+                    class="text-white bg-[#003566] hover:bg-[#f6aa1c] focus:ring-4 focus:outline-none focus:ring-[#1da1f2]/50 font-semibold rounded-lg text-base px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#1da1f2]/55"
                     @click="editMember"
                   >
                     {{ btn }}
                   </button>
                   <button
                     type="button"
-                    class="mb-2 md:mb-0 bg-blue-500 border border-blue-500 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-md hover:shadow-lg hover:bg-blue-600"
+                    class="text-gray-900 bg-gray-300 hover:bg-[#f6aa1c] focus:ring-4 focus:outline-none focus:ring-gray-100 font-semibold rounded-lg text-base px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-500"
                     @click="onToggle"
                   >
                     닫기
@@ -355,41 +355,6 @@ const formatDate = (value) => {
   const formatted = `${dateParts[0]}-${dateParts[1]}-${dateParts[2]}`;
   return formatted;
 };
-
-// const handleSubmit = (event) => {
-//   event.preventDefault();
-
-//   if(confirm("사원 정보를 수정하시겠습니까?")) { // 확인
-//     const memberUpdateDto = {
-//       memberId: member.value.memberId,
-//       memberName: member.value.memberName,
-//       memberCellphone: member.value.memberCellphone,
-//       memberEmail: member.value.memberEmail,
-//       departmentName: member.value.departmentName,
-//       annualCount: member.value.annualCount,
-//       modifiedBy: "admin", // 로그인한 관리자의 아이디로 수정
-//       createdDate: member.value.createdDate,
-//       retireDate: member.value.retireDate,
-//       memberAuth: member.value.memberAuth,
-//       memberStatus: member.value.memberStatus
-//     };
-
-//     axios.patch('http://localhost:8090/admin/member/' + props.memberId, memberUpdateDto)
-//     .then(response => {
-//       alert("사원 정보가 수정되었습니다.");
-//       console.log(response + " : 사원 정보 업데이트 성공");
-//     })
-//     .catch(error => {
-//       alert("사원 정보 수정에 실패했습니다.");
-//       console.log(error + " : 사원 정보 업데이트 실패");
-//       btn.value = '저장';
-//       editMode.value = true;
-//       buttonType.value = 'button';
-//     });
-//   } else { // 취소
-//     getMemberInfo();
-//   }  
-// };
 
 const handleSubmit = (event) => {
   event.preventDefault();
