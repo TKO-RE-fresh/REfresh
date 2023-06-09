@@ -202,22 +202,22 @@
             </div>
           </div>
         </div>
-        <div class="flex justify-center mt-10">
-          <div class="space-x-4">
-            <button
-              id="request-btn"
-              class="text-white bg-blue-500 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-[#1da1f2]/50 font-semibold rounded-lg text-base px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#1da1f2]/55"
-              type="submit"
-            >
-              등록
-            </button>
-            <button
-              class="text-gray-900 bg-gray-300 hover:bg-white focus:ring-4 focus:outline-none focus:ring-gray-100 font-semibold rounded-lg text-base px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-500"
-              type="reset"
-            >
-              초기화
-            </button>
-          </div>
+      </div>
+      <div class="flex justify-center mt-10">
+        <div class="space-x-4">
+          <button
+            id="request-btn"
+            class="text-white bg-[#003566] hover:bg-[#f6aa1c] focus:ring-4 focus:outline-none focus:ring-[#1da1f2]/50 font-semibold rounded-lg text-base px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#1da1f2]/55"
+            type="submit"
+          >
+            등록
+          </button>
+          <button
+            class="text-gray-900 bg-gray-300 hover:bg-[#f6aa1c] focus:ring-4 focus:outline-none focus:ring-gray-100 font-semibold rounded-lg text-base px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-500"
+            type="reset"
+          >
+            취소
+          </button>
         </div>
       </div>
     </form>

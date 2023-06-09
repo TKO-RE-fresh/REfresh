@@ -4,9 +4,7 @@
     class="fixed top-0 left-0 z-40 w-64 h-screen pt-16 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700"
     aria-label="Sidebar"
   >
-    <div
-      class="h-full px-3 pt-4 pb-4 overflow-y-auto bg-white"
-    >
+    <div class="h-full px-3 pt-4 pb-4 overflow-y-auto bg-white">
       <div class="h-72 bg-white rounded-lg font-mice">
         <div class="flex justify-center mb-4">
           <img
@@ -37,7 +35,7 @@
         <li>
           <router-link
             to="/"
-            class="flex items-center p-2 text-[#003566]  rounded-lg hover:bg-gray-100"
+            class="flex items-center p-2 text-[#003566] rounded-lg hover:bg-gray-100"
           >
             <svg
               aria-hidden="true"
@@ -58,11 +56,11 @@
         <li>
           <router-link
             to="/leaverequest"
-            class="flex items-center p-2 text-[#003566] rounded-lg  hover:bg-gray-100 "
+            class="flex items-center p-2 text-[#003566] rounded-lg hover:bg-gray-100"
           >
             <svg
               aria-hidden="true"
-              class="w-6 h-6 text-[#003566] transition duration-75  group-hover:text-gray-900"
+              class="w-6 h-6 text-[#003566] transition duration-75 group-hover:text-gray-900"
               fill="currentColor"
               viewBox="0 0 20 20"
               xmlns="http://www.w3.org/2000/svg"
@@ -76,11 +74,11 @@
         <li>
           <router-link
             to="/mypage/history"
-            class="flex items-center text-[#003566] p-2 rounded-lg  hover:bg-gray-100"
+            class="flex items-center text-[#003566] p-2 rounded-lg hover:bg-gray-100"
           >
             <svg
               aria-hidden="true"
-              class="flex-shrink-0 w-6 h-6 text-[#003566] transition duration-75  group-hover:text-gray-900"
+              class="flex-shrink-0 w-6 h-6 text-[#003566] transition duration-75 group-hover:text-gray-900"
               fill="currentColor"
               viewBox="0 0 20 20"
               xmlns="http://www.w3.org/2000/svg"
@@ -121,7 +119,7 @@
 </template>
 
 <script>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import { useStore } from "vuex";
 import Store from "@/store/index.js";
 
@@ -155,6 +153,15 @@ export default {
     onMounted(() => {
       fetchLeaveInfo();
     });
+
+    watch(
+      /* */
+      // annualList.content 변경 감지하여 휴가 정보 다시 가져오기
+      () => Store.state.annualList.content,
+      () => {
+        fetchLeaveInfo();
+      }
+    );
 
     return {
       auth,
