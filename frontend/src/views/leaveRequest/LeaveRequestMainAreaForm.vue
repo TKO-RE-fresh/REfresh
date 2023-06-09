@@ -293,14 +293,14 @@ export default {
 
         // console.log("피리어드의 종료일: " + period.endDate);
 
-        // console.log(
-        //   "기간: " +
-        //     period +
-        //     " 기간 쪼개서 확인: " +
-        //     period.startDate +
-        //     " " +
-        //     period.endDate
-        // );
+        console.log(
+          "반차기간: " +
+            period +
+            " 기간 쪼개서 확인: " +
+            period.startDate +
+            " " +
+            period.endDate
+        );
 
         data = {
           memberId: memberId.value,
