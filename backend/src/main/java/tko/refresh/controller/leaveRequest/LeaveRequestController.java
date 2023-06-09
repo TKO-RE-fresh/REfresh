@@ -19,14 +19,14 @@ public class LeaveRequestController {
     @GetMapping
     public ResponseEntity getLeaveInfo(){
         Map<String, Double> usedAnnualLeave = leaveRequestService.getUsedAnnualLeave();
-        System.out.println("사용한 연차개수: " +usedAnnualLeave);
+//        System.out.println("사용한 연차개수: " +usedAnnualLeave);
         return ResponseEntity.ok().body(usedAnnualLeave);
     }
 
     /* 연차 신청폼에 들어온 정보를 토대로 연차 신청  */
     @PostMapping
     public ResponseEntity requestForLeave(@RequestBody LeaveRequestDto leaveRequestDto) {
-
+        System.out.println("컨트롤러의 leaveRequestDto: " + leaveRequestDto);
         GlobalResponseDto leaveRequest = leaveRequestService.createLeaveRequest(leaveRequestDto);
         return ResponseEntity.ok().body(leaveRequest);
     }
