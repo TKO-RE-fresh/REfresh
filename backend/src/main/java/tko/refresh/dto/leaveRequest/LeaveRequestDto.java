@@ -1,6 +1,5 @@
 package tko.refresh.dto.leaveRequest;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -9,7 +8,6 @@ import tko.refresh.util.valid.ValidPeriod;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
-
 
 @Getter
 @ToString
@@ -32,10 +30,5 @@ public class LeaveRequestDto {
                 .startDate(startDate)
                 .endDate(endDate)
                 .build();
-
     }
-
-
-
-
 }
