@@ -39,7 +39,7 @@
                   />
                   <label
                     for="am-half-day"
-                    class="block cursor-pointer select-none rounded-xl p-2 text-center peer-checked:bg-blue-500 peer-checked:font-bold peer-checked:text-white font-semibold"
+                    class="block cursor-pointer select-none rounded-xl p-2 text-center peer-checked:bg-[#f6aa1c] peer-checked:font-bold peer-checked:text-white font-semibold"
                     >오전 반차</label
                   >
                 </div>
@@ -55,7 +55,7 @@
                   />
                   <label
                     for="pm-half-day"
-                    class="block cursor-pointer select-none rounded-xl p-2 text-center peer-checked:bg-blue-500 peer-checked:font-bold peer-checked:text-white font-semibold" 
+                    class="block cursor-pointer select-none rounded-xl p-2 text-center peer-checked:bg-[#f6aa1c] peer-checked:font-bold peer-checked:text-white font-semibold" 
                     >오후 반차</label
                   >
                 </div>
@@ -70,7 +70,7 @@
                   />
                   <label
                     for="full-day"
-                    class="block cursor-pointer select-none rounded-xl p-2 text-center peer-checked:bg-blue-500 peer-checked:font-bold peer-checked:text-white font-semibold"
+                    class="block cursor-pointer select-none rounded-xl p-2 text-center peer-checked:bg-[#f6aa1c] peer-checked:font-bold peer-checked:text-white font-semibold"
                     >연차</label>
                 </div>
               </div>
@@ -110,17 +110,17 @@
           
 
           <div class="flex justify-end">
-            <div class="space-x-4">
+            <div class="space-x-4 font-mice">
               <button
                 id="request-btn"
-                class="text-white bg-blue-500 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-[#1da1f2]/50 font-semibold rounded-lg text-base px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#1da1f2]/55 "
+                class="text-white bg-[#003566] hover:bg-[#f6aa1c] focus:ring-4 focus:outline-none focus:ring-[#1da1f2]/50 font-semibold rounded-lg text-base px-5 py-2.5 text-center inline-flex items-center "
                 type="submit"
                 @click="confirmAlert(applicantName, selectedLeaveType, startDate, endDate)"
               >
                 신청
               </button>
               <button
-                class="text-gray-900 bg-gray-300 hover:bg-white focus:ring-4 focus:outline-none focus:ring-gray-100 font-semibold rounded-lg text-base px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-500"
+                class="text-gray-900 bg-gray-300 hover:bg-[#f6aa1c] focus:ring-4 focus:outline-none focus:ring-gray-100 font-semibold rounded-lg text-base px-5 py-2.5 text-center inline-flex items-center"
                 type="reset"
               >
                 초기화
@@ -330,7 +330,7 @@ export default {
         title: "연차신청 내역 확인",
         text: "신청한 연차 내역을 확인하세요",
         icon: "success",
-        confirmButtonColor: "#3b82f6",
+        confirmButtonColor: "#003566",
         confirmButtonText: "확인",
         html:
           "<div>이름: " +
