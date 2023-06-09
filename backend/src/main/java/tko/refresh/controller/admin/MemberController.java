@@ -73,7 +73,7 @@ public class MemberController {
 
     @PostMapping
     public ResponseEntity createMember(@RequestBody @Valid MemberJoinDto memberJoinDto) {
-
+        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+memberJoinDto);
         loginService.signup(memberJoinDto);
 
         return ResponseEntity.ok("Success");
