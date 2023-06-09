@@ -18,14 +18,14 @@
                 />
               </svg>
               <h2 class="text-2xl font-bold py-4">연차 승인 여부</h2>
-              <div class="p-3">
-                <label>
+              <div class="p-3 items-center">
+                <label class="item-center">
                   <input
                     v-model="acceptYn"
                     type="radio"
                     name="radio-10"
                     value="y"
-                    class="radio checked:bg-green-500"
+                    class="radio checked:bg-green-500 pt-2"
                     checked
                   />
                   <span class="mx-3">승인</span>
@@ -53,15 +53,15 @@
               </div>
             </div>
 
-            <div class="p-3 mt-2 text-center space-x-4 md:block">
+            <div class="p-3 mt-2 text-center space-x-4 md:block font-mice">
               <button
-                class="mb-2 md:mb-0 bg-white px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-gray-600 rounded-md hover:shadow-lg hover:bg-gray-100"
+                class="mb-2 md:mb-0 bg-[#003566] px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-gray-600 rounded-md hover:shadow-lg hover:bg-[#f6aa1c]"
                 @click="accetpHandler"
               >
                 확인
               </button>
               <button
-                class="mb-2 md:mb-0 bg-blue-500 border border-blue-500 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-md hover:shadow-lg hover:bg-blue-600"
+                class="mb-2 md:mb-0 bg-gray-300 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-md hover:shadow-lg hover:bg-[#f6aa1c]"
                 @click="onToggle"
               >
                 닫기

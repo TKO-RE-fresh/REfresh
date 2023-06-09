@@ -1,8 +1,6 @@
 package tko.refresh.dto.member;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 import tko.refresh.domain.enu.MemberStatus;
 import tko.refresh.domain.enu.RoleType;
 import tko.refresh.util.converter.MemberStatusConverter;

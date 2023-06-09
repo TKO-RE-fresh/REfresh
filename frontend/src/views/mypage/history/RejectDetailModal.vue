@@ -6,14 +6,14 @@
           class="w-full max-w-md p-3 relative mx-auto my-auto rounded-xl shadow-lg bg-white"
         >
           <div>
-            <div class="text-center p-3 flex-auto justify-center leading-6">
+            <div class="text-center p-3 flex-auto justify-center font-mice leading-6">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke-width="1.5"
                 stroke="currentColor"
-                class="w-16 h-16 items-center text-blue-500 mx-auto"
+                class="w-16 h-16 items-center text-[#003566] mx-auto"
               >
                 <path
                   stroke-linecap="round"
@@ -23,8 +23,8 @@
               </svg>
               <h2 class="text-2xl font-bold py-4">연차 반려 상세</h2>
 
-              <div class="px-6 py-3 text-gray-600 ">
-                <p>
+              <div class="px-6 py-3 text-gray-600">
+                <p class="p-4">
                   {{props.data.annualType}}
                 </p>
                 <p>
@@ -44,7 +44,7 @@
             </div>
             <div class="p-3 text-center space-x-4 md:block">
               <button
-                class="mb-2 md:mb-0 bg-blue-500 border border-blue-500 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-md hover:shadow-lg hover:bg-blue-600"
+                class="mb-2 md:mb-0 bg-[#003566] hover:bg-[#f6aa1c] px-5 py-2 text-sm shadow-sm font-mice tracking-wider text-white rounded-md hover:shadow-lg"
                 @click="onToggle"
               >
                 닫기

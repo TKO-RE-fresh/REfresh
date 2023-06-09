@@ -8,9 +8,16 @@
           class="bg-white p-8 rounded-lg shadow-lg h-full font-mice"
           @submit.prevent="onSubmit"
         >
-          <h2 class="text-4xl font-mice font-bold mb-4 flex justify-center text-[#f6aa1c]">
+        <div class="flex justify-center mb-5">
+          <img src="../../../public/img/icons/logo.png" class="w-2/5"/>
+        </div>
+          
+
+
+
+          <!-- <h2 class="text-4xl font-mice font-bold mb-4 flex justify-center text-[#f6aa1c]">
             <span class="text-[#003566] font-mice-bold ">RE</span>fresh
-          </h2>
+          </h2> -->
 
           <div class="mb-12 h-16">
             <label class="block text-gray-700 font-bold mb-2" for="id"

@@ -12,6 +12,7 @@ import tko.refresh.domain.enu.AnnualStatus;
 import tko.refresh.domain.enu.AnnualType;
 import tko.refresh.dto.myPage.AnnualHistoryDto;
 import tko.refresh.dto.myPage.HistorySearchDto;
+import tko.refresh.util.jwt.JwtAuthMember;
 
 import java.util.List;
 
@@ -22,6 +23,8 @@ import static tko.refresh.domain.entity.QMember.member;
 public class AnnualHistoryRepositoryImpl implements AnnualHistoryRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
+    private final JwtAuthMember jwtAuthMember;
+
     @Override
     public Page<AnnualHistoryDto> getAnnualHistoryPage(HistorySearchDto searchDto, Pageable pageable) {
         List<AnnualHistoryDto> content = getAnnualHistoryList(searchDto,pageable);
@@ -48,7 +51,7 @@ public class AnnualHistoryRepositoryImpl implements AnnualHistoryRepositoryCusto
                         annual.modifiedDate,
                         annual.rejectReason))
                 .from(annual)
-                .where(annual.member.memberId.eq("juhee"),
+                .where(annual.member.memberId.eq(jwtAuthMember.getJwtAuthMember().getMemberId()),
                         yearEq(searchDto.getYear()),
                         annualTypeEq(searchDto.getType()),
                         annualStatusEq(searchDto.getStatus()))
@@ -62,7 +65,7 @@ public class AnnualHistoryRepositoryImpl implements AnnualHistoryRepositoryCusto
         return queryFactory
                 .select(annual.count())
                 .from(annual)
-                .where(annual.member.memberId.eq("juhee"),
+                .where(annual.member.memberId.eq(jwtAuthMember.getJwtAuthMember().getMemberId()),
                         yearEq(searchDto.getYear()),
                         annualTypeEq(searchDto.getType()),
                         annualStatusEq(searchDto.getStatus()))
