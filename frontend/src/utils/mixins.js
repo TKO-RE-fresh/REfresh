@@ -10,8 +10,6 @@ axios.interceptors.response.use(
   (error) => {
     const status = error.response.status;
 
-    console.log("믹스인에서 확인한 상태코드: " + status);
-
     if (status === 401) {
       // 엑세스 토큰이 만료되었을때
       return refreshTokenAndRetryRequest(error.config);

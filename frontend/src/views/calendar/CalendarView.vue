@@ -122,7 +122,6 @@ function toggleSubCalendar(e) {
 
 // param 생성
 function makeParams(dept) {
-  console.log(Store.state.deptName);
   return {
     year: yearMonth.year,
     month: yearMonth.month,
@@ -162,5 +161,4 @@ async function fetchCalendarByDept(deptName) {
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

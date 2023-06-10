@@ -20,19 +20,21 @@ export default {
   actions: {
     async fetchLeaveInfo({ commit }) {
       try {
-        const response = await axios.get("http://localhost:8090/leaveRequest");
-        console.log(
-          "store에서 rest휴가 정보 받아오기 (response): " +
-            response.data.restLeaveCount
-        );
-        console.log(
-          "store에서 used휴가 정보 받아오기 (response): " +
-            response.data.usedLeaveCount
-        );
+        const response = await axios.get("http://localhost:80/leaveRequest");
+        // console.log(
+        //   "store에서 rest휴가 정보 받아오기 (response): " +
+        //     response.data.restLeaveCount
+        // );
+        // console.log(
+        //   "store에서 used휴가 정보 받아오기 (response): " +
+        //     response.data.usedLeaveCount
+        // );
         commit("setRestLeave", response.data.restLeaveCount);
         commit("setUsedLeave", response.data.usedLeaveCount);
       } catch (error) {
-        console.log("휴가 정보를 가져오는데 실패했습니다. " + error);
+        console.log(
+          "휴가 정보를 가져오는데 실패했습니다. 에러메시지: " + error
+        );
       }
     },
   },
