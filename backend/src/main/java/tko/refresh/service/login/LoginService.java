@@ -84,6 +84,8 @@ public class LoginService {
                 .createdBy(authMemberDto.getMemberId())
                 .build();
 
+        System.out.println("!!!!!"+member);
+
         dept.addMember(member);
         // 회원가입 성공
         memberRepository.save(member);
