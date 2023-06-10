@@ -10,7 +10,6 @@ axios.interceptors.response.use(
   (error) => {
     const status = error.response.status;
 
-  
 
     if (status === 401) {
       // 엑세스 토큰이 만료되었을때

@@ -18,8 +18,8 @@
             <div class="flex flex-col m-6">
                 <div class="font-bold mb-2 text-xl">연차 현황</div>
                 <div>
-                    <div>남은 연차: <span class="text-blue-500">{{ restLeave }}</span>일</div>
-                    <div>사용한 연차: <span class="text-red-500">{{ usedLeave }}</span>일</div>
+                    <div>남은 휴가: <span class="text-blue-500">{{ restLeave }}</span>일</div>
+                    <div>사용 휴가: <span class="text-red-500">{{ usedLeave }}</span>일</div>
                 </div>
             </div>
                  
@@ -91,13 +91,14 @@
                 @change="validityCheck"
                 class="rounded-lg pl-4 pr-2 py-2 shadow focus:outline-none focus:ring focus:ring-blue-500">
               </div>
-              <div v-show="selectedLeaveType === '연차'" class="flex flex-col">
+              <div v-if="selectedLeaveType === '연차'" class="flex flex-col">
                 <label class="font-bold mb-3">종료일</label>
                 <input
                 type="date"
                   id="endDate"
                   name="endDate"
                   v-bind:min="startDate"
+                  v-bind:max="validateDate"
                   v-model="endDate"
                   placeholder="종료일"
                   @change="validityCheck"
@@ -108,13 +109,14 @@
           </div>
 
           
-
+          <!-- 버튼 영역 -->
           <div class="flex justify-end">
             <div class="space-x-4">
               <button
                 id="request-btn"
                 class="text-white bg-blue-500 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-[#1da1f2]/50 font-semibold rounded-lg text-base px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#1da1f2]/55 "
                 type="submit"
+                :disabled="errorMessageLength !== 0"
                 @click="confirmAlert(applicantName, selectedLeaveType, startDate, endDate)"
               >
                 신청
@@ -127,10 +129,8 @@
               </button>
             </div>
           </div>
-
         </div>
       </form>
-    
     </div>
 </template>
 <script>
@@ -141,24 +141,25 @@ import Swal from "sweetalert2/dist/sweetalert2";
 
 export default {
   setup() {
+    const store = useStore();
+
     const restLeave = ref(0);
     const usedLeave = ref(0);
     const startDate = ref(null);
     const endDate = ref(null);
+    const daysDiff = ref(null);
     const errorMessage = ref("");
-    let buttonAble = ref(false);
-    const visible = ref(false);
+    const validateDate = ref(null);
+    const errorMessageLength = ref(0);
 
     const state = reactive({
       applicantName: "",
     });
 
-    const store = useStore();
     const memberName = store.state.memberName;
     state.applicantName = memberName;
 
     const memberId = ref(store.state.memberId);
-    // console.log("멤버 아이디: " + memberId.value);
 
     const selectedLeaveType = ref("");
     const annualType = ref("");
@@ -171,8 +172,6 @@ export default {
       return `${year}-${month}-${day}`;
     });
 
-    console.log("오늘날짜 today.value: " + today.value);
-
     const tomorrow = computed(() => {
       const today = new Date();
       const now = new Date(today.setDate(today.getDate() + 1));
@@ -181,8 +180,6 @@ export default {
       const day = String(now.getDate()).padStart(2, "0");
       return `${year}-${month}-${day}`;
     });
-
-    console.log("내일: " + tomorrow.value);
 
     const handleLeaveType = (e) => {
       const selectedValue = e.target.value; // let 쓰면 에러
@@ -199,67 +196,84 @@ export default {
     };
 
     /* 시작 & 종료일 유효성 검사 */
-    watch([selectedLeaveType, startDate, endDate, today, buttonAble], () => {
-      errorMessage.value = "";
+    watch(
+      [
+        selectedLeaveType,
+        startDate,
+        endDate,
+        today,
+        daysDiff,
+        restLeave,
+        validateDate,
+        errorMessageLength,
+      ],
+      () => {
+        errorMessage.value = "";
+        const start = startDate.value;
+        const end = endDate.value;
 
-      const start = startDate.value;
-      const end = endDate.value;
-      // const today = new Date().toJSON().slice(0, 10);
+        daysDiff.value = Math.ceil(
+          (new Date(end).getTime() - new Date(start).getTime()) /
+            (1000 * 60 * 60 * 24)
+        );
 
-      /* 유효성 검사 */
-      /* 시작일을 선택 */
-      if (start !== null) {
-        /* 반차인 경우 */
-        if (selectedLeaveType.value.includes("반차")) {
-          // console.log("반차선택!!!!!");
+        /* 유효성 검사 */
+        /* 시작일을 선택 */
+        if (start !== null) {
+          /* 반차인 경우 */
+          if (selectedLeaveType.value.includes("반차")) {
+            endDate.value = startDate.value;
+            console.log(
+              `반차 - 시작일: ${startDate.value}, 종료일: ${endDate.value}`
+            );
+            if (restLeave.value < 0.5) {
+              errorMessage.value =
+                "연차기간이 남은 연차일을 초과할 수 없습니다!";
+            }
 
-          if (restLeave.value < 0.5) {
-            errorMessage.value = "연차기간이 남은 연차일을 초과할 수 없습니다!";
-            // console.log(errorMessage);
-          }
-
-          /* 오늘보다 이전날짜를 선택한 경우 */
-          if (start <= today.value) {
-            // console.log("휴가 시작일이 오늘 이전임 ㅡㅡ ");
-            buttonAble = true;
-            errorMessage.value = "휴가 시작일은 오늘 날짜 이후여야 합니다!";
-            // console.log(errorMessage);
+            /* 오늘보다 이전날짜를 선택한 경우 */
+            if (start <= today.value) {
+              errorMessage.value = "휴가 시작일은 오늘 날짜 이후여야 합니다!";
+            } else {
+              console.log("반차 - 휴가 시작일이 오늘보다 이후가 맞음");
+            }
           } else {
-            // console.log("휴가 시작일이 오늘보다 이후가 맞음");
+            /* 연차인 경우 */
+
+            /* 오늘보다 이전날짜를 선택한 경우 */
+            if (start <= today.value) {
+              errorMessage.value = "휴가 시작일은 오늘 날짜 이후여야 합니다!";
+            } else {
+              console.log("연차 - 휴가 시작일이 오늘보다 이후가 맞음");
+            }
+
+            /* 종료일을 선택 */
+            if (end !== null) {
+              console.log("종료일 선택. + 잔여연차: " + restLeave.value);
+              console.log("종료일 선택. 시작일 : " + start);
+              console.log("종료일 선택. 종료일:  " + end);
+              console.log("종료일 선택. + 날짜 차이일: " + daysDiff.value);
+
+              /* 종료일보다 시작일이 늦은 경우 */
+              if (start > end) {
+                errorMessage.value =
+                  "휴가 시작일은 휴가 종료일 이전이어야 합니다!";
+              }
+
+              /* 남은 연차를 초과하는 경우 */
+              if (daysDiff.value > restLeave.value) {
+                errorMessage.value =
+                  "신청한 휴가 일수가 남은 휴가일수 보다 많습니다!";
+                console.log("보유휴가수 > 잔여휴가수 에러: ", errorMessage);
+              }
+            }
           }
         } else {
-          /* 연차인 경우 */
-          // console.log("연차선택!!!!!!");
-
-          /* 오늘보다 이전날짜를 선택한 경우 */
-          if (start <= today.value) {
-            // console.log("휴가 시작일이 오늘 이전임 ㅡㅡ ");
-            errorMessage.value = "휴가 시작일은 오늘 날짜 이후여야 합니다!";
-            // console.log(errorMessage);
-          } else {
-            // console.log("휴가 시작일이 오늘보다 이후가 맞음");
-          }
-
-          /* 종료일을 선택 */
-          if (end !== null) {
-            /* 종료일보다 시작일이 늦은 경우 */
-            if (start > end) {
-              errorMessage.value =
-                "휴가 시작일은 휴가 종료일 이전이어야 합니다!";
-              // console.log(errorMessage);
-            }
-
-            /* 남은 연차를 초과하는 경우 */
-            const daysDiff = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
-            // console.log("날짜차이일: " + daysDiff);
-            if (daysDiff > restLeave.value) {
-              errorMessage.value = "휴가 일수가 잔여 연차보다 많습니다!";
-              console.log("보유휴가수 > 잔여휴가수 에러: ", errorMessage);
-            }
-          }
+          errorMessage.value = "시작일을 선택하세요!";
         }
+        errorMessageLength.value = errorMessage.value.length;
       }
-    });
+    );
 
     /* 잔여연차 & 사용연차 받아오기 */
     const fetchLeaveDates = async () => {
@@ -290,21 +304,13 @@ export default {
       if (selectedLeaveType.value.includes("반차")) {
         period.endDate = period.startDate;
 
-        console.log(
-          "반차기간: " +
-            period +
-            " 기간 쪼개서 확인: " +
-            period.startDate +
-            " " +
-            period.endDate
-        );
-
         data = {
           memberId: memberId.value,
           annualType: annualType.value,
           period,
         };
       }
+      console.log("삽입전 데이터 확인: " + data);
 
       try {
         const response = await axios.post(
@@ -318,7 +324,7 @@ export default {
       }
     };
 
-    /* 연차신청내역 확인  */
+    /* 연차신청내역 확인 모달  */
     const confirmAlert = (
       applicantName,
       selectedLeaveType,
@@ -365,8 +371,8 @@ export default {
       selectedLeaveType,
       today,
       tomorrow,
-      visible,
       confirmAlert,
+      errorMessageLength,
     };
   },
 };
