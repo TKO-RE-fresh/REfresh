@@ -83,6 +83,7 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         MemberLogoutHandler logoutHandler = memberLogoutHandler();
         http.cors();
+//        http.requiresChannel().anyRequest().requiresSecure();
         http.logout().addLogoutHandler(logoutHandler);
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

@@ -214,7 +214,8 @@
           </button>
           <button
             class="text-gray-900 bg-gray-300 hover:bg-[#f6aa1c] focus:ring-4 focus:outline-none focus:ring-gray-100 font-semibold rounded-lg text-base px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-500"
-            type="reset"
+            type="button"
+            @click="resetForm"
           >
             취소
           </button>
@@ -284,6 +285,7 @@ const join = (event) => {
         })
         .catch((error) => {
           console.log(error);
+<<<<<<< HEAD
           Swal.fire(
             "등록 실패",
             "사원 등록에 실패했습니다. 다시 시도해 주세요.",
@@ -292,6 +294,14 @@ const join = (event) => {
         });
     }
     joinForm.value.reset();
+=======
+          Swal.fire("등록 실패", "사원 등록에 실패했습니다. 다시 시도해 주세요.",'error'); 
+        })
+        .finally( () =>{
+          resetForm();
+        })
+    } 
+>>>>>>> 4833f671b05a33dde36621f53884b887d60ca78e
   });
 };
 
@@ -306,4 +316,19 @@ function setMemberAuth(e) {
 function setMemberStatus(e) {
   joinInput.memberStatus = e.target.value;
 }
+
+const resetForm = () => {
+  joinInput.memberId = '';
+  joinInput.password = '';
+  joinInput.memberName = '';
+  joinInput.memberCellphone = '';
+  joinInput.memberEmail = '';
+  joinInput.annualCount = '';
+  joinInput.createdDate = '';
+  joinInput.departmentName = joinFormData.departmentList[0];
+  joinInput.memberStatus = joinFormData.memberStatusList[0];
+  joinInput.memberAuth = joinFormData.memberAuthList[0];
+
+  joinForm.value.reset();
+};
 </script>
