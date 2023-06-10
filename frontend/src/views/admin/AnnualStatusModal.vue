@@ -9,7 +9,7 @@
             <div class="text-center p-3 flex-auto justify-center leading-6">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                class="w-16 h-16 flex items-center text-blue-500 mx-auto"
+                class="w-16 h-16 flex items-center text-[#f6aa1c] mx-auto"
                 viewBox="0 0 24 24"
                 fill="currentColor"
               >
@@ -20,28 +20,36 @@
               <h2 class="text-2xl font-bold py-4">연차 승인 여부</h2>
               <div class="p-3 items-center">
                 <label class="item-center">
-                  <input
-                    v-model="acceptYn"
-                    type="radio"
-                    name="radio-10"
-                    value="y"
-                    class="radio checked:bg-green-500 pt-2"
-                    checked
-                  />
-                  <span class="mx-3">승인</span>
+                  <div class="flex justify-center">
+                    <div class="">
+                      <input
+                        v-model="acceptYn"
+                        type="radio"
+                        name="radio-10"
+                        value="y"
+                        class="radio checked:bg-green-500 pt-2"
+                        checked
+                      />
+                    </div>
+                    <span class="mx-3">승인</span>
+                  </div>
                 </label>
               </div>
 
               <div class="p-3">
                 <label>
-                  <input
-                    v-model="acceptYn"
-                    type="radio"
-                    name="radio-10"
-                    value="n"
-                    class="radio checked:bg-red-500"
-                  />
-                  <span class="mx-3">반려</span>
+                  <div class="flex justify-center">
+                    <div class="">
+                      <input
+                        v-model="acceptYn"
+                        type="radio"
+                        name="radio-10"
+                        value="n"
+                        class="radio checked:bg-red-500"
+                      />
+                    </div>
+                    <span class="mx-3">반려</span>
+                  </div>
                 </label>
               </div>
 
