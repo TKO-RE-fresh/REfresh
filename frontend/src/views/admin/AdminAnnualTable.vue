@@ -32,7 +32,6 @@
             :key="idx"
             class="bg-white border-b hover:bg-blue-50"
           >
-
             <td class="w-4 p-3">
               <div class="flex items-center">
                 <input
@@ -60,10 +59,24 @@
             <td class="px-3 py-3">{{ row.departmentName }}</td>
             <td class="px-3 py-3">{{ row.annualType }}</td>
             <td class="px-3 py-3">{{ row.startDate }} ~ {{ row.endDate }}</td>
-            <td class="px-3 py-3" @click="handleModal(row.annualStatus, row.annualUid)" >
-              <div :class="row.annualStatus == '대기' ? 'tooltip': '' " data-tip='Click!'  class="flex items-center">
-                <div 
-                  :class="row.annualStatus == '승인' ? 'bg-green-500' : row.annualStatus == '대기'? 'bg-gray-200': 'bg-red-500'
+            <td
+              class="px-3 py-3"
+              @click="handleModal(row.annualStatus, row.annualUid)"
+            >
+              <div
+                :class="
+                  row.annualStatus == '대기' ? 'tooltip' : 'cursor-not-allowed'
+                "
+                data-tip="Click!"
+                class="flex items-center"
+              >
+                <div
+                  :class="
+                    row.annualStatus == '승인'
+                      ? 'bg-green-500'
+                      : row.annualStatus == '대기'
+                      ? 'bg-gray-200'
+                      : 'bg-red-500'
                   "
                   class="h-2.5 w-2.5 rounded-full mr-2"
                 ></div>
@@ -75,26 +88,29 @@
       </table>
     </div>
   </div>
-  <AnnualStatusModal :isOpen="isOpen" :onToggle="onToggle" :uid = "uid"></AnnualStatusModal>
+  <AnnualStatusModal
+    :isOpen="isOpen"
+    :onToggle="onToggle"
+    :uid="uid"
+  ></AnnualStatusModal>
 </template>
 <script setup>
-import {ref } from "vue";
+import { ref } from "vue";
 import AnnualStatusModal from "./AnnualStatusModal.vue";
 import Store from "@/store/index.js";
 
-const header = ['신청일','사원명','부서명','연차 종류','기간','상태']
+const header = ["신청일", "사원명", "부서명", "연차 종류", "기간", "상태"];
 const isOpen = ref(false);
-const uid = ref('');
+const uid = ref("");
 
 const onToggle = () => {
   isOpen.value = !isOpen.value;
 };
 
-const handleModal=(data,id) =>{
-  if(data == '대기'){
+const handleModal = (data, id) => {
+  if (data == "대기") {
     uid.value = id;
     onToggle();
   }
-}
-
+};
 </script>
