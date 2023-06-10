@@ -11,12 +11,14 @@ import javax.validation.constraints.*;
 
 @Getter
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @ToString
 public class MemberJoinDto {
 
     @NotBlank(message = "아이디를 입력하세요.")
     @Size(min = 3, max = 10, message = "아이디를 3자 이상 10자 이하로 입력하세요")
-    private final String memberId;
+    private  String memberId;
 
     @NotBlank(message = "비밀번호를 입력하세요.")
     @Size(min = 4, max = 20, message = "비밀번호를 4자 이상 20자 이하로 입력하세요")
