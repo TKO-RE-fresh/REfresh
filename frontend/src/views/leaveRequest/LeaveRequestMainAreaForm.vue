@@ -6,7 +6,7 @@
         method="post"
         action="/leaveRequest/confirmResult"
       >
-        <div class="p-6 flex flex-col  bg-slate-50 my-4 rounded-lg shadow-sm
+        <div class="p-6 flex flex-col  bg-slate-50 my-4 rounded-lg shadow-sm font-mice
         ">
           <div class="flex flex-col ml-6">
             <label class="text-gray-700 font-bold mb-2 text-xl">신청인</label>
@@ -111,7 +111,7 @@
           
           <!-- 버튼 영역 -->
           <div class="flex justify-end">
-            <div class="space-x-4 font-mice">
+            <div class="space-x-4 font-mice mr-10">
               <button
                 id="request-btn"
                 class="text-white bg-[#003566] hover:bg-[#f6aa1c] focus:ring-4 focus:outline-none focus:ring-[#1da1f2]/50 font-semibold rounded-lg text-base px-5 py-2.5 text-center inline-flex items-center "

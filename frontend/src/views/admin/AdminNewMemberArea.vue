@@ -285,23 +285,12 @@ const join = (event) => {
         })
         .catch((error) => {
           console.log(error);
-<<<<<<< HEAD
-          Swal.fire(
-            "등록 실패",
-            "사원 등록에 실패했습니다. 다시 시도해 주세요.",
-            "error"
-          );
-        });
-    }
-    joinForm.value.reset();
-=======
           Swal.fire("등록 실패", "사원 등록에 실패했습니다. 다시 시도해 주세요.",'error'); 
         })
         .finally( () =>{
           resetForm();
         })
     } 
->>>>>>> 4833f671b05a33dde36621f53884b887d60ca78e
   });
 };
 
