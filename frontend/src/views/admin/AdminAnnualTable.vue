@@ -61,7 +61,7 @@
             <td class="px-3 py-3">{{ row.annualType }}</td>
             <td class="px-3 py-3">{{ row.startDate }} ~ {{ row.endDate }}</td>
             <td class="px-3 py-3" @click="handleModal(row.annualStatus, row.annualUid)" >
-              <div :class="row.annualStatus == '대기' ? 'tooltip': '' " data-tip='Click!'  class="flex items-center">
+              <div :class="row.annualStatus == '대기' ? 'tooltip': 'cursor-not-allowed' " data-tip='Click!'  class="flex items-center">
                 <div 
                   :class="row.annualStatus == '승인' ? 'bg-green-500' : row.annualStatus == '대기'? 'bg-gray-200': 'bg-red-500'
                   "
