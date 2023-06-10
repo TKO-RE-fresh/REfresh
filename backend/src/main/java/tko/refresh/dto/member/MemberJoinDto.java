@@ -10,13 +10,12 @@ import javax.persistence.Convert;
 import javax.validation.constraints.*;
 
 @Getter
-@Builder
 @ToString
 public class MemberJoinDto {
 
     @NotBlank(message = "아이디를 입력하세요.")
     @Size(min = 3, max = 10, message = "아이디를 3자 이상 10자 이하로 입력하세요")
-    private final String memberId;
+    private String memberId;
 
     @NotBlank(message = "비밀번호를 입력하세요.")
     @Size(min = 4, max = 20, message = "비밀번호를 4자 이상 20자 이하로 입력하세요")
@@ -46,7 +45,26 @@ public class MemberJoinDto {
     @NotNull(message = "부서를 선택하세요")
     private String departmentName;
 
+    public MemberJoinDto(){
+
+    }
+    
+    @Builder
+    public MemberJoinDto(String memberId, String password, RoleType memberAuth, String memberName, String memberCellphone, String memberEmail, MemberStatus memberStatus, double annualCount, String departmentName, String createdDate) {
+        this.memberId = memberId;
+        this.password = password;
+        this.memberAuth = memberAuth;
+        this.memberName = memberName;
+        this.memberCellphone = memberCellphone;
+        this.memberEmail = memberEmail;
+        this.memberStatus = memberStatus;
+        this.annualCount = annualCount;
+        this.departmentName = departmentName;
+        this.createdDate = createdDate;
+    }
+
     private String createdDate;
+
 
     public void setEncodePwd(String encode) {
         this.password = encode;
