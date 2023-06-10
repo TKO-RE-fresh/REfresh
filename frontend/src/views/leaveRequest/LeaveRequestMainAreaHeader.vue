@@ -6,9 +6,9 @@
       </div>
       <div class="flex-none">
           <div class="tabs">
-              <a class="tab tab-bordered tab-active text-lg">연차</a> 
-              <a class="tab tab-bordered text-lg">오전 반차</a> 
-              <a class="tab tab-bordered text-lg">오후 반차</a>
+            <a class="tab tab-bordered text-lg">오전 반차</a> 
+            <a class="tab tab-bordered text-lg">오후 반차</a>
+            <a class="tab tab-bordered tab-active text-lg">연차</a> 
           </div>
       </div>
     </div>
