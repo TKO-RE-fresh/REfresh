@@ -8,12 +8,9 @@
           class="bg-white p-8 rounded-lg shadow-lg h-full font-mice"
           @submit.prevent="onSubmit"
         >
-        <div class="flex justify-center mb-5">
-          <img src="../../../public/img/icons/logo.png" class="w-2/5"/>
-        </div>
-          
-
-
+          <div class="flex justify-center mb-5">
+            <img src="../../../public/img/icons/logo.png" class="w-2/5" />
+          </div>
 
           <!-- <h2 class="text-4xl font-mice font-bold mb-4 flex justify-center text-[#f6aa1c]">
             <span class="text-[#003566] font-mice-bold ">RE</span>fresh
@@ -129,7 +126,6 @@ async function onSubmit() {
       alertIdMsg.value = "아이디를 확인해주세요.";
       alertPwMsg.value = "비밀번호를 확인해주세요.";
     }
-    console.log(err);
   }
 }
 </script>

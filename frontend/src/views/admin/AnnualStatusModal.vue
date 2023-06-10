@@ -47,9 +47,13 @@
 
               <div v-if="acceptYn == 'n'" class="form-control mx-10">
                 <label class="label">
-                  <span class="label-text text-gray-700 ">반려 사유</span>
+                  <span class="label-text text-gray-700">반려 사유</span>
                 </label>
-                <textarea v-model="rejectReason" class="textarea textarea-bordered h-24" placeholder="반려 사유 입력"></textarea>
+                <textarea
+                  v-model="rejectReason"
+                  class="textarea textarea-bordered h-24"
+                  placeholder="반려 사유 입력"
+                ></textarea>
               </div>
             </div>
 
@@ -80,7 +84,7 @@
 
 <script setup>
 import Swal from "sweetalert2/dist/sweetalert2.js";
-import { defineProps, ref ,inject  } from "vue";
+import { defineProps, ref, inject } from "vue";
 import axios from "axios";
 import Store from "@/store/index.js";
 
@@ -96,48 +100,49 @@ const props = defineProps({
     required: true,
   },
   uid: {
-    type : String,
+    type: String,
     required: true,
-  }
+  },
 });
-const acceptYn = ref('y');
-const rejectReason = ref('');
-const currentPage = inject('currentPage');
+const acceptYn = ref("y");
+const rejectReason = ref("");
+const currentPage = inject("currentPage");
 
 function makeBody() {
   return {
     uid: props.uid,
-    status: (acceptYn.value == 'y') ? 'AGREE' : 'REJECT',
-    rejectReason: rejectReason.value
-  }
+    status: acceptYn.value == "y" ? "AGREE" : "REJECT",
+    rejectReason: rejectReason.value,
+  };
 }
 
-const accetpHandler= async () => {
-    const body = makeBody();
-    await axios.put('http://localhost:8090/admin/annual', body)
-      .then(()=>{
-        Swal.fire({
-          toast: true,
-          icon: 'success',
-          title: '연차 신청 처리 성공',
-          timer: 1500,
-          timerProgressBar: true,
-          showConfirmButton: false,
-        })
-
-    }).catch(()=>{
+const accetpHandler = async () => {
+  const body = makeBody();
+  await axios
+    .put("http://localhost:80/admin/annual", body)
+    .then(() => {
       Swal.fire({
-          toast: true,
-          icon: 'error',
-          title: '연차 신청 처리 실패',
-          timer: 1500,
-          timerProgressBar: true,
-          showConfirmButton: false,
-        })
+        toast: true,
+        icon: "success",
+        title: "연차 신청 처리 성공",
+        timer: 1500,
+        timerProgressBar: true,
+        showConfirmButton: false,
+      });
+    })
+    .catch(() => {
+      Swal.fire({
+        toast: true,
+        icon: "error",
+        title: "연차 신청 처리 실패",
+        timer: 1500,
+        timerProgressBar: true,
+        showConfirmButton: false,
+      });
     });
-    await Store.dispatch('fetchAnnualList', currentPage.value);
-    props.onToggle();
-}
+  await Store.dispatch("fetchAnnualList", currentPage.value);
+  props.onToggle();
+};
 </script>
 
 <style scoped>
