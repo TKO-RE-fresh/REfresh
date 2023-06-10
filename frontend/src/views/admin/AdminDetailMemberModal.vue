@@ -3,7 +3,7 @@
     <div v-if="isOpen">
       <form @submit="handleSubmit">
         <div>
-          <div class="fixed inset-0 z-10 flex items-center justify-center">
+          <div class="fixed inset-0 z-10 flex items-center justify-center font-mice">
             <div
               class="w-full max-w-2xl p-3 relative mx-auto rounded-xl shadow-lg bg-white"
             >
@@ -251,14 +251,14 @@
                   <button
                     v-show="!editFormDisabled"
                     :type="buttonType"
-                    class="text-white bg-[#003566] hover:bg-[#f6aa1c] font-semibold rounded-lg text-base px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#1da1f2]/55"
+                    class="text-white bg-[#003566] hover:bg-[#f6aa1c] rounded-lg text-base px-5 py-2.5 text-center inline-flex items-center"
                     @click="editMember"
                   >
                     {{ btn }}
                   </button>
                   <button
                     type="button"
-                    class="text-gray-900 bg-gray-300 hover:bg-[#f6aa1c] font-semibold rounded-lg text-base px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-500"
+                    class="text-gray-900 bg-gray-300 hover:bg-[#f6aa1c] rounded-lg text-base px-5 py-2.5 text-center inline-flex items-center"
                     @click="onToggle"
                   >
                     닫기

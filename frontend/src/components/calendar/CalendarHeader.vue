@@ -1,6 +1,6 @@
 <template>
-  <div class="flex space-x-36 mb-12 items-center">
-    <div class="w-fit">
+  <div class="flex space-x-36 items-center">
+    <div class="w-fit font-mice">
       <div class="h-fit p-3 whitespace-nowrap flex items-center">
         <svg
           class="w-12 h-12 text-gray-500 transition-all duration-300 transform rotate-180 hover:scale-110 cursor-pointer"
@@ -49,9 +49,9 @@
             </svg>
           </a>
         </div>
-        <div>
+        <div class="m-5">
           <button
-            class="w-16 h-6 bg-blue-500 hover:bg-blue-700 text-white px-1 rounded"
+            class="text-white bg-[#003566] hover:bg-[#f6aa1c] rounded-lg text-base px-4 py-1.5 text-center"
             @click="resetYearMonth"
           >
             오늘
@@ -61,7 +61,7 @@
     </div>
     <div v-if="auth === 'admin'">
       <select
-        class="block appearance-none py-2 px-40 relative border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+        class="block appearance-none py-2 px-40 relative rounded-md shadow-sm border-2 border-[#DAD9FF] hover:border-[#A566FF] font-mice"
         @change="handleDept"
       >
         <option v-for="(item, idx) in dept" :key="idx">
@@ -76,10 +76,10 @@
     </div>
     <div v-if="auth === 'admin'">
       <button
-        class="w-24 h-6 bg-blue-500 hover:bg-blue-700 text-white px-1 rounded"
+        class="text-white bg-[#003566] hover:bg-[#f6aa1c] font-mice rounded-lg text-base px-5 py-2.5 text-center"
         @click="ocSearchModal"
       >
-        사원 검색하기
+        사원 검색
       </button>
     </div>
     <calendar-search-modal
