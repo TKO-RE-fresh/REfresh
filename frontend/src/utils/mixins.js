@@ -9,7 +9,9 @@ axios.interceptors.response.use(
   (response) => response,
   (error) => {
     const status = error.response.status;
-    console.log("상태코드: " + status);
+
+    console.log("믹스인에서 확인한 상태코드: " + status);
+
     if (status === 401) {
       // 엑세스 토큰이 만료되었을때
       return refreshTokenAndRetryRequest(error.config);
@@ -18,12 +20,14 @@ axios.interceptors.response.use(
     if (status === 403) {
       console.log("상태코드 403 error: " + error);
       router.push("/forbiddenerror");
+      userInfoRemove();
       return Promise.reject(error); // error를 reject하여 체인을 중단합니다.
     }
 
     if (status === 500) {
       console.log("500에러: " + error);
       router.push("/internalservererror");
+      userInfoRemove();
       return Promise.reject(error);
     }
 
@@ -44,6 +48,15 @@ const refreshTokenAndRetryRequest = async (config) => {
     // 리프레시 토큰이 만료된 경우
     return Promise.reject(e);
   }
+};
+
+const userInfoRemove = async () => {
+  await axios.post("token/logout", {});
+  Store.commit("setAccessToken", null);
+  Store.commit("setMemberId", null);
+  Store.commit("setMemberName", null);
+  Store.commit("setAuth", null);
+  Store.commit("setDept", null);
 };
 
 // reload 시 쿠키 존재 확인 서버 요청
