@@ -2,7 +2,7 @@
   <Teleport to="body">
     <transition name="fade">
       <div>
-        <div class="fixed inset-0 z-10 flex items-center justify-center">
+        <div class="fixed inset-0 z-10 flex items-center justify-center font-mice">
           <div
             class="w-full h-calModalH max-w-lg p-3 relative mx-auto my-auto rounded-xl shadow-lg bg-white"
           >
@@ -42,7 +42,7 @@
                 class="absolute bottom-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center md:block"
               >
                 <button
-                  class="mb-2 md:mb-0 bg-blue-500 border border-blue-500 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-md hover:shadow-lg hover:bg-blue-600"
+                  class="mb-2 md:mb-0  bg-[#003566] hover:bg-[#f6aa1c] border px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-md"
                   @click="closeEvent"
                 >
                   닫기

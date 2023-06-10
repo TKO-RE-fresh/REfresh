@@ -17,6 +17,7 @@ public class MemberJoinDto {
     @Size(min = 3, max = 10, message = "아이디를 3자 이상 10자 이하로 입력하세요")
     private String memberId;
 
+
     @NotBlank(message = "비밀번호를 입력하세요.")
     @Size(min = 4, max = 20, message = "비밀번호를 4자 이상 20자 이하로 입력하세요")
     private String password;
@@ -64,7 +65,6 @@ public class MemberJoinDto {
     }
 
     private String createdDate;
-
 
     public void setEncodePwd(String encode) {
         this.password = encode;
