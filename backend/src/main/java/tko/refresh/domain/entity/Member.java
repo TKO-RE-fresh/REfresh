@@ -80,7 +80,7 @@ public class Member extends BaseEntity {
     public Member(String memberId, String password, MemberInfo memberInfo, double annualCount, MemberStatus memberStatus,
                   RoleType memberAuth,
                   Department department, LocalDateTime createdDate, LocalDateTime modifiedDate, LocalDateTime retireDate, String createdBy, String modifiedBy) {
-        super(createdBy, modifiedBy, createdDate, modifiedDate);
+        super(createdBy, modifiedBy, modifiedDate ,createdDate);
         this.memberId = memberId;
         this.password = password;
         this.memberInfo = memberInfo;

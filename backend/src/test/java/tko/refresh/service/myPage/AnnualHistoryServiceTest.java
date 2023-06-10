@@ -80,6 +80,7 @@ class AnnualHistoryServiceTest {
     @Test
     public void 마이페이지_연차내역_전체조회(){
         list = annualHistoryService.getAnnualHistoryPage(HistorySearchDto.builder().build(),1);
+
         list.stream().forEach(System.out::println);
         Assertions.assertEquals(list.getContent().size(),1);
 

@@ -116,8 +116,12 @@
                       </div>
                       <div class="text-sm" name="detailInfo">
                         <div class="m-2">
-                          <input v-model="member.memberId" type="text" :readonly=true
-                            class="shadow border rounded py-1 text-gray-700 hover:bg-gray-100 focus:outline-none">
+                          <input
+                            v-model="member.memberId"
+                            type="text"
+                            :readonly="true"
+                            class="shadow border rounded py-1 text-gray-700 hover:bg-gray-100 focus:outline-none"
+                          />
                         </div>
                         <div class="m-2">
                           <input
@@ -263,51 +267,50 @@
               </div>
             </div>
           </div>
-          <div
-            class="fixed inset-0 opacity-70 z-0"
-            @click="onToggle"
-          ></div>
+          <div class="fixed inset-0 opacity-70 z-0" @click="onToggle"></div>
         </div>
       </form>
-      </div>
-    </transition>
-  </template>
+    </div>
+  </transition>
+</template>
   
   <script setup>
-  import { defineProps, watch, ref } from "vue";
-  import axios from "axios";
-  import Swal from "sweetalert2/dist/sweetalert2.js";
+import { defineProps, watch, ref } from "vue";
+import axios from "axios";
+import Swal from "sweetalert2/dist/sweetalert2.js";
 
-  const member = ref({});
-  const editMode = ref(false);
-  const btn = ref('수정');
-  const buttonType = ref('button');
-  const selectedMemberId = ref();
-  
-  const props = defineProps({
-    isOpen: {
-      type: Boolean,
-      required: true,
-      default: false
-    },
-    onToggle: {
-      type: Function,
-      required: true,
-    },
-    memberId: {
-      type : String,
-      required: true,
-    }
-  });
+const member = ref({});
+const editMode = ref(false);
+const btn = ref("수정");
+const buttonType = ref("button");
+const selectedMemberId = ref();
+
+const props = defineProps({
+  isOpen: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
+  onToggle: {
+    type: Function,
+    required: true,
+  },
+  memberId: {
+    type: String,
+    required: true,
+  },
+});
 
 //   onMounted(() => {
 //   selectedMemberId.value = props.memberId;
 // });
 
-  watch(() => props.isOpen, (newValue) => {
+watch(
+  () => props.isOpen,
+  (newValue) => {
     console.log("props 변경 감지 : " + newValue);
     selectedMemberId.value = props.memberId;
-    if(btn.value == '저장') {
+    if (btn.value == "저장") {
       editMember();
     }
 
@@ -315,24 +318,32 @@
     if (newValue) {
       getMemberInfo();
     }
-  });
-
-  async function getMemberInfo() {
-    try {
-      // console.log("주소창 id : ");
-      // console.log(selectedMemberId.value);
-      const res = await axios.get(`http://localhost:8090/admin/member/${selectedMemberId.value}`);
-
-      member.value = res.data;
-
-      (member.value.createdDate != null) ? member.value.createdDate = formatDate(member.value.createdDate) : member.value.createdDate =null;
-      (member.value.modifiedDate != null) ? member.value.modifiedDate = formatDate(member.value.modifiedDate) : member.value.modifiedDate =null;
-      (member.value.retireDate != null) ? member.value.retireDate = formatDate(member.value.retireDate) : member.value.retireDate =null;
-
-    } catch (error) {
-      console.error('Error get data: ', error);
-    }
   }
+);
+
+async function getMemberInfo() {
+  try {
+    // console.log("주소창 id : ");
+    // console.log(selectedMemberId.value);
+    const res = await axios.get(
+      `http://localhost:8090/admin/member/${selectedMemberId.value}`
+    );
+
+    member.value = res.data;
+
+    member.value.createdDate != null
+      ? (member.value.createdDate = formatDate(member.value.createdDate))
+      : (member.value.createdDate = null);
+    member.value.modifiedDate != null
+      ? (member.value.modifiedDate = formatDate(member.value.modifiedDate))
+      : (member.value.modifiedDate = null);
+    member.value.retireDate != null
+      ? (member.value.retireDate = formatDate(member.value.retireDate))
+      : (member.value.retireDate = null);
+  } catch (error) {
+    console.error("Error get data: ", error);
+  }
+}
 
 // 수정 버튼 클릭
 const editMember = () => {
@@ -360,29 +371,32 @@ const handleSubmit = (event) => {
   event.preventDefault();
 
   const memberUpdateDto = {
-      memberId: member.value.memberId,
-      memberName: member.value.memberName,
-      memberCellphone: member.value.memberCellphone,
-      memberEmail: member.value.memberEmail,
-      departmentName: member.value.departmentName,
-      annualCount: member.value.annualCount,
-      createdDate: member.value.createdDate,
-      retireDate: member.value.retireDate,
-      memberAuth: member.value.memberAuth,
-      memberStatus: member.value.memberStatus,
-    };
+    memberId: member.value.memberId,
+    memberName: member.value.memberName,
+    memberCellphone: member.value.memberCellphone,
+    memberEmail: member.value.memberEmail,
+    departmentName: member.value.departmentName,
+    annualCount: member.value.annualCount,
+    createdDate: member.value.createdDate,
+    retireDate: member.value.retireDate,
+    memberAuth: member.value.memberAuth,
+    memberStatus: member.value.memberStatus,
+  };
   Swal.fire({
     title: "사원 정보 수정",
     text: "사원 정보를 수정하시겠습니까?",
     icon: "info",
     showCancelButton: true,
-    cancelButtonText : '취소',
-    confirmButtonColor: '#3b82f6',
+    cancelButtonText: "취소",
+    confirmButtonColor: "#3b82f6",
     confirmButtonText: "확인",
   }).then(async (result) => {
     if (result.isConfirmed) {
       await axios
-        .patch('http://localhost:8090/admin/member/' + props.memberId, memberUpdateDto)
+        .patch(
+          "http://localhost:80/admin/member/" + props.memberId,
+          memberUpdateDto
+        )
         .then(() => {
           Swal.fire("수정 완료", "사원 정보가 수정되었습니다.", "success");
           // getMemberInfo();
@@ -393,13 +407,16 @@ const handleSubmit = (event) => {
           // console.log(selectedMemberId.value);
           // getMemberInfo();
         })
-        .catch(()=>{
-          Swal.fire("수정 실패", "사원 정보 수정에 실패했습니다. 다시 시도해 주세요.",'error');
+        .catch(() => {
+          Swal.fire(
+            "수정 실패",
+            "사원 정보 수정에 실패했습니다. 다시 시도해 주세요.",
+            "error"
+          );
           // getMemberInfo();
-        })
-    } 
+        });
+    }
     getMemberInfo();
-    
   });
 };
 </script>
