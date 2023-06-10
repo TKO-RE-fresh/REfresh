@@ -22,31 +22,37 @@
               </h2>
               <div class="p-3 items-center">
                 <label class="item-center">
-                  <input
-                    v-model="acceptYn"
-                    type="radio"
-                    name="radio-10"
-                    value="y"
-                    class="radio checked:bg-green-500"
-                    checked
-                  />
-                  <span class="mx-3 font-mice">승인</span>
+                  <div class="flex justify-center">
+                    <div class="">
+                      <input
+                        v-model="acceptYn"
+                        type="radio"
+                        name="radio-10"
+                        value="y"
+                        class="radio checked:bg-green-500 pt-2"
+                        checked
+                      />
+                    </div>
+                    <span class="mx-3">승인</span>
+                  </div>
                 </label>
               </div>
-
               <div class="p-3">
                 <label>
-                  <input
-                    v-model="acceptYn"
-                    type="radio"
-                    name="radio-10"
-                    value="n"
-                    class="radio checked:bg-red-500"
-                  />
-                  <span class="mx-3 font-mice">반려</span>
+                  <div class="flex justify-center">
+                    <div class="">
+                      <input
+                        v-model="acceptYn"
+                        type="radio"
+                        name="radio-10"
+                        value="n"
+                        class="radio checked:bg-red-500"
+                      />
+                    </div>
+                    <span class="mx-3">반려</span>
+                  </div>
                 </label>
               </div>
-
               <div v-if="acceptYn == 'n'" class="form-control mx-10">
                 <label class="label">
                   <span class="label-text text-gray-700 font-semibold"
