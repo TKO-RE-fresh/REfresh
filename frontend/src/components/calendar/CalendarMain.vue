@@ -27,8 +27,10 @@
       </div>
       <div :id="day.day" class="absolute max-w-full right-2 bottom-2">
         <template v-if="day.sumCount !== 0">
-          <div :id="day.day" v-html="personIcon"></div>
-          {{ day.sumCount }}명
+          <div class="flex space-x-2">
+            <div :id="day.day" v-html="personIcon"></div>
+            <div>{{ day.sumCount }}명</div>
+          </div>
         </template>
       </div>
     </td>

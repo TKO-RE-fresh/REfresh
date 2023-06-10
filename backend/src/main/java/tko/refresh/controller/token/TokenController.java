@@ -32,7 +32,7 @@ public class TokenController {
 
     @PostMapping("/cookie")
     public ResponseEntity getCookieToken(@CookieValue("Refresh_Token") String refreshToken, HttpServletRequest request, HttpServletResponse response) {
-        if(!jwtUtil.refreshTokenValidation(refreshToken)) {
+        if(!refreshToken.isEmpty() && !jwtUtil.refreshTokenValidation(refreshToken)) {
             return ResponseEntity.status(BAD_REQUEST).body("만료된 토큰입니다.");
         }
 

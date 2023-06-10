@@ -264,7 +264,7 @@ export default {
     /* 잔여연차 & 사용연차 받아오기 */
     const fetchLeaveDates = async () => {
       try {
-        const response = await axios.get("http://localhost:8090/leaveRequest");
+        const response = await axios.get("http://localhost:80/leaveRequest");
         restLeave.value = response.data.restLeaveCount;
         usedLeave.value = response.data.usedLeaveCount;
       } catch (error) {
@@ -308,7 +308,7 @@ export default {
 
       try {
         const response = await axios.post(
-          "http://localhost:8090/leaveRequest",
+          "http://localhost:80/leaveRequest",
           data
         );
 

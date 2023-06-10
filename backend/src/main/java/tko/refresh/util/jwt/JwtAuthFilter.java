@@ -43,31 +43,23 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         String accessToken = extractTokenFromHeader(jwtUtil.getHeaderToken(request));
         String refreshToken = jwtUtil.getCookieToken(request);
 
-        if(accessToken == null  && refreshToken == null) {
+        if((accessToken == null && refreshToken == null))  {
             filterChain.doFilter(request, response);
             return;
         }
-
         if(accessToken != null) {
             if (!accessToken.equals("undefined") && jwtUtil.tokenValidation(accessToken)) {
                 String id = jwtUtil.getIdFromToken(accessToken);
                 setAuthentication(id);
             } else {
                 // Access 토큰이 만료된 경우
-                if (refreshToken != null && jwtUtil.refreshTokenValidation(refreshToken)) {
+                if (!refreshToken.isEmpty() && jwtUtil.refreshTokenValidation(refreshToken)) {
                     // Refresh 토큰이 유효한 경우
                     String id = jwtUtil.getIdFromToken(refreshToken);
                     String email = jwtUtil.getEmailFromToken(refreshToken);
                     setAuthentication(id);
                     String newAccessToken = jwtUtil.createToken(id, email, ACCESS);
                     response.setHeader(jwtUtil.ACCESS_TOKEN, newAccessToken);
-                } else {
-                    // Refresh 토큰이 유효하지 않은 경우
-                    if(!memberLogoutHandler.isLogout(request)) {
-                        memberLogoutHandler.logout(request, response, null);
-                    }
-                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, UNAUTHORIZED);
-                    return;
                 }
             }
         }
