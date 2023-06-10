@@ -10,13 +10,17 @@ axios.interceptors.response.use(
   (error) => {
     const status = error.response.status;
 
+
     if (status === 401) {
       // 엑세스 토큰이 만료되었을때
       return refreshTokenAndRetryRequest(error.config);
     }
 
     if (status === 403) {
-      console.log("상태코드 403 error: " + error);
+      const currentUrl = window.location.pathname;
+      if (currentUrl === "/") {
+        return Promise.reject(error);
+      }
       router.push("/forbiddenerror");
       userInfoRemove();
       return Promise.reject(error); // error를 reject하여 체인을 중단합니다.

@@ -1,4 +1,5 @@
-import axios from "axios";
+import mixins from '@/utils/mixins';
+// import axios from "axios";
 
 export default {
   state: {
@@ -20,15 +21,15 @@ export default {
   actions: {
     async fetchLeaveInfo({ commit }) {
       try {
-        const response = await axios.get("http://localhost:80/leaveRequest");
-        // console.log(
-        //   "store에서 rest휴가 정보 받아오기 (response): " +
-        //     response.data.restLeaveCount
-        // );
-        // console.log(
-        //   "store에서 used휴가 정보 받아오기 (response): " +
-        //     response.data.usedLeaveCount
-        // );
+        const response = await mixins.methods.$api("http://localhost:80/leaveRequest", "get", {});
+        console.log(
+          "store에서 rest휴가 정보 받아오기 (response): " +
+            response.data.restLeaveCount
+        );
+        console.log(
+          "store에서 used휴가 정보 받아오기 (response): " +
+            response.data.usedLeaveCount
+        );
         commit("setRestLeave", response.data.restLeaveCount);
         commit("setUsedLeave", response.data.usedLeaveCount);
       } catch (error) {
