@@ -1,6 +1,6 @@
 <template>
   <div>
-    <main class="flex">
+    <main class="flex font-mice">
       <the-header></the-header>
       <div class="h-[calc(100%-4rem)] pt-24 w-screen pl-80 flex justify-evenly">
         <data-table>
@@ -21,7 +21,7 @@
                 v-for="(value, idx) in dayOfWeek"
                 id="day-of-week"
                 :key="idx"
-                class="w-1/7 border-2"
+                class="w-1/7 h-14 border-2 bg-[#DAD9FF] text-xl"
               >
                 {{ value }}
               </th>

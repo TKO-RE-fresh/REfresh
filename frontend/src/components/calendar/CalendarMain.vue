@@ -4,11 +4,11 @@
       v-for="(day, dayIdx) in it"
       :id="day.day"
       :key="dayIdx"
-      class="border-2 w-48 h-28 relative"
+      class="border-2 w-48 h-28 relative font-mice"
       :class="{
         'cursor-pointer': isDayModal(day),
         'hover:bg-gray-100': isDayModal(day),
-        'bg-slate-200': isToday(day),
+        'border-[#D1B2FF] border-4': isToday(day),
       }"
       @click="showDayModal($event, day.hoName, day.sumCount)"
     >
