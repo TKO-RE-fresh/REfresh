@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 package tko.refresh.repository.calendar;
 
 import java.time.LocalDateTime;
@@ -18,17 +17,3 @@ public interface AnnualRepository extends JpaRepository<Annual, Long> {
            + "or (FUNCTION('DATE', :startDate) <= a.period.startDate and FUNCTION('DATE', :endDate) >= a.period.endDate))")
     int countAnnualByMemberUidAndPeriod(@Param("memberId") String memberId, @Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
 }
-=======
-package tko.refresh.repository.leaveRequest;
-
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-import tko.refresh.domain.entity.Annual;
-
-import java.util.UUID;
-
-@Repository
-public interface LeaveRequestRepository extends JpaRepository<Annual, UUID> {
-
-}
->>>>>>> 8e1b2a184f8df8342d618b4c44ca9a6c9d9789c3

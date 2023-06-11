@@ -48,7 +48,7 @@ public class LeaveRequestService {
     public GlobalResponseDto createLeaveRequest(LeaveRequestDto dto) {
 
         // 이름을 가지고 Member 객체를 찾는다.
-        Optional<Member> member = memberRepository.findByMemberId(dto.getMemberId());
+        Optional<Member> member = memberRepository.findLoginMemberId(dto.getMemberId());
 
         /* 멤버 객체 존재여부 확인 */
         if(!member.isPresent()) {

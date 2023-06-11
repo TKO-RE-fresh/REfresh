@@ -1,6 +1,5 @@
 package tko.refresh.repository.admin;
 
-<<<<<<< HEAD
 import org.hibernate.annotations.BatchSize;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -34,20 +33,5 @@ public interface AnnualManageRepository extends JpaRepository<Annual, UUID>, Ann
     @Modifying
     @Query("update Annual ann set ann.annualStatus = :status, ann.acceptor= :acceptor, ann.rejectReason = :msg , ann.modifiedDate=now() where ann.uid = :uid")
     int rejectAnnualStatus(@Param("uid") UUID uid, @Param("status") AnnualStatus status, @Param("acceptor")String acceptor , @Param("msg") String msg);
-=======
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Repository;
 
-import tko.refresh.domain.entity.Annual;
-
-import java.util.List;
-@Repository
-public interface AnnualManageRepository extends JpaRepository<Annual,Long>, AnnualManageRepositoryCustom {
-
-    @Query("SELECT a FROM Annual a LEFT JOIN FETCH a.member m LEFT JOIN FETCH m.department")
-    public List<Annual> findAllWithMember(Pageable pageable);
-
->>>>>>> 8e1b2a184f8df8342d618b4c44ca9a6c9d9789c3
 }

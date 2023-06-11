@@ -1,7 +1,7 @@
 package tko.refresh.service.admin;
 
 import lombok.RequiredArgsConstructor;
-<<<<<<< HEAD
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -20,21 +20,14 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-=======
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import tko.refresh.domain.entity.Member;
-import tko.refresh.dto.admin.MemberDto;
-import tko.refresh.repository.member.MemberRepository;
 
-import java.util.ArrayList;
-import java.util.List;
->>>>>>> 8e1b2a184f8df8342d618b4c44ca9a6c9d9789c3
+import tko.refresh.dto.admin.MemberDto;
+
 
 @Service
 @RequiredArgsConstructor
 public class MemberService {
-<<<<<<< HEAD
+
     private final int PAGE_SIZE = 5;
 
     private final MemberRepository memberRepository;
@@ -60,7 +53,7 @@ public class MemberService {
     }
 
     public MemberDetailDto getMemberDetail(String memberId) {
-        Optional<Member> member = memberRepository.findByMemberId(memberId);
+        Optional<Member> member = memberRepository.findLoginMemberId(memberId);
 
         List<MemberStatus> memberStatuses = new ArrayList<>();
         for(MemberStatus status : MemberStatus.values()) {
@@ -96,7 +89,7 @@ public class MemberService {
 
     @Transactional
     public void editMember(String memberId, MemberUpdateDto memberUpdateDto) {
-        Member member = memberRepository.findByMemberId(memberId).orElseThrow();
+        Member member = memberRepository.findLoginMemberId(memberId).orElseThrow();
         Department department = memberDepartmentRepository.getDepartmentByName(memberUpdateDto.getDepartmentName());
         AuthMemberDto authMemberDto = jwtAuthMember.getJwtAuthMember();
 
@@ -126,32 +119,5 @@ public class MemberService {
         return searchFormDto;
     }
 
-
-=======
-    private final int PAGE_SIZE = 10;
-
-    private final MemberRepository memberRepository;
-
-    public List<MemberDto> getAllMemberList(int page) {
-        List<MemberDto> resultList = new ArrayList<>();
-        Pageable pageable = Pageable.ofSize(PAGE_SIZE).withPage(page);
-        List<Member> memberList = memberRepository.findAll();
-
-        for (Member data : memberList) {
-            resultList.add(MemberDto.builder()
-                    .memberId(data.getMemberId())
-                    .memberName(data.getMemberInfo().getName())
-                    .departmentName(data.getDepartment().getName())
-                    .memberCellphone(data.getMemberInfo().getCellphone())
-                    .memberEmail(data.getMemberInfo().getEmail())
-                    .createdDate(String.valueOf(data.getCreatedDate()))
-                    .retireDate(String.valueOf(data.getRetireDate()))
-                    .memberStatus(String.valueOf(data.getMemberStatus()))
-                    .build()
-            );
-        }
-        return resultList;
-    }
->>>>>>> 8e1b2a184f8df8342d618b4c44ca9a6c9d9789c3
 }
 
