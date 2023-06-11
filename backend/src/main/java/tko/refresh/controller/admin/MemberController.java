@@ -1,5 +1,6 @@
 package tko.refresh.controller.admin;
 
+<<<<<<< HEAD
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,18 @@ import tko.refresh.service.login.LoginService;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
+=======
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import lombok.RequiredArgsConstructor;
+import tko.refresh.dto.admin.MemberDto;
+import tko.refresh.service.admin.MemberService;
+
+import java.util.List;
+>>>>>>> 8e1b2a184f8df8342d618b4c44ca9a6c9d9789c3
 
 
 @RestController
@@ -23,6 +36,7 @@ public class MemberController {
 
     private final MemberService memberService;
 
+<<<<<<< HEAD
     private final MemberDepartmentRepository departmentRepository;
 
     private final LoginService loginService;
@@ -79,4 +93,12 @@ public class MemberController {
     }
 
 
+=======
+    @GetMapping
+    public ResponseEntity getMemberAllList() {
+        List<MemberDto> list = memberService.getAllMemberList(0);
+
+        return ResponseEntity.ok().body(list);
+    }
+>>>>>>> 8e1b2a184f8df8342d618b4c44ca9a6c9d9789c3
 }

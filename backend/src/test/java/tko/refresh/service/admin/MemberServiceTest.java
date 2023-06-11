@@ -5,7 +5,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+<<<<<<< HEAD
 import org.springframework.data.domain.Page;
+=======
+>>>>>>> 8e1b2a184f8df8342d618b4c44ca9a6c9d9789c3
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 import tko.refresh.domain.emb.MemberInfo;
@@ -13,6 +16,7 @@ import tko.refresh.domain.entity.Department;
 import tko.refresh.domain.entity.Member;
 import tko.refresh.domain.enu.MemberStatus;
 import tko.refresh.domain.enu.RoleType;
+<<<<<<< HEAD
 import tko.refresh.dto.GlobalResponseDto;
 import tko.refresh.dto.admin.MemberDetailDto;
 import tko.refresh.dto.admin.MemberDto;
@@ -22,6 +26,11 @@ import tko.refresh.dto.member.MemberJoinDto;
 import tko.refresh.repository.calendar.DepartmentRepository;
 import tko.refresh.repository.member.MemberRepository;
 import tko.refresh.service.login.LoginService;
+=======
+import tko.refresh.dto.admin.MemberDto;
+import tko.refresh.repository.calendar.DepartmentRepository;
+import tko.refresh.repository.member.MemberRepository;
+>>>>>>> 8e1b2a184f8df8342d618b4c44ca9a6c9d9789c3
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -40,8 +49,12 @@ class MemberServiceTest {
     @Autowired
     private MemberService memberService;
 
+<<<<<<< HEAD
     @Autowired
     private LoginService loginService;
+=======
+    private List<MemberDto> list;
+>>>>>>> 8e1b2a184f8df8342d618b4c44ca9a6c9d9789c3
 
     @BeforeEach
     public void setup() {
@@ -56,8 +69,13 @@ class MemberServiceTest {
                 .department(department)
                 .createdDate(LocalDateTime.now())
                 .modifiedDate(LocalDateTime.now())
+<<<<<<< HEAD
 //                .retireDate(LocalDateTime.now())
                 .memberAuth(RoleType.MEMBER)
+=======
+                .memberAuth(RoleType.MEMBER)
+//                .retireDate(LocalDateTime.now())
+>>>>>>> 8e1b2a184f8df8342d618b4c44ca9a6c9d9789c3
                 .createdBy("admin")
                 .modifiedBy("admin")
                 .build();
@@ -67,6 +85,7 @@ class MemberServiceTest {
         departmentRepository.save(department);
         memberRepository.save(member);
 
+<<<<<<< HEAD
         Department department2 = new Department("인사팀", "insazang", "admin", "admin", LocalDateTime.now(), LocalDateTime.now());
         MemberInfo memberInfo2 = new MemberInfo("김예준", "010-3442-3838", "insa@daum.net");
         Member member2 = Member.builder()
@@ -88,10 +107,13 @@ class MemberServiceTest {
 
         departmentRepository.save(department);
         memberRepository.save(member2);
+=======
+>>>>>>> 8e1b2a184f8df8342d618b4c44ca9a6c9d9789c3
     }
 
     @Test
     public void 관리자_사원전체조회() {
+<<<<<<< HEAD
         Page<MemberDto> list = memberService.getAllMemberList(1);
         list.stream().forEach(System.out::println);
 
@@ -194,4 +216,12 @@ class MemberServiceTest {
         System.out.println(responseDto);
     }
     
+=======
+        list = memberService.getAllMemberList(0);
+        list.stream().forEach(System.out::println);
+
+        Assertions.assertEquals(list.size(), 1);
+    }
+
+>>>>>>> 8e1b2a184f8df8342d618b4c44ca9a6c9d9789c3
 }

@@ -1,5 +1,6 @@
 package tko.refresh;
 
+<<<<<<< HEAD
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -7,27 +8,41 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+=======
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationProvider;
+>>>>>>> 8e1b2a184f8df8342d618b4c44ca9a6c9d9789c3
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+<<<<<<< HEAD
 import org.springframework.security.core.userdetails.UserDetailsService;
+=======
+>>>>>>> 8e1b2a184f8df8342d618b4c44ca9a6c9d9789c3
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+<<<<<<< HEAD
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+=======
+>>>>>>> 8e1b2a184f8df8342d618b4c44ca9a6c9d9789c3
 
 import lombok.RequiredArgsConstructor;
 import tko.refresh.util.jwt.JwtAuthFilter;
 import tko.refresh.util.jwt.JwtUtil;
+<<<<<<< HEAD
 import tko.refresh.util.jwt.MemberDetailsServiceImpl;
 import tko.refresh.util.jwt.MemberLogoutHandler;
+=======
+>>>>>>> 8e1b2a184f8df8342d618b4c44ca9a6c9d9789c3
 
 @Configuration
 @EnableWebSecurity
@@ -35,6 +50,7 @@ import tko.refresh.util.jwt.MemberLogoutHandler;
 public class WebSecurityConfig {
     private final JwtUtil jwtUtil;
 
+<<<<<<< HEAD
     @Bean
     public UserDetailsService userDetailsService() {
         // 역할 정보를 제공하는 사용자 정의 UserDetailsService를 반환
@@ -54,6 +70,8 @@ public class WebSecurityConfig {
     public MemberLogoutHandler memberLogoutHandler() {
         return new MemberLogoutHandler();
     }
+=======
+>>>>>>> 8e1b2a184f8df8342d618b4c44ca9a6c9d9789c3
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -66,6 +84,7 @@ public class WebSecurityConfig {
     }
 
     @Bean
+<<<<<<< HEAD
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Collections.singletonList("http://localhost:8080")); // 80 포트에서 오는 요청만 허용
@@ -97,4 +116,18 @@ public class WebSecurityConfig {
         return http.build();
     }
 
+=======
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.cors();
+        http.csrf().disable();
+
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.authorizeRequests().antMatchers("/member/**", "/swagger-ui.html", "/swagger/**",
+                                             "/swagger-resources/**","/webjars/**","/v2/api-docs").permitAll()
+                .anyRequest().authenticated()
+                .and().addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
+
+        return http.build();
+    }
+>>>>>>> 8e1b2a184f8df8342d618b4c44ca9a6c9d9789c3
 }
