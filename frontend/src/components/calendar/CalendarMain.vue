@@ -56,7 +56,7 @@ function closeModal() {
 }
 
 function isDay(day) {
-  return day.hoName === "평일" && day.sumCount !== 0;
+  return day.hoName === "평일" && day.sumCount > 0;
 }
 function isSaturday(day) {
   return day.hoName === "토요일";

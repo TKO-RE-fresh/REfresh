@@ -53,11 +53,9 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
-  console.log(to, from);
   try {
     // 권한이 있는지 확인
     const res = await Store.dispatch("checkCookie");
-    console.log(res + "res");
     if (res.status === 200) {
       if (to.path === "/") {
         next({ name: "calendar" });

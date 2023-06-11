@@ -21,9 +21,11 @@
                 v-for="(value, idx) in dayOfWeek"
                 id="day-of-week"
                 :key="idx"
-                class="w-1/7 h-14 border-2 bg-[#DAD9FF] text-xl"
+                class="w-1/7 h-14 border-2 bg-[#DAD9FF] text-xl align-middle"
               >
-                {{ value }}
+                <div class="flex w-full justify-center">
+                  {{ value }}
+                </div>
               </th>
             </tr>
             <calendar-main :calendar="calendar"></calendar-main>

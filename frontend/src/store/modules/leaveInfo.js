@@ -21,15 +21,7 @@ export default {
   actions: {
     async fetchLeaveInfo({ commit }) {
       try {
-        const response = await mixins.methods.$api("leaveRequest", "get", {});
-        console.log(
-          "store에서 rest휴가 정보 받아오기 (response): " +
-            response.data.restLeaveCount
-        );
-        console.log(
-          "store에서 used휴가 정보 받아오기 (response): " +
-            response.data.usedLeaveCount
-        );
+        const response = await mixins.methods.$api("leaveRequest", "get", {}); 
         commit("setRestLeave", response.data.restLeaveCount);
         commit("setUsedLeave", response.data.usedLeaveCount);
       } catch (error) {

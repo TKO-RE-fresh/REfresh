@@ -129,7 +129,6 @@ export default {
       return this.$store.getters.getRestLeave;
     },
     getUsedLeave() {
-      console.log("사용한 연차: " + this.$store.getters.getUsedLeave);
       return this.$store.getters.getUsedLeave;
     },
     restLeave() {
