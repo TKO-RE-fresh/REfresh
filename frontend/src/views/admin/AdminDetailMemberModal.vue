@@ -3,12 +3,12 @@
     <div v-if="isOpen">
       <form @submit="handleSubmit">
         <div>
-          <div class="fixed inset-0 z-10 flex items-center justify-center">
+          <div class="fixed inset-0 z-10 flex items-center justify-center font-mice">
             <div
               class="w-full max-w-2xl p-3 relative mx-auto rounded-xl shadow-lg bg-white"
             >
               <div>
-                <div class="text-center p-3 flex-auto justify-center leading-6">
+                <div clccass="text-center p-3 flex-auto justify-center leading-6">
                   <h2 class="text-2xl font-bold py-4">사원 상세 정보</h2>
                   <div class="flex" name="firstContetns">
                     <div class="w-1/2 flex justify-center items-center">
@@ -251,14 +251,14 @@
                   <button
                     v-show="!editFormDisabled"
                     :type="buttonType"
-                    class="text-white bg-[#003566] hover:bg-[#f6aa1c] focus:ring-4 focus:outline-none focus:ring-[#1da1f2]/50 font-semibold rounded-lg text-base px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#1da1f2]/55"
+                    class="text-white bg-[#003566] hover:bg-[#f6aa1c] rounded-lg text-base px-5 py-2.5 text-center inline-flex items-center"
                     @click="editMember"
                   >
                     {{ btn }}
                   </button>
                   <button
                     type="button"
-                    class="text-gray-900 bg-gray-300 hover:bg-[#f6aa1c] focus:ring-4 focus:outline-none focus:ring-gray-100 font-semibold rounded-lg text-base px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-500"
+                    class="text-gray-900 bg-gray-300 hover:bg-[#f6aa1c] rounded-lg text-base px-5 py-2.5 text-center inline-flex items-center"
                     @click="onToggle"
                   >
                     닫기
