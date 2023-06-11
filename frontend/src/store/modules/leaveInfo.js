@@ -21,7 +21,7 @@ export default {
   actions: {
     async fetchLeaveInfo({ commit }) {
       try {
-        const response = await mixins.methods.$api("http://localhost:80/leaveRequest", "get", {});
+        const response = await mixins.methods.$api("leaveRequest", "get", {});
         console.log(
           "store에서 rest휴가 정보 받아오기 (response): " +
             response.data.restLeaveCount

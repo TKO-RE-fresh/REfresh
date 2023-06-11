@@ -2,7 +2,7 @@ import axios from "axios";
 import Store from "@/store/index";
 import router from "@/router";
 
-axios.defaults.baseURL = "http://localhost:80/";
+axios.defaults.baseURL = "http://localhost:8090/";
 axios.defaults.withCredentials = true; // 쿠키를 자동으로 포함시킴
 
 axios.interceptors.response.use(
@@ -19,6 +19,7 @@ axios.interceptors.response.use(
     if (status === 403) {
       const currentUrl = window.location.pathname;
       if (currentUrl === "/") {
+        userInfoRemove();
         return Promise.reject(error);
       }
       router.push("/forbiddenerror");
@@ -42,9 +43,12 @@ const refreshTokenAndRetryRequest = async (config) => {
     // 토큰 갱신
     const response = await axios.get("token/cookie", {});
     const newToken = response.headers.access_token;
-    Store.commit("setAccessToken", newToken);
+    if (newToken !== null) {
+      Store.commit("setAccessToken", newToken);
     // 갱신 토큰 저장
     axios.defaults.headers.common.access_token = `Bearer ${newToken}`;
+    }
+    
     return axios(config);
   } catch (e) {
     // 리프레시 토큰이 만료된 경우

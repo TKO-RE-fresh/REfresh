@@ -107,7 +107,7 @@ public class LoginService {
             return MemberLoginResDto.builder().statusCode(FORBIDDEN.value()).message("pwd").build();
         }
         //--유효한 계정--
-
+        System.out.println("유효한 계정");
         // 아이디 정보로 Token생성
         TokenDto tokenDto = jwtUtil.createAllToken(member.getMemberId(), member.getMemberInfo().getEmail());
         // 레디스에 정보 저장
@@ -122,13 +122,12 @@ public class LoginService {
     // 토큰 값을 쿠키로 설정하여 HTTP 응답에 추가하는 메소드
     public void addTokenCookieToResponse(HttpServletResponse response, String token) {
         Cookie tokenCookie = new Cookie(REFRESH_TOKEN, token);
-        tokenCookie.setHttpOnly(true);
+//        tokenCookie.setHttpOnly(true);
 
 //        tokenCookie.setSecure(true); HTTPS 연결에서만 전송
         tokenCookie.setPath("/"); // 쿠키의 유효 경로
-        tokenCookie.setComment("SameSite=Origin"); // CSRF 공격 방지
+//        tokenCookie.setComment("SameSite=Origin"); // CSRF 공격 방지
         tokenCookie.setMaxAge(7776000); // 쿠키의 만료 시간 (초 단위) 3개월
-        tokenCookie.setSecure(true);
         response.addCookie(tokenCookie);
     }
 

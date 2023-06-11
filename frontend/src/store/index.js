@@ -144,7 +144,9 @@ const store = createStore({
 });
 store.subscribe((mutation, state) => {
   if (mutation.type === "setAccessToken") {
-    axios.defaults.headers.common.access_token = `Bearer ${state.token}`;
+    if (state.token !== null) {
+      axios.defaults.headers.common.access_token = `Bearer ${state.token}`;      
+    }
   }
 });
 
