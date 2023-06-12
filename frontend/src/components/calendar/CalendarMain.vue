@@ -29,10 +29,12 @@
         {{ isSpecialHoliday(day) ? parseHoliday(day) : "" }}
       </div>
       <div :id="day.day" class="absolute max-w-full right-2 bottom-2">
-        <div v-if="isDay(day)" :id="day.day" class="flex space-x-2">
-          <div :id="day.day" v-html="personIcon"></div>
-          <div :id="day.day">{{ day.sumCount }}명</div>
-        </div>
+        <template v-if="day.sumCount !== 0 && day.hoName === '평일'">
+          <div class="flex space-x-2">
+            <div :id="day.day" v-html="personIcon"></div>
+            <div :id="day.day">{{ day.sumCount }}명</div>
+          </div>
+        </template>
       </div>
     </td>
   </tr>
@@ -55,9 +57,6 @@ function closeModal() {
   showModal.value = false;
 }
 
-function isDay(day) {
-  return day.hoName === "평일" && day.sumCount > 0;
-}
 function isSaturday(day) {
   return day.hoName === "토요일";
 }
@@ -74,7 +73,7 @@ function isSpecialHoliday(day) {
   );
 }
 function isHoliday(day) {
-  return day.hoName !== "평일" && day.hoName !== "" && day.hoName !== "토요일";
+  return day.hoName !== "평일" && day.hoName !== "토요일" && day.hoName !== "";
 }
 
 function parseHoliday(day) {
@@ -99,5 +98,4 @@ function showDayModal(e, holidayName, sumCount) {
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>
