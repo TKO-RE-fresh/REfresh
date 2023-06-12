@@ -92,7 +92,7 @@ public class WebSecurityConfig {
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/**").access("hasAnyRole('MEMBER', 'ADMIN')")
             .anyRequest().authenticated().and()
-            .headers().frameOptions().sameOrigin().and()
+//            .headers().frameOptions().sameOrigin().and()
             .addFilterBefore(new JwtAuthFilter(jwtUtil, logoutHandler), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }

@@ -53,7 +53,6 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
-  console.log(to, from);
   try {
     // 권한이 있는지 확인
     const res = await Store.dispatch("checkCookie");
