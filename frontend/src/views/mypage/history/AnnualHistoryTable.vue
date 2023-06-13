@@ -157,6 +157,7 @@ const cancelHandeler = (uid) => {
       await axios
         .put("http://localhost:80/myPage/history", { uid })
         .then(() => {
+          Store.dispatch("fetchLeaveInfo");
           Swal.fire("취소!", "연차 신청을 취소 하였습니다.", "success");
         })
         .catch(() => {
